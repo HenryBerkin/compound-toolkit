@@ -1,8 +1,13 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import pkg from './package.json';
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
+
   preview: {
     allowedHosts: true, // allow Cloudflare tunnel host during testing
   },
@@ -15,9 +20,9 @@ export default defineConfig({
       includeAssets: ['icons/*.png', 'icons/*.svg'],
       manifest: {
         name: 'Compound Growth Toolkit',
-        short_name: 'Growth Calc',
+        short_name: 'Compound Toolkit',
         description:
-          'A production-quality compound interest & investment growth calculator. Works offline.',
+          'Professional compound growth planning with inflation and fee modelling. Works offline.',
         start_url: '/',
         display: 'standalone',
         background_color: '#0f172a',
@@ -34,7 +39,7 @@ export default defineConfig({
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512.png',
+            src: '/icons/icon-512-maskable.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',

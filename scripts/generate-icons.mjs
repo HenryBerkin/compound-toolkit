@@ -4,16 +4,22 @@
  * Generates placeholder PNG icons for the PWA manifest using only Node.js
  * built-in modules (no canvas / sharp dependency required).
  *
- * Output: public/icons/icon-192.png, icon-512.png, apple-touch-icon.png
+ * Output:
+ *  - public/icons/icon-32.png
+ *  - public/icons/icon-48.png
+ *  - public/icons/icon-192.png
+ *  - public/icons/icon-512.png
+ *  - public/icons/icon-512-maskable.png
+ *  - public/icons/apple-touch-icon.png
  *
- * The icons render a simple ascending bar-chart with a trend line — the same
- * design used in icon.svg — drawn pixel-by-pixel.
+ * The icons use a solid indigo background with a minimal white upward mark.
+ * No transparency is used in generated PNGs.
  *
  * Run: node scripts/generate-icons.mjs
  */
 
 import { deflateSync } from 'zlib';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -52,90 +58,85 @@ function chunk(type, data) {
 
 // ─── Pixel painter ────────────────────────────────────────────────────────────
 
+const BG = [0x4f, 0x46, 0xe5];
+const FG = [0xff, 0xff, 0xff];
+
+const STYLES = {
+  standard: {
+    thickness: 0.063,
+    feather: 0.013,
+    segments: [
+      [0.24, 0.68, 0.46, 0.50],
+      [0.46, 0.50, 0.72, 0.31],
+      [0.72, 0.31, 0.62, 0.31],
+      [0.72, 0.31, 0.66, 0.41],
+    ],
+  },
+  maskable: {
+    // Extra inner padding for Android mask clipping.
+    thickness: 0.058,
+    feather: 0.012,
+    segments: [
+      [0.30, 0.67, 0.47, 0.52],
+      [0.47, 0.52, 0.66, 0.36],
+      [0.66, 0.36, 0.58, 0.36],
+      [0.66, 0.36, 0.61, 0.44],
+    ],
+  },
+};
+
+function clamp01(value) {
+  if (value < 0) return 0;
+  if (value > 1) return 1;
+  return value;
+}
+
+function blend(bg, fg, a) {
+  return Math.round(bg * (1 - a) + fg * a);
+}
+
+function segmentDistance(px, py, x1, y1, x2, y2) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const lenSq = dx * dx + dy * dy;
+  const t = lenSq === 0
+    ? 0
+    : Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / lenSq));
+  const cx = x1 + t * dx;
+  const cy = y1 + t * dy;
+  const ox = px - cx;
+  const oy = py - cy;
+  return Math.sqrt(ox * ox + oy * oy);
+}
+
 /**
  * Returns [r, g, b] for a pixel at normalised coords (nx, ny) in [0,1].
- * Paints the bar-chart-with-trend-line icon.
+ * Paints a minimal upward growth mark on a solid background.
  */
-function pixel(nx, ny) {
-  // Background: indigo #4f46e5
-  const BG  = [0x4f, 0x46, 0xe5];
-  const WHT = [0xff, 0xff, 0xff];
-
-  // ── Rounded-square mask (22% corner radius) ─────────────────────────────
-  // Map to [-1, 1] space
-  const mx = nx * 2 - 1;
-  const my = ny * 2 - 1;
-  const r  = 0.78; // inner rect limit
-  const cr = 0.22; // corner rounding
-  const ax = Math.abs(mx);
-  const ay = Math.abs(my);
-  if (ax > r || ay > r) {
-    // Are we in a corner region?
-    if (ax > r - cr && ay > r - cr) {
-      const dx = ax - (r - cr);
-      const dy = ay - (r - cr);
-      if (Math.sqrt(dx * dx + dy * dy) > cr) {
-        return [0, 0, 0, 0]; // transparent (outside rounded corner)
-      }
-    }
+function pixel(nx, ny, style) {
+  let minDist = Infinity;
+  for (const [x1, y1, x2, y2] of style.segments) {
+    minDist = Math.min(minDist, segmentDistance(nx, ny, x1, y1, x2, y2));
   }
 
-  // ── Bars ────────────────────────────────────────────────────────────────
-  const PAD = 0.08;
-  const BOTTOM = 1 - PAD;
+  const alpha = minDist <= style.thickness
+    ? 1
+    : clamp01((style.thickness + style.feather - minDist) / style.feather);
 
-  const bars = [
-    { x: 0.08, w: 0.16, h: 0.26 },
-    { x: 0.28, w: 0.16, h: 0.42 },
-    { x: 0.48, w: 0.16, h: 0.58 },
-    { x: 0.68, w: 0.16, h: 0.76 },
+  if (alpha <= 0) return BG;
+
+  return [
+    blend(BG[0], FG[0], alpha),
+    blend(BG[1], FG[1], alpha),
+    blend(BG[2], FG[2], alpha),
   ];
-
-  for (let i = 0; i < bars.length; i++) {
-    const { x, w, h } = bars[i];
-    if (nx >= x && nx <= x + w && ny >= BOTTOM - h && ny <= BOTTOM) {
-      // Varying opacity per bar
-      const opacity = 0.55 + i * 0.15;
-      return [
-        Math.round(0x4f + (0xff - 0x4f) * opacity),
-        Math.round(0x46 + (0xff - 0x46) * opacity),
-        Math.round(0xe5 + (0xff - 0xe5) * opacity),
-      ];
-    }
-  }
-
-  // ── Trend line ─────────────────────────────────────────────────────────
-  const dots = bars.map(({ x, w, h }) => ({ x: x + w / 2, y: BOTTOM - h - 0.035 }));
-
-  const LINE_THICK = 0.028;
-  const DOT_R      = 0.045;
-
-  // Check dot proximity first
-  for (const d of dots) {
-    const dist = Math.sqrt((nx - d.x) ** 2 + (ny - d.y) ** 2);
-    if (dist <= DOT_R) return WHT;
-  }
-
-  // Check segment proximity
-  for (let i = 0; i < dots.length - 1; i++) {
-    const a = dots[i];
-    const b = dots[i + 1];
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    const lenSq = dx * dx + dy * dy;
-    const t = Math.max(0, Math.min(1, ((nx - a.x) * dx + (ny - a.y) * dy) / lenSq));
-    const px = a.x + t * dx;
-    const py = a.y + t * dy;
-    const dist = Math.sqrt((nx - px) ** 2 + (ny - py) ** 2);
-    if (dist <= LINE_THICK) return WHT;
-  }
-
-  return BG;
 }
 
 // ─── PNG generator ────────────────────────────────────────────────────────────
 
-function createPNG(size) {
+function createPNG(size, styleKey = 'standard') {
+  const style = STYLES[styleKey] ?? STYLES.standard;
+
   // IHDR
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(size, 0);
@@ -154,7 +155,7 @@ function createPNG(size) {
     for (let x = 0; x < size; x++) {
       const nx = x / (size - 1);
       const ny = y / (size - 1);
-      const [r, g, b] = pixel(nx, ny);
+      const [r, g, b] = pixel(nx, ny, style);
       const off = rowOff + 1 + x * 3;
       raw[off]     = r;
       raw[off + 1] = g;
@@ -177,19 +178,18 @@ function createPNG(size) {
 mkdirSync(iconsDir, { recursive: true });
 
 const sizes = [
-  ['icon-192.png',        192],
-  ['icon-512.png',        512],
-  ['apple-touch-icon.png', 180],
+  { name: 'icon-32.png', size: 32, style: 'standard' },
+  { name: 'icon-48.png', size: 48, style: 'standard' },
+  { name: 'icon-192.png', size: 192, style: 'standard' },
+  { name: 'icon-512.png', size: 512, style: 'standard' },
+  { name: 'icon-512-maskable.png', size: 512, style: 'maskable' },
+  { name: 'apple-touch-icon.png', size: 180, style: 'standard' },
 ];
 
-for (const [name, size] of sizes) {
+for (const { name, size, style } of sizes) {
   const dest = join(iconsDir, name);
-  if (!existsSync(dest)) {
-    writeFileSync(dest, createPNG(size));
-    console.log(`  ✓ Generated ${name} (${size}×${size})`);
-  } else {
-    console.log(`  · Skipped  ${name} (already exists)`);
-  }
+  writeFileSync(dest, createPNG(size, style));
+  console.log(`  ✓ Generated ${name} (${size}×${size})`);
 }
 
 console.log('Icons ready.\n');

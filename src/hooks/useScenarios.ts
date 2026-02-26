@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { CalcInputs, Scenario } from '../types';
+import { createId } from '../lib/id';
 
 const STORAGE_KEY = 'cgt-scenarios';
 
@@ -27,12 +28,17 @@ export function useScenarios() {
     saveToStorage(scenarios);
   }, [scenarios]);
 
-  function saveScenario(name: string, inputs: CalcInputs): Scenario {
+  function saveScenario(
+    name: string,
+    inputs: CalcInputs,
+    meta?: { presetName?: string },
+  ): Scenario {
     const now = new Date().toISOString();
     const scenario: Scenario = {
-      id: crypto.randomUUID(),
+      id: createId(),
       name: name.trim() || 'Untitled',
       inputs,
+      presetName: meta?.presetName,
       createdAt: now,
       updatedAt: now,
     };
@@ -50,7 +56,7 @@ export function useScenarios() {
     const now = new Date().toISOString();
     const copy: Scenario = {
       ...source,
-      id: crypto.randomUUID(),
+      id: createId(),
       name: `${source.name} (Copy)`,
       createdAt: now,
       updatedAt: now,

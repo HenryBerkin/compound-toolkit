@@ -1,13 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { CalcInputs, CalcResult, FormState, Scenario } from './types';
 import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/calc';
-<<<<<<< HEAD
 import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
 import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
-=======
-import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
-import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
->>>>>>> 254cf16 (chore(pwa): tidy config and types after icon update)
 import { useDebounce } from './hooks/useDebounce';
 import { useTheme } from './hooks/useTheme';
 import { useScenarios } from './hooks/useScenarios';
@@ -31,10 +26,6 @@ export default function App() {
   const [validInputs, setValidInputs] = useState<CalcInputs | null>(null);
   const [errors, setErrors] = useState<ReturnType<typeof parseAndValidate>['errors']>({});
   const [activeScenarioId, setActiveScenarioId] = useState<string | null>(null);
-<<<<<<< HEAD
-  const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
-=======
->>>>>>> 254cf16 (chore(pwa): tidy config and types after icon update)
   const [activePresetName, setActivePresetName] = useState<string | null>(null);
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);

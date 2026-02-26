@@ -3,10 +3,15 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  preview: {
+    allowedHosts: true, // allow Cloudflare tunnel host during testing
+  },
+
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: false,
       includeAssets: ['icons/*.png', 'icons/*.svg'],
       manifest: {
         name: 'Compound Growth Toolkit',
@@ -42,6 +47,7 @@ export default defineConfig({
       },
     }),
   ],
+
   test: {
     environment: 'node',
     globals: true,

@@ -1,6 +1,7 @@
 import { useState, type FC } from 'react';
 import type { CalcResult } from '../types';
 import { formatGBP, monthName } from '../lib/format';
+import { buildCsv, downloadCsv } from '../lib/exportCsv';
 
 interface Props {
   result: CalcResult;
@@ -140,6 +141,70 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
   const labels = viewLabels();
   const totalsRow = totals();
 
+  function exportCsv(): void {
+    const granularity = showMonthly ? 'monthly' : 'yearly';
+    const viewSlug = {
+      nominal: 'nominal',
+      real: 'real',
+      afterFees: 'after-fees',
+      realAfterFees: 'real-after-fees',
+    }[view];
+
+    const date = new Date().toISOString().slice(0, 10);
+    const filename = `compound-toolkit_${viewSlug}_${granularity}_${date}.csv`;
+
+    if (showMonthly) {
+      const headers = [
+        'Period',
+        'Year',
+        'Month',
+        'Opening Balance',
+        'Contributions',
+        'Interest',
+        'Closing Balance',
+      ];
+      const rows = months.map((row) => [
+        row.period,
+        row.year,
+        monthName(row.month),
+        row.startingBalance,
+        row.contributions,
+        row.interest,
+        row.endingBalance,
+      ]);
+      const csv = buildCsv(headers, rows);
+      downloadCsv(filename, csv);
+      return;
+    }
+
+    const headers = [
+      'Year',
+      labels.opening,
+      labels.contributions,
+      labels.middle,
+      labels.closing,
+    ];
+    const rows: Array<Array<string | number>> = yearly.map((row, idx) => {
+      const values = rowValues(idx);
+      return [
+        row.year,
+        values.opening,
+        values.contributions,
+        values.middle,
+        values.closing,
+      ];
+    });
+    rows.push([
+      'Total',
+      '',
+      totalsRow.contributions,
+      totalsRow.middle,
+      totalsRow.closing,
+    ]);
+    const csv = buildCsv(headers, rows);
+    downloadCsv(filename, csv);
+  }
+
   return (
     <section className="breakdown-section card" aria-label="Year-by-year breakdown">
       <div className="breakdown-header">
@@ -170,6 +235,14 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
             <span className="toggle-track" aria-hidden="true" />
             <span className="toggle-text">Monthly view</span>
           </label>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={exportCsv}
+            aria-label="Export current breakdown view as CSV"
+          >
+            Export CSV
+          </button>
           {monthly && view !== 'nominal' && (
             <p className="breakdown-note">
               Monthly view is available for Nominal mode only.

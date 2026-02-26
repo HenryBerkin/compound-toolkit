@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { CalcInputs, CalcResult, FormState, Scenario } from './types';
 import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/calc';
+import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
 import { useDebounce } from './hooks/useDebounce';
 import { useTheme } from './hooks/useTheme';
 import { useScenarios } from './hooks/useScenarios';
@@ -22,6 +23,7 @@ export default function App() {
   const [validInputs, setValidInputs] = useState<CalcInputs | null>(null);
   const [errors, setErrors] = useState<ReturnType<typeof parseAndValidate>['errors']>({});
   const [activeScenarioId, setActiveScenarioId] = useState<string | null>(null);
+  const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
 
   const debouncedForm = useDebounce(form, 280);
 
@@ -47,6 +49,8 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => onPwaUpdateAvailable(() => setShowUpdatePrompt(true)), []);
+
   const handleFormChange = useCallback((patch: Partial<FormState>) => {
     setForm((prev) => ({ ...prev, ...patch }));
     setActiveScenarioId(null);
@@ -69,6 +73,30 @@ export default function App() {
 
   return (
     <div className="app">
+      {showUpdatePrompt && (
+        <div className="update-banner" role="status" aria-live="polite">
+          <span className="update-banner__text">Update available</span>
+          <div className="update-banner__actions">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={() => {
+                void applyPwaUpdate();
+              }}
+            >
+              Refresh
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => setShowUpdatePrompt(false)}
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── Header ──────────────────────────────────────────────────────────── */}
       <header className="app-header">
         <div className="header-inner">

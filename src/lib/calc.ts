@@ -1,5 +1,5 @@
 /**
- * calc.ts — Pure calculation engine for the Compound Growth Toolkit.
+ * calc.ts — Pure calculation engine for the Investment Growth Calculator.
  *
  * Design principles:
  *  - No side-effects; all functions are pure.
@@ -22,6 +22,7 @@ import type {
   ValidationErrors,
   YearlyBreakdown,
 } from '../types';
+import { parseLooseNumber } from './inputFormat';
 
 // ─── Rate helpers ──────────────────────────────────────────────────────────────
 
@@ -268,7 +269,7 @@ export function parseAndValidate(form: FormState): ParseResult {
   const errors: ValidationErrors = {};
 
   // ── principal ───────────────────────────────────────────────────────────────
-  const principal = parseFloat(form.principal);
+  const principal = parseLooseNumber(form.principal);
   if (form.principal.trim() === '' || isNaN(principal)) {
     errors.principal = 'Enter a valid initial investment (0 or more).';
   } else if (principal < 0) {
@@ -278,7 +279,7 @@ export function parseAndValidate(form: FormState): ParseResult {
   }
 
   // ── contribution ────────────────────────────────────────────────────────────
-  const contribution = parseFloat(form.contribution);
+  const contribution = parseLooseNumber(form.contribution);
   if (form.contribution.trim() === '' || isNaN(contribution)) {
     errors.contribution = 'Enter a valid contribution amount (0 or more).';
   } else if (contribution < 0) {
@@ -389,15 +390,15 @@ export function parseAndValidate(form: FormState): ParseResult {
 
 export const DEFAULT_FORM: FormState = {
   principal: '10000',
-  contribution: '200',
+  contribution: '250',
   contributionFrequency: 'monthly',
-  apr: '5',
-  inflationPercent: '0',
-  annualFeePercent: '0',
+  apr: '7',
+  inflationPercent: '3',
+  annualFeePercent: '0.20',
   compoundFrequency: 'monthly',
-  years: '10',
+  years: '15',
   months: '0',
-  timing: 'end',
+  timing: 'start',
 };
 
 export function inputsToForm(inputs: CalcInputs): FormState {

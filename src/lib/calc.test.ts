@@ -627,6 +627,28 @@ describe('parseAndValidate', () => {
     expect(result.errors.months).toBeTruthy();
   });
 
+  it('accepts comma-formatted currency inputs', () => {
+    const result = parseAndValidate({
+      ...DEFAULT_FORM,
+      principal: '10,000',
+      contribution: '1,250',
+    });
+    expect(result.isValid).toBe(true);
+    expect(result.inputs?.principal).toBeCloseTo(10000, 10);
+    expect(result.inputs?.contribution).toBeCloseTo(1250, 10);
+  });
+
+  it('accepts space-formatted and decimal currency inputs', () => {
+    const result = parseAndValidate({
+      ...DEFAULT_FORM,
+      principal: '10 000.50',
+      contribution: '250.75',
+    });
+    expect(result.isValid).toBe(true);
+    expect(result.inputs?.principal).toBeCloseTo(10000.5, 10);
+    expect(result.inputs?.contribution).toBeCloseTo(250.75, 10);
+  });
+
   it('converts APR percent to decimal correctly', () => {
     const result = parseAndValidate({ ...DEFAULT_FORM, apr: '7.5' });
     expect(result.isValid).toBe(true);

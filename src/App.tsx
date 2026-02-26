@@ -172,8 +172,8 @@ export default function App() {
               <circle cx="32" cy="5" r="2" fill="white" />
             </svg>
             <div>
-              <h1 className="brand-title">Compound Growth Toolkit</h1>
-              <p className="brand-subtitle">Long-term investment planning calculator · Works offline</p>
+              <h1 className="brand-title">Investment Growth Calculator</h1>
+              <p className="brand-subtitle">Model compounding, inflation and fees. Works offline.</p>
             </div>
           </div>
           <DarkModeToggle theme={theme} onToggle={toggleTheme} />

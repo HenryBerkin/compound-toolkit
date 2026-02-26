@@ -1,6 +1,7 @@
 import { useState, type FC, type ChangeEvent } from 'react';
 import type { FormState, ValidationErrors } from '../types';
 import { STARTER_PRESETS, type StarterPresetId } from '../lib/presets';
+import { formatGroupedNumberInput, normalizeNumericInput } from '../lib/inputFormat';
 
 interface Props {
   form: FormState;
@@ -33,6 +34,41 @@ const Field: FC<{
   </div>
 );
 
+const CurrencyInput: FC<{
+  id: string;
+  value: string;
+  placeholder: string;
+  error?: string;
+  onValueChange: (nextValue: string) => void;
+}> = ({ id, value, placeholder, error, onValueChange }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const displayValue = isFocused ? value : formatGroupedNumberInput(value);
+
+  return (
+    <input
+      id={id}
+      type="text"
+      inputMode="decimal"
+      className="form-control"
+      value={displayValue}
+      onChange={(e) => onValueChange(e.target.value)}
+      onFocus={() => {
+        setIsFocused(true);
+        const normalized = normalizeNumericInput(value);
+        if (normalized !== value) onValueChange(normalized);
+      }}
+      onBlur={() => {
+        setIsFocused(false);
+        const normalized = normalizeNumericInput(value);
+        if (normalized !== value) onValueChange(normalized);
+      }}
+      aria-describedby={error ? `${id}-error` : undefined}
+      placeholder={placeholder}
+      autoComplete="off"
+    />
+  );
+};
+
 // ─── Main form ────────────────────────────────────────────────────────────────
 
 export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePresetName, onApplyPreset }) => {
@@ -43,12 +79,16 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
       onChange({ [key]: e.target.value } as Partial<FormState>);
   }
 
+  function currencyField(key: 'principal' | 'contribution') {
+    return (value: string) => onChange({ [key]: value } as Partial<FormState>);
+  }
+
   return (
     <form
       className="calculator-form"
       onSubmit={(e) => e.preventDefault()}
       noValidate
-      aria-label="Compound growth calculator"
+      aria-label="Investment growth calculator"
     >
       {/* ── Quick Start Presets ───────────────────────────────────────────── */}
       <fieldset className="form-section">
@@ -95,16 +135,11 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
         >
           <div className="input-group">
             <span className="input-prefix">£</span>
-            <input
+            <CurrencyInput
               id="principal"
-              type="number"
-              inputMode="decimal"
-              className="form-control"
               value={form.principal}
-              onChange={field('principal')}
-              min="0"
-              step="any"
-              aria-describedby={errors.principal ? 'principal-error' : undefined}
+              onValueChange={currencyField('principal')}
+              error={errors.principal}
               placeholder="0.00"
             />
           </div>
@@ -118,16 +153,11 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
           >
             <div className="input-group">
               <span className="input-prefix">£</span>
-              <input
+              <CurrencyInput
                 id="contribution"
-                type="number"
-                inputMode="decimal"
-                className="form-control"
                 value={form.contribution}
-                onChange={field('contribution')}
-                min="0"
-                step="any"
-                aria-describedby={errors.contribution ? 'contribution-error' : undefined}
+                onValueChange={currencyField('contribution')}
+                error={errors.contribution}
                 placeholder="0.00"
               />
             </div>

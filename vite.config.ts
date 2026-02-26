@@ -19,10 +19,10 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['icons/*.png', 'icons/*.svg'],
       manifest: {
-        name: 'Compound Growth Toolkit',
-        short_name: 'Compound Toolkit',
+        name: 'Investment Growth Calculator',
+        short_name: 'Invest Growth',
         description:
-          'Professional compound growth planning with inflation and fee modelling. Works offline.',
+          'Model compounding, inflation, and fees for long-term investing. Works offline.',
         start_url: '/',
         display: 'standalone',
         background_color: '#0f172a',

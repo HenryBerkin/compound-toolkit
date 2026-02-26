@@ -153,6 +153,56 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange }) => {
             </select>
           </Field>
         </div>
+
+        <div className="form-row">
+          <Field
+            id="inflationPercent"
+            label="Inflation Rate"
+            error={errors.inflationPercent}
+            hint="Optional. Used for real-terms projections."
+          >
+            <div className="input-group">
+              <input
+                id="inflationPercent"
+                type="number"
+                inputMode="decimal"
+                className="form-control"
+                value={form.inflationPercent ?? ''}
+                onChange={field('inflationPercent')}
+                min="0"
+                max="20"
+                step="any"
+                aria-describedby={errors.inflationPercent ? 'inflationPercent-error' : undefined}
+                placeholder="0.00"
+              />
+              <span className="input-suffix">%</span>
+            </div>
+          </Field>
+
+          <Field
+            id="annualFeePercent"
+            label="Annual Fee"
+            error={errors.annualFeePercent}
+            hint="Optional. Asset-based fee drag."
+          >
+            <div className="input-group">
+              <input
+                id="annualFeePercent"
+                type="number"
+                inputMode="decimal"
+                className="form-control"
+                value={form.annualFeePercent ?? ''}
+                onChange={field('annualFeePercent')}
+                min="0"
+                max="10"
+                step="any"
+                aria-describedby={errors.annualFeePercent ? 'annualFeePercent-error' : undefined}
+                placeholder="0.00"
+              />
+              <span className="input-suffix">%</span>
+            </div>
+          </Field>
+        </div>
       </fieldset>
 
       {/* ── Time Period ───────────────────────────────────────────────────── */}

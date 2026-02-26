@@ -126,7 +126,7 @@ export default function App() {
 
             {result && validInputs && (
               <>
-                <ResultsSummary result={result} principal={validInputs.principal} />
+                <ResultsSummary result={result} />
                 <GrowthChart inputs={validInputs} result={result} />
                 <BreakdownTable result={result} />
               </>
@@ -156,7 +156,7 @@ export default function App() {
       <footer className="app-footer">
         <p>
           Compound Growth Toolkit — illustrative projections only, not financial advice.&nbsp;
-          Assumes constant APR, no inflation adjustment or tax.
+          Assumes constant APR, inflation and fee rates; excludes tax and market volatility.
         </p>
       </footer>
     </div>

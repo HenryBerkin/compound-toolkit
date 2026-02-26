@@ -94,6 +94,8 @@ export const ScenarioManager: FC<Props> = ({
               totalMonths % 12 === 0
                 ? `${totalMonths / 12}yr`
                 : `${Math.floor(totalMonths / 12)}yr ${totalMonths % 12}mo`;
+            const inflationLabel = `${((s.inputs.inflationRate ?? 0) * 100).toFixed(2)}% inf`;
+            const feeLabel = `${((s.inputs.annualFeeRate ?? 0) * 100).toFixed(2)}% fee`;
 
             return (
               <li
@@ -104,7 +106,7 @@ export const ScenarioManager: FC<Props> = ({
                   <span className="scenario-name">{s.name}</span>
                   <span className="scenario-meta">
                     {formatGBP(s.inputs.principal)} · {(s.inputs.apr * 100).toFixed(2)}% APR ·{' '}
-                    {durationLabel}
+                    {inflationLabel} · {feeLabel} · {durationLabel}
                   </span>
                 </div>
                 <div className="scenario-actions">

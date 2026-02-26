@@ -4,36 +4,45 @@ import { formatGBP } from '../lib/format';
 
 interface Props {
   result: CalcResult;
-  principal: number;
 }
 
-export const ResultsSummary: FC<Props> = ({ result, principal }) => {
-  const { finalBalance, totalContributions, totalInterest } = result;
-  const totalInvested = principal + totalContributions;
-  const growthPct = totalInvested > 0 ? (totalInterest / totalInvested) * 100 : 0;
-
+export const ResultsSummary: FC<Props> = ({ result }) => {
   return (
     <div className="results-summary">
       <div className="summary-card summary-card--balance">
-        <span className="summary-label">Final Balance</span>
-        <span className="summary-value">{formatGBP(finalBalance)}</span>
-        <span className="summary-sub">after all contributions &amp; interest</span>
+        <span className="summary-label">Final Balance (Nominal)</span>
+        <span className="summary-value">{formatGBP(result.finalBalance)}</span>
+        <span className="summary-sub">before inflation adjustment</span>
+      </div>
+
+      <div className="summary-card summary-card--balance">
+        <span className="summary-label">Final Balance (Real)</span>
+        <span className="summary-value">{formatGBP(result.finalBalanceReal)}</span>
+        <span className="summary-sub">inflation-adjusted purchasing power</span>
       </div>
 
       <div className="summary-card summary-card--invested">
-        <span className="summary-label">Total Invested</span>
-        <span className="summary-value">{formatGBP(totalInvested)}</span>
-        <span className="summary-sub">
-          {formatGBP(principal)} initial + {formatGBP(totalContributions)} contributions
-        </span>
+        <span className="summary-label">Final Balance (After Fees)</span>
+        <span className="summary-value">{formatGBP(result.finalBalanceAfterFees)}</span>
+        <span className="summary-sub">nominal balance after fee drag</span>
+      </div>
+
+      <div className="summary-card summary-card--invested">
+        <span className="summary-label">Final Balance (Real After Fees)</span>
+        <span className="summary-value">{formatGBP(result.finalBalanceAfterFeesReal)}</span>
+        <span className="summary-sub">inflation-adjusted after fee drag</span>
       </div>
 
       <div className="summary-card summary-card--interest">
-        <span className="summary-label">Interest Earned</span>
-        <span className="summary-value">{formatGBP(totalInterest)}</span>
-        <span className="summary-sub">
-          {growthPct.toFixed(1)}% growth on invested capital
-        </span>
+        <span className="summary-label">Total Fees Paid (Nominal)</span>
+        <span className="summary-value">{formatGBP(result.totalFeesPaidNominal)}</span>
+        <span className="summary-sub">cumulative asset-based fees</span>
+      </div>
+
+      <div className="summary-card summary-card--interest">
+        <span className="summary-label">Total Fees Paid (Real)</span>
+        <span className="summary-value">{formatGBP(result.totalFeesPaidReal)}</span>
+        <span className="summary-sub">inflation-adjusted fee total</span>
       </div>
     </div>
   );

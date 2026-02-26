@@ -70,6 +70,8 @@ textarea {
   /* Chart */
   --color-chart-invested: #4f46e5;
   --color-chart-interest: #10b981;
+  --color-chart-real: #0284c7;
+  --color-chart-real-after-fee: #f59e0b;
 
   /* Shadows */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -115,6 +117,8 @@ textarea {
   --color-interest-text: #34d399;
   --color-chart-invested: #6366f1;
   --color-chart-interest: #10b981;
+  --color-chart-real: #38bdf8;
+  --color-chart-real-after-fee: #fbbf24;
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -602,6 +606,45 @@ select.form-control {
   overflow: hidden;
 }
 
+.chart-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 0.75rem;
+}
+
+.chart-controls-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.chart-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.chart-legend-dot--nominal {
+  background: var(--color-chart-invested);
+}
+
+.chart-legend-dot--after-fee {
+  background: var(--color-chart-interest);
+}
+
 .chart-tooltip {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -690,6 +733,19 @@ select.form-control {
   flex-wrap: wrap;
 }
 
+.breakdown-select-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.breakdown-select {
+  min-width: 170px;
+}
+
 .breakdown-note {
   font-size: 0.75rem;
   color: var(--color-text-muted);
@@ -766,7 +822,7 @@ select.form-control {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .breakdown-table th {
@@ -779,6 +835,9 @@ select.form-control {
   padding: 0.6rem 0.875rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
+  white-space: normal;
+  line-height: 1.25;
+  vertical-align: bottom;
 }
 
 .breakdown-table th.num,
@@ -790,6 +849,7 @@ select.form-control {
   padding: 0.55rem 0.875rem;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 .breakdown-table tr:last-child td {
@@ -804,6 +864,10 @@ select.form-control {
   background: var(--color-surface-raised);
   border-top: 2px solid var(--color-border);
   border-bottom: none;
+}
+
+.breakdown-table td.num {
+  font-variant-numeric: tabular-nums;
 }
 
 .year-cell {
@@ -836,6 +900,29 @@ select.form-control {
   font-weight: 600;
   color: var(--color-balance-text);
   font-variant-numeric: tabular-nums;
+}
+
+.breakdown-table--year-sticky th.col-year,
+.breakdown-table--year-sticky td.year-cell {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--color-surface);
+  box-shadow: 1px 0 0 var(--color-border);
+}
+
+.breakdown-table--year-sticky thead th.col-year {
+  background: var(--color-surface-raised);
+  z-index: 4;
+}
+
+.breakdown-table--year-sticky tfoot td.year-cell {
+  background: var(--color-surface-raised);
+  z-index: 3;
+}
+
+.breakdown-table--year-sticky tbody tr:hover td.year-cell {
+  background: var(--color-surface-raised);
 }
 
 /* ── Scenarios ───────────────────────────────────────────────────────────── */

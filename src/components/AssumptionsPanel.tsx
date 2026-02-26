@@ -60,12 +60,13 @@ export const AssumptionsPanel: FC<Props> = ({ compoundFrequency }) => {
             <div className="assumption-item">
               <dt>
                 <span className="assumption-emoji" aria-hidden="true">📊</span>
-                APR (Annual Percentage Rate)
+                APR, inflation, and fees
               </dt>
               <dd>
-                APR is the nominal annual interest rate before compounding. It does{' '}
-                <em>not</em> account for inflation, tax, platform fees, or any other costs.
-                Real investment returns will differ.
+                APR is the nominal annual interest rate before compounding. Inflation and annual
+                fee inputs are optional and default to 0%. Inflation is used for real-terms
+                discounting, and fees are applied as an asset-based drag each compounding period.
+                Tax and market volatility are not modelled.
               </dd>
             </div>
 

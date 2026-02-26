@@ -69,6 +69,24 @@ export function effectiveMonthlyContribution(
   }
 }
 
+/**
+ * Convert annual fee rate (decimal) into an equivalent monthly fee drag factor
+ * aligned to the selected compounding convention.
+ */
+function effectiveMonthlyFeeRate(annualFeeRate: number, compound: CompoundFrequency): number {
+  if (annualFeeRate === 0) return 0;
+  switch (compound) {
+    case 'daily':
+      return 1 - Math.pow(1 - annualFeeRate / 365, 365 / 12);
+    case 'monthly':
+      return annualFeeRate / 12;
+    case 'quarterly':
+      return 1 - Math.pow(1 - annualFeeRate / 4, 1 / 3);
+    case 'annual':
+      return 1 - Math.pow(1 - annualFeeRate, 1 / 12);
+  }
+}
+
 /** Discount factor for converting nominal values at elapsed years into real terms. */
 function inflationDiscountFactor(inflationRate: number, elapsedYears: number): number {
   if (inflationRate === 0) return 1;
@@ -93,6 +111,7 @@ export function calculate(inputs: CalcInputs): CalcResult {
     contributionFrequency,
     apr,
     inflationRate = 0,
+    annualFeeRate = 0,
     compoundFrequency,
     years,
     months: additionalMonths,
@@ -101,17 +120,24 @@ export function calculate(inputs: CalcInputs): CalcResult {
 
   const totalMonths = years * 12 + additionalMonths;
   const monthlyRate = effectiveMonthlyRate(apr, compoundFrequency);
+  const monthlyFeeRate = effectiveMonthlyFeeRate(annualFeeRate, compoundFrequency);
   const monthlyContrib = effectiveMonthlyContribution(contribution, contributionFrequency);
 
   const monthlyBreakdown: MonthlyBreakdown[] = [];
   let balance = principal;
+  let balanceAfterFees = principal;
   let cumulativeContributions = 0;
   let cumulativeInterest = 0;
+  let totalFeesPaidNominal = 0;
+  const periodFeesPaid: number[] = [];
+  const cumulativeFeesPaidByPeriod: number[] = [];
+  const endingBalanceAfterFeesByPeriod: number[] = [];
 
   for (let m = 1; m <= totalMonths; m++) {
     const startingBalance = balance;
     let periodContrib: number;
     let periodInterest: number;
+    let periodFeePaid: number;
 
     if (timing === 'start') {
       // Contribution earns a full period of interest
@@ -119,16 +145,30 @@ export function calculate(inputs: CalcInputs): CalcResult {
       periodContrib = monthlyContrib;
       periodInterest = balance * monthlyRate;
       balance += periodInterest;
+
+      balanceAfterFees += monthlyContrib;
+      const balanceAfterGrowth = balanceAfterFees * (1 + monthlyRate);
+      periodFeePaid = balanceAfterGrowth * monthlyFeeRate;
+      balanceAfterFees = balanceAfterGrowth - periodFeePaid;
     } else {
       // Interest applied to current balance, then contribution added
       periodInterest = balance * monthlyRate;
       balance += periodInterest;
       periodContrib = monthlyContrib;
       balance += monthlyContrib;
+
+      const balanceAfterGrowth = balanceAfterFees * (1 + monthlyRate);
+      periodFeePaid = balanceAfterGrowth * monthlyFeeRate;
+      balanceAfterFees = balanceAfterGrowth - periodFeePaid;
+      balanceAfterFees += monthlyContrib;
     }
 
     cumulativeContributions += periodContrib;
     cumulativeInterest += periodInterest;
+    totalFeesPaidNominal += periodFeePaid;
+    periodFeesPaid.push(periodFeePaid);
+    cumulativeFeesPaidByPeriod.push(totalFeesPaidNominal);
+    endingBalanceAfterFeesByPeriod.push(balanceAfterFees);
 
     monthlyBreakdown.push({
       period: m,
@@ -153,8 +193,12 @@ export function calculate(inputs: CalcInputs): CalcResult {
     const rows = monthlyBreakdown.filter((r) => r.year === y);
     if (rows.length === 0) continue;
     const rowEnd = rows[rows.length - 1];
+    const rowEndIndex = rowEnd.period - 1;
     const elapsedYears = rowEnd.period / 12;
     const discount = inflationDiscountFactor(inflationRate, elapsedYears);
+    const yearlyFeesPaid = rows.reduce((s, r) => s + periodFeesPaid[r.period - 1], 0);
+    const cumulativeFeesPaid = cumulativeFeesPaidByPeriod[rowEndIndex];
+    const endingBalanceAfterFees = endingBalanceAfterFeesByPeriod[rowEndIndex];
 
     yearlyBreakdown.push({
       year: y,
@@ -164,6 +208,9 @@ export function calculate(inputs: CalcInputs): CalcResult {
       endingBalance: rowEnd.endingBalance,
       cumulativeContributions: rowEnd.cumulativeContributions,
       cumulativeInterest: rowEnd.cumulativeInterest,
+      yearlyFeesPaid,
+      cumulativeFeesPaid,
+      endingBalanceAfterFees,
       realEndingBalance: rowEnd.endingBalance / discount,
       realCumulativeContributions: rowEnd.cumulativeContributions / discount,
       realCumulativeInterest: rowEnd.cumulativeInterest / discount,
@@ -177,9 +224,13 @@ export function calculate(inputs: CalcInputs): CalcResult {
     finalBalance: balance,
     totalContributions: cumulativeContributions,
     totalInterest: cumulativeInterest,
+    totalFeesPaidNominal,
+    finalBalanceAfterFees: balanceAfterFees,
     finalBalanceReal: balance / finalDiscount,
     totalContributionsReal: cumulativeContributions / finalDiscount,
     totalInterestReal: cumulativeInterest / finalDiscount,
+    totalFeesPaidReal: totalFeesPaidNominal / finalDiscount,
+    finalBalanceAfterFeesReal: balanceAfterFees / finalDiscount,
     yearlyBreakdown,
     monthlyBreakdown,
   };
@@ -265,6 +316,20 @@ export function parseAndValidate(form: FormState): ParseResult {
     }
   }
 
+  // ── annual fee (optional) ───────────────────────────────────────────────────
+  const annualFeeInput = form.annualFeePercent?.trim() ?? '';
+  let annualFeePct = 0;
+  if (annualFeeInput !== '') {
+    annualFeePct = parseFloat(annualFeeInput);
+    if (isNaN(annualFeePct)) {
+      errors.annualFeePercent = 'Enter a valid annual fee (e.g. 0.5 for 0.5%).';
+    } else if (annualFeePct < 0) {
+      errors.annualFeePercent = 'Annual fee cannot be negative.';
+    } else if (annualFeePct > 10) {
+      errors.annualFeePercent = 'Annual fee must be 10% or less.';
+    }
+  }
+
   // ── years ───────────────────────────────────────────────────────────────────
   const yearsRaw = Number(form.years.trim());
   if (
@@ -311,6 +376,7 @@ export function parseAndValidate(form: FormState): ParseResult {
       contributionFrequency: form.contributionFrequency,
       apr: aprPct / 100,
       inflationRate: inflationPct / 100,
+      annualFeeRate: annualFeePct / 100,
       compoundFrequency: form.compoundFrequency,
       years: yearsRaw,
       months: monthsRaw,
@@ -327,6 +393,7 @@ export const DEFAULT_FORM: FormState = {
   contributionFrequency: 'monthly',
   apr: '5',
   inflationPercent: '0',
+  annualFeePercent: '0',
   compoundFrequency: 'monthly',
   years: '10',
   months: '0',
@@ -340,6 +407,7 @@ export function inputsToForm(inputs: CalcInputs): FormState {
     contributionFrequency: inputs.contributionFrequency,
     apr: String(inputs.apr * 100),
     inflationPercent: String((inputs.inflationRate ?? 0) * 100),
+    annualFeePercent: String((inputs.annualFeeRate ?? 0) * 100),
     compoundFrequency: inputs.compoundFrequency,
     years: String(inputs.years),
     months: String(inputs.months),

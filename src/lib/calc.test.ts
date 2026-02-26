@@ -146,6 +146,76 @@ describe('calculate', () => {
     expect(result.finalBalanceReal).toBeLessThan(result.finalBalance);
   });
 
+  it('annual fee = 0 behaves identically to the no-fee model', () => {
+    const base = {
+      principal: 10000,
+      contribution: 250,
+      contributionFrequency: 'monthly' as const,
+      apr: 0.07,
+      compoundFrequency: 'monthly' as const,
+      years: 15,
+      months: 3,
+      timing: 'end' as const,
+    };
+    const noFee = calculate(base);
+    const explicitZeroFee = calculate({ ...base, annualFeeRate: 0 });
+
+    expect(explicitZeroFee.finalBalance).toBeCloseTo(noFee.finalBalance, 12);
+    expect(explicitZeroFee.totalContributions).toBeCloseTo(noFee.totalContributions, 12);
+    expect(explicitZeroFee.totalInterest).toBeCloseTo(noFee.totalInterest, 12);
+    expect(explicitZeroFee.finalBalanceAfterFees).toBeCloseTo(noFee.finalBalance, 8);
+    expect(explicitZeroFee.totalFeesPaidNominal).toBeCloseTo(0, 12);
+    expect(explicitZeroFee.finalBalanceAfterFeesReal).toBeCloseTo(noFee.finalBalanceReal, 8);
+    expect(explicitZeroFee.totalFeesPaidReal).toBeCloseTo(0, 12);
+    expect(explicitZeroFee.yearlyBreakdown.every((row) => row.yearlyFeesPaid === 0)).toBe(true);
+    expect(explicitZeroFee.yearlyBreakdown.every((row) => row.cumulativeFeesPaid === 0)).toBe(true);
+    expect(
+      explicitZeroFee.yearlyBreakdown.every(
+        (row) => Math.abs(row.endingBalanceAfterFees - row.endingBalance) < 1e-8,
+      ),
+    ).toBe(true);
+  });
+
+  it('with annual fee > 0, final balance after fees is lower than nominal balance', () => {
+    const result = calculate({
+      principal: 10000,
+      contribution: 200,
+      contributionFrequency: 'monthly',
+      apr: 0.06,
+      annualFeeRate: 0.01,
+      compoundFrequency: 'monthly',
+      years: 20,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(result.totalFeesPaidNominal).toBeGreaterThan(0);
+    expect(result.finalBalanceAfterFees).toBeLessThan(result.finalBalance);
+  });
+
+  it('totalFeesPaidNominal and yearly cumulative fees increase over time', () => {
+    const result = calculate({
+      principal: 50000,
+      contribution: 0,
+      contributionFrequency: 'monthly',
+      apr: 0.05,
+      annualFeeRate: 0.01,
+      compoundFrequency: 'monthly',
+      years: 10,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(result.totalFeesPaidNominal).toBeGreaterThan(0);
+    for (let i = 1; i < result.yearlyBreakdown.length; i++) {
+      expect(result.yearlyBreakdown[i].cumulativeFeesPaid)
+        .toBeGreaterThanOrEqual(result.yearlyBreakdown[i - 1].cumulativeFeesPaid);
+    }
+    expect(
+      result.yearlyBreakdown[result.yearlyBreakdown.length - 1].cumulativeFeesPaid,
+    ).toBeCloseTo(result.totalFeesPaidNominal, 8);
+  });
+
   it('applies partial-year inflation discount using years + months/12', () => {
     const result = calculate({
       principal: 1200,
@@ -166,6 +236,26 @@ describe('calculate', () => {
     expect(result.finalBalanceReal).toBeCloseTo(expectedRealFinal, 12);
     expect(result.yearlyBreakdown[result.yearlyBreakdown.length - 1].realEndingBalance)
       .toBeCloseTo(expectedRealFinal, 12);
+  });
+
+  it('inflation + fee yields lower real after-fee balance than inflation-only case', () => {
+    const base = {
+      principal: 10000,
+      contribution: 200,
+      contributionFrequency: 'monthly' as const,
+      apr: 0.06,
+      inflationRate: 0.025,
+      compoundFrequency: 'monthly' as const,
+      years: 25,
+      months: 0,
+      timing: 'end' as const,
+    };
+    const inflationOnly = calculate(base);
+    const inflationAndFee = calculate({ ...base, annualFeeRate: 0.01 });
+
+    expect(inflationAndFee.finalBalanceAfterFeesReal)
+      .toBeLessThan(inflationOnly.finalBalanceAfterFeesReal);
+    expect(inflationAndFee.totalFeesPaidReal).toBeGreaterThan(0);
   });
 
   it('no principal, monthly contributions, 0% APR: balance = contributions total', () => {
@@ -429,6 +519,29 @@ describe('calculate', () => {
     expect(result.yearlyBreakdown.every((row) => Number.isFinite(row.realCumulativeInterest))).toBe(true);
     expect(result.finalBalanceReal).toBeLessThan(result.finalBalance);
   });
+
+  it('remains numerically stable over very long durations with fee drag', () => {
+    const result = calculate({
+      principal: 10000,
+      contribution: 200,
+      contributionFrequency: 'monthly',
+      apr: 0.07,
+      annualFeeRate: 0.01,
+      inflationRate: 0.03,
+      compoundFrequency: 'monthly',
+      years: 50,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(Number.isFinite(result.finalBalanceAfterFees)).toBe(true);
+    expect(Number.isFinite(result.totalFeesPaidNominal)).toBe(true);
+    expect(Number.isFinite(result.finalBalanceAfterFeesReal)).toBe(true);
+    expect(Number.isFinite(result.totalFeesPaidReal)).toBe(true);
+    expect(result.yearlyBreakdown.every((row) => Number.isFinite(row.endingBalanceAfterFees))).toBe(true);
+    expect(result.yearlyBreakdown.every((row) => Number.isFinite(row.cumulativeFeesPaid))).toBe(true);
+    expect(result.finalBalanceAfterFees).toBeLessThan(result.finalBalance);
+  });
 });
 
 // ─── parseAndValidate ─────────────────────────────────────────────────────────
@@ -459,6 +572,13 @@ describe('parseAndValidate', () => {
     expect(result.inputs?.inflationRate).toBe(0);
   });
 
+  it('accepts missing annual fee input and defaults to 0', () => {
+    const { annualFeePercent: _ignored, ...withoutAnnualFee } = DEFAULT_FORM;
+    const result = parseAndValidate(withoutAnnualFee);
+    expect(result.isValid).toBe(true);
+    expect(result.inputs?.annualFeeRate).toBe(0);
+  });
+
   it('rejects negative inflation', () => {
     const result = parseAndValidate({ ...DEFAULT_FORM, inflationPercent: '-0.5' });
     expect(result.isValid).toBe(false);
@@ -469,6 +589,18 @@ describe('parseAndValidate', () => {
     const result = parseAndValidate({ ...DEFAULT_FORM, inflationPercent: '25' });
     expect(result.isValid).toBe(false);
     expect(result.errors.inflationPercent).toBeTruthy();
+  });
+
+  it('rejects negative annual fee', () => {
+    const result = parseAndValidate({ ...DEFAULT_FORM, annualFeePercent: '-0.1' });
+    expect(result.isValid).toBe(false);
+    expect(result.errors.annualFeePercent).toBeTruthy();
+  });
+
+  it('rejects annual fee above maximum bound', () => {
+    const result = parseAndValidate({ ...DEFAULT_FORM, annualFeePercent: '12' });
+    expect(result.isValid).toBe(false);
+    expect(result.errors.annualFeePercent).toBeTruthy();
   });
 
   it('rejects zero duration', () => {
@@ -505,5 +637,11 @@ describe('parseAndValidate', () => {
     const result = parseAndValidate({ ...DEFAULT_FORM, inflationPercent: '2.5' });
     expect(result.isValid).toBe(true);
     expect(result.inputs?.inflationRate).toBeCloseTo(0.025, 10);
+  });
+
+  it('converts annual fee percent to decimal correctly', () => {
+    const result = parseAndValidate({ ...DEFAULT_FORM, annualFeePercent: '1.25' });
+    expect(result.isValid).toBe(true);
+    expect(result.inputs?.annualFeeRate).toBeCloseTo(0.0125, 10);
   });
 });

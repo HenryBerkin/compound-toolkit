@@ -106,6 +106,68 @@ describe('calculate', () => {
     expect(result.totalContributions).toBeCloseTo(0, 6);
   });
 
+  it('inflation=0 keeps real outputs equal to nominal outputs', () => {
+    const result = calculate({
+      principal: 10000,
+      contribution: 200,
+      contributionFrequency: 'monthly',
+      apr: 0.05,
+      inflationRate: 0,
+      compoundFrequency: 'monthly',
+      years: 10,
+      months: 6,
+      timing: 'end',
+    });
+
+    expect(result.finalBalanceReal).toBeCloseTo(result.finalBalance, 12);
+    expect(result.totalContributionsReal).toBeCloseTo(result.totalContributions, 12);
+    expect(result.totalInterestReal).toBeCloseTo(result.totalInterest, 12);
+    for (const row of result.yearlyBreakdown) {
+      expect(row.realEndingBalance).toBeCloseTo(row.endingBalance, 12);
+      expect(row.realCumulativeContributions).toBeCloseTo(row.cumulativeContributions, 12);
+      expect(row.realCumulativeInterest).toBeCloseTo(row.cumulativeInterest, 12);
+    }
+  });
+
+  it('with inflation > 0, real final balance is lower than nominal final balance', () => {
+    const result = calculate({
+      principal: 10000,
+      contribution: 200,
+      contributionFrequency: 'monthly',
+      apr: 0.06,
+      inflationRate: 0.025,
+      compoundFrequency: 'monthly',
+      years: 20,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(result.finalBalance).toBeGreaterThan(0);
+    expect(result.finalBalanceReal).toBeLessThan(result.finalBalance);
+  });
+
+  it('applies partial-year inflation discount using years + months/12', () => {
+    const result = calculate({
+      principal: 1200,
+      contribution: 0,
+      contributionFrequency: 'monthly',
+      apr: 0,
+      inflationRate: 0.04,
+      compoundFrequency: 'monthly',
+      years: 2,
+      months: 6,
+      timing: 'end',
+    });
+
+    const t = 2 + 6 / 12;
+    const discount = Math.pow(1 + 0.04, t);
+    const expectedRealFinal = 1200 / discount;
+    expect(result.finalBalance).toBeCloseTo(1200, 12);
+    expect(result.finalBalanceReal).toBeCloseTo(expectedRealFinal, 12);
+    expect(result.yearlyBreakdown[result.yearlyBreakdown.length - 1].realEndingBalance)
+      .toBeCloseTo(expectedRealFinal, 12);
+  });
+
   it('no principal, monthly contributions, 0% APR: balance = contributions total', () => {
     const result = calculate({
       principal: 0,
@@ -343,6 +405,30 @@ describe('calculate', () => {
       6,
     );
   });
+
+  it('remains numerically stable over very long durations with inflation-adjusted outputs', () => {
+    const result = calculate({
+      principal: 10000,
+      contribution: 200,
+      contributionFrequency: 'monthly',
+      apr: 0.07,
+      inflationRate: 0.03,
+      compoundFrequency: 'monthly',
+      years: 50,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(Number.isFinite(result.finalBalanceReal)).toBe(true);
+    expect(Number.isFinite(result.totalContributionsReal)).toBe(true);
+    expect(Number.isFinite(result.totalInterestReal)).toBe(true);
+    expect(result.yearlyBreakdown.every((row) => Number.isFinite(row.realEndingBalance))).toBe(true);
+    expect(
+      result.yearlyBreakdown.every((row) => Number.isFinite(row.realCumulativeContributions)),
+    ).toBe(true);
+    expect(result.yearlyBreakdown.every((row) => Number.isFinite(row.realCumulativeInterest))).toBe(true);
+    expect(result.finalBalanceReal).toBeLessThan(result.finalBalance);
+  });
 });
 
 // ─── parseAndValidate ─────────────────────────────────────────────────────────
@@ -364,6 +450,25 @@ describe('parseAndValidate', () => {
     const result = parseAndValidate({ ...DEFAULT_FORM, apr: '-1' });
     expect(result.isValid).toBe(false);
     expect(result.errors.apr).toBeTruthy();
+  });
+
+  it('accepts missing inflation input and defaults to 0', () => {
+    const { inflationPercent: _ignored, ...withoutInflation } = DEFAULT_FORM;
+    const result = parseAndValidate(withoutInflation);
+    expect(result.isValid).toBe(true);
+    expect(result.inputs?.inflationRate).toBe(0);
+  });
+
+  it('rejects negative inflation', () => {
+    const result = parseAndValidate({ ...DEFAULT_FORM, inflationPercent: '-0.5' });
+    expect(result.isValid).toBe(false);
+    expect(result.errors.inflationPercent).toBeTruthy();
+  });
+
+  it('rejects inflation above maximum bound', () => {
+    const result = parseAndValidate({ ...DEFAULT_FORM, inflationPercent: '25' });
+    expect(result.isValid).toBe(false);
+    expect(result.errors.inflationPercent).toBeTruthy();
   });
 
   it('rejects zero duration', () => {
@@ -394,5 +499,11 @@ describe('parseAndValidate', () => {
     const result = parseAndValidate({ ...DEFAULT_FORM, apr: '7.5' });
     expect(result.isValid).toBe(true);
     expect(result.inputs?.apr).toBeCloseTo(0.075, 10);
+  });
+
+  it('converts inflation percent to decimal correctly', () => {
+    const result = parseAndValidate({ ...DEFAULT_FORM, inflationPercent: '2.5' });
+    expect(result.isValid).toBe(true);
+    expect(result.inputs?.inflationRate).toBeCloseTo(0.025, 10);
   });
 });

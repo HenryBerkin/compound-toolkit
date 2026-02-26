@@ -11,6 +11,8 @@ export interface CalcInputs {
   contributionFrequency: ContributionFrequency;
   /** Decimal — 0.05 = 5% */
   apr: number;
+  /** Optional decimal inflation rate — 0.02 = 2% */
+  inflationRate?: number;
   compoundFrequency: CompoundFrequency;
   years: number;
   /** 0–11 additional months */
@@ -43,12 +45,21 @@ export interface YearlyBreakdown {
   endingBalance: number;
   cumulativeContributions: number;
   cumulativeInterest: number;
+  /** Inflation-adjusted ending balance at this row end date */
+  realEndingBalance: number;
+  /** Inflation-adjusted cumulative contributions at this row end date */
+  realCumulativeContributions: number;
+  /** Inflation-adjusted cumulative interest at this row end date */
+  realCumulativeInterest: number;
 }
 
 export interface CalcResult {
   finalBalance: number;
   totalContributions: number;
   totalInterest: number;
+  finalBalanceReal: number;
+  totalContributionsReal: number;
+  totalInterestReal: number;
   yearlyBreakdown: YearlyBreakdown[];
   monthlyBreakdown: MonthlyBreakdown[];
 }
@@ -81,6 +92,7 @@ export interface FormState {
   contribution: string;
   contributionFrequency: ContributionFrequency;
   apr: string;
+  inflationPercent?: string;
   compoundFrequency: CompoundFrequency;
   years: string;
   months: string;

@@ -69,6 +69,12 @@ export function effectiveMonthlyContribution(
   }
 }
 
+/** Discount factor for converting nominal values at elapsed years into real terms. */
+function inflationDiscountFactor(inflationRate: number, elapsedYears: number): number {
+  if (inflationRate === 0) return 1;
+  return Math.pow(1 + inflationRate, elapsedYears);
+}
+
 // ─── Core simulation ───────────────────────────────────────────────────────────
 
 /**
@@ -86,6 +92,7 @@ export function calculate(inputs: CalcInputs): CalcResult {
     contribution,
     contributionFrequency,
     apr,
+    inflationRate = 0,
     compoundFrequency,
     years,
     months: additionalMonths,
@@ -145,22 +152,34 @@ export function calculate(inputs: CalcInputs): CalcResult {
   for (let y = 1; y <= maxYear; y++) {
     const rows = monthlyBreakdown.filter((r) => r.year === y);
     if (rows.length === 0) continue;
+    const rowEnd = rows[rows.length - 1];
+    const elapsedYears = rowEnd.period / 12;
+    const discount = inflationDiscountFactor(inflationRate, elapsedYears);
 
     yearlyBreakdown.push({
       year: y,
       startingBalance: rows[0].startingBalance,
       contributions: rows.reduce((s, r) => s + r.contributions, 0),
       interest: rows.reduce((s, r) => s + r.interest, 0),
-      endingBalance: rows[rows.length - 1].endingBalance,
-      cumulativeContributions: rows[rows.length - 1].cumulativeContributions,
-      cumulativeInterest: rows[rows.length - 1].cumulativeInterest,
+      endingBalance: rowEnd.endingBalance,
+      cumulativeContributions: rowEnd.cumulativeContributions,
+      cumulativeInterest: rowEnd.cumulativeInterest,
+      realEndingBalance: rowEnd.endingBalance / discount,
+      realCumulativeContributions: rowEnd.cumulativeContributions / discount,
+      realCumulativeInterest: rowEnd.cumulativeInterest / discount,
     });
   }
+
+  const totalYears = totalMonths / 12;
+  const finalDiscount = inflationDiscountFactor(inflationRate, totalYears);
 
   return {
     finalBalance: balance,
     totalContributions: cumulativeContributions,
     totalInterest: cumulativeInterest,
+    finalBalanceReal: balance / finalDiscount,
+    totalContributionsReal: cumulativeContributions / finalDiscount,
+    totalInterestReal: cumulativeInterest / finalDiscount,
     yearlyBreakdown,
     monthlyBreakdown,
   };
@@ -232,6 +251,20 @@ export function parseAndValidate(form: FormState): ParseResult {
     errors.apr = 'Interest rate must be 999% or less.';
   }
 
+  // ── inflation (optional) ────────────────────────────────────────────────────
+  const inflationInput = form.inflationPercent?.trim() ?? '';
+  let inflationPct = 0;
+  if (inflationInput !== '') {
+    inflationPct = parseFloat(inflationInput);
+    if (isNaN(inflationPct)) {
+      errors.inflationPercent = 'Enter a valid inflation rate (e.g. 2 for 2%).';
+    } else if (inflationPct < 0) {
+      errors.inflationPercent = 'Inflation rate cannot be negative.';
+    } else if (inflationPct > 20) {
+      errors.inflationPercent = 'Inflation rate must be 20% or less.';
+    }
+  }
+
   // ── years ───────────────────────────────────────────────────────────────────
   const yearsRaw = Number(form.years.trim());
   if (
@@ -277,6 +310,7 @@ export function parseAndValidate(form: FormState): ParseResult {
       contribution,
       contributionFrequency: form.contributionFrequency,
       apr: aprPct / 100,
+      inflationRate: inflationPct / 100,
       compoundFrequency: form.compoundFrequency,
       years: yearsRaw,
       months: monthsRaw,
@@ -292,6 +326,7 @@ export const DEFAULT_FORM: FormState = {
   contribution: '200',
   contributionFrequency: 'monthly',
   apr: '5',
+  inflationPercent: '0',
   compoundFrequency: 'monthly',
   years: '10',
   months: '0',
@@ -304,6 +339,7 @@ export function inputsToForm(inputs: CalcInputs): FormState {
     contribution: String(inputs.contribution),
     contributionFrequency: inputs.contributionFrequency,
     apr: String(inputs.apr * 100),
+    inflationPercent: String((inputs.inflationRate ?? 0) * 100),
     compoundFrequency: inputs.compoundFrequency,
     years: String(inputs.years),
     months: String(inputs.months),

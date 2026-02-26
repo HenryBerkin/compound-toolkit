@@ -233,16 +233,25 @@ export function parseAndValidate(form: FormState): ParseResult {
   }
 
   // ── years ───────────────────────────────────────────────────────────────────
-  const yearsRaw = parseInt(form.years, 10);
-  if (form.years.trim() === '' || isNaN(yearsRaw)) {
+  const yearsRaw = Number(form.years.trim());
+  if (
+    form.years.trim() === ''
+    || !Number.isFinite(yearsRaw)
+    || !Number.isInteger(yearsRaw)
+  ) {
     errors.years = 'Enter a whole number of years.';
   } else if (yearsRaw < 0) {
     errors.years = 'Years cannot be negative.';
   }
 
   // ── months ──────────────────────────────────────────────────────────────────
-  const monthsRaw = form.months.trim() === '' ? 0 : parseInt(form.months, 10);
-  if (isNaN(monthsRaw) || monthsRaw < 0 || monthsRaw > 11) {
+  const monthsRaw = form.months.trim() === '' ? 0 : Number(form.months.trim());
+  if (
+    !Number.isFinite(monthsRaw)
+    || !Number.isInteger(monthsRaw)
+    || monthsRaw < 0
+    || monthsRaw > 11
+  ) {
     errors.months = 'Additional months must be 0–11.';
   }
 

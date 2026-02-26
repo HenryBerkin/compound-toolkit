@@ -1,8 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { CalcInputs, CalcResult, FormState, Scenario } from './types';
 import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/calc';
+<<<<<<< HEAD
 import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
 import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
+=======
+import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
+import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
+>>>>>>> 254cf16 (chore(pwa): tidy config and types after icon update)
 import { useDebounce } from './hooks/useDebounce';
 import { useTheme } from './hooks/useTheme';
 import { useScenarios } from './hooks/useScenarios';
@@ -26,8 +31,12 @@ export default function App() {
   const [validInputs, setValidInputs] = useState<CalcInputs | null>(null);
   const [errors, setErrors] = useState<ReturnType<typeof parseAndValidate>['errors']>({});
   const [activeScenarioId, setActiveScenarioId] = useState<string | null>(null);
+<<<<<<< HEAD
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
+=======
+>>>>>>> 254cf16 (chore(pwa): tidy config and types after icon update)
   const [activePresetName, setActivePresetName] = useState<string | null>(null);
+  const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   const debouncedForm = useDebounce(form, 280);
@@ -173,7 +182,7 @@ export default function App() {
             </svg>
             <div>
               <h1 className="brand-title">Compound Growth Toolkit</h1>
-              <p className="brand-subtitle">Investment growth calculator · Works offline</p>
+              <p className="brand-subtitle">Long-term investment planning calculator · Works offline</p>
             </div>
           </div>
           <DarkModeToggle theme={theme} onToggle={toggleTheme} />
@@ -185,7 +194,7 @@ export default function App() {
         {showOnboarding && (
           <section className="onboarding-card card" aria-label="Getting started">
             <p className="onboarding-copy">
-              Model growth including fees and inflation. Start with a preset, then tweak inputs.
+              Model growth including fees and inflation. Start with a preset, then refine inputs.
             </p>
             <div className="onboarding-actions">
               <button type="button" className="btn btn-primary btn-sm" onClick={focusPresetSelector}>
@@ -250,10 +259,11 @@ export default function App() {
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer className="app-footer">
-        <p>
-          Compound Growth Toolkit — illustrative projections only, not financial advice.&nbsp;
-          Assumes constant APR, inflation and fee rates; excludes tax and market volatility.
+        <p className="app-footer__disclaimer">
+          Illustrative projections only, not financial advice. Assumes constant rates and excludes
+          taxes, slippage, and market volatility.
         </p>
+        <p className="app-footer__version">v{__APP_VERSION__}</p>
       </footer>
     </div>
   );

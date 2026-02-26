@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { CalcInputs, CalcResult, FormState, Scenario } from './types';
 import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/calc';
 import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
+import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
 import { useDebounce } from './hooks/useDebounce';
 import { useTheme } from './hooks/useTheme';
 import { useScenarios } from './hooks/useScenarios';
@@ -14,6 +15,8 @@ import { BreakdownTable } from './components/BreakdownTable';
 import { ScenarioManager } from './components/ScenarioManager';
 import { AssumptionsPanel } from './components/AssumptionsPanel';
 
+const ONBOARDING_DISMISSED_KEY = 'cgt-onboarding-dismissed';
+
 export default function App() {
   const { theme, toggleTheme } = useTheme();
   const { scenarios, saveScenario, deleteScenario, duplicateScenario } = useScenarios();
@@ -24,6 +27,8 @@ export default function App() {
   const [errors, setErrors] = useState<ReturnType<typeof parseAndValidate>['errors']>({});
   const [activeScenarioId, setActiveScenarioId] = useState<string | null>(null);
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
+  const [activePresetName, setActivePresetName] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const debouncedForm = useDebounce(form, 280);
 
@@ -51,23 +56,64 @@ export default function App() {
 
   useEffect(() => onPwaUpdateAvailable(() => setShowUpdatePrompt(true)), []);
 
+  useEffect(() => {
+    try {
+      const dismissed = localStorage.getItem(ONBOARDING_DISMISSED_KEY) === '1';
+      setShowOnboarding(!dismissed && scenarios.length === 0);
+    } catch {
+      setShowOnboarding(scenarios.length === 0);
+    }
+  }, [scenarios.length]);
+
   const handleFormChange = useCallback((patch: Partial<FormState>) => {
     setForm((prev) => ({ ...prev, ...patch }));
+    setActiveScenarioId(null);
+  }, []);
+
+  const handleApplyPreset = useCallback((presetId: StarterPresetId) => {
+    const preset = STARTER_PRESETS.find((item) => item.id === presetId);
+    if (!preset) return;
+
+    setForm((prev) => ({
+      ...prev,
+      apr: String(preset.apr),
+      inflationPercent: String(preset.inflationPercent),
+      annualFeePercent: String(preset.annualFeePercent),
+      compoundFrequency: preset.compoundFrequency,
+    }));
+    setActivePresetName(preset.name);
     setActiveScenarioId(null);
   }, []);
 
   const handleLoadScenario = useCallback((scenario: Scenario) => {
     setForm(inputsToForm(scenario.inputs));
     setActiveScenarioId(scenario.id);
+    setActivePresetName(scenario.presetName ?? null);
   }, []);
 
   const handleSaveScenario = useCallback(
     (name: string) => {
       if (!validInputs) return;
-      saveScenario(name, validInputs);
+      saveScenario(name, validInputs, { presetName: activePresetName ?? undefined });
     },
-    [validInputs, saveScenario],
+    [activePresetName, validInputs, saveScenario],
   );
+
+  const dismissOnboarding = useCallback(() => {
+    setShowOnboarding(false);
+    try {
+      localStorage.setItem(ONBOARDING_DISMISSED_KEY, '1');
+    } catch {
+      // localStorage unavailable — ignore
+    }
+  }, []);
+
+  const focusPresetSelector = useCallback(() => {
+    const select = document.getElementById('preset-selector') as HTMLSelectElement | null;
+    if (!select) return;
+    select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    select.focus();
+  }, []);
 
   const hasErrors = Object.keys(errors).length > 0;
 
@@ -136,11 +182,33 @@ export default function App() {
 
       {/* ── Main ────────────────────────────────────────────────────────────── */}
       <main className="app-main">
+        {showOnboarding && (
+          <section className="onboarding-card card" aria-label="Getting started">
+            <p className="onboarding-copy">
+              Model growth including fees and inflation. Start with a preset, then tweak inputs.
+            </p>
+            <div className="onboarding-actions">
+              <button type="button" className="btn btn-primary btn-sm" onClick={focusPresetSelector}>
+                Choose a preset
+              </button>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={dismissOnboarding}>
+                Dismiss
+              </button>
+            </div>
+          </section>
+        )}
+
         <div className="app-layout">
           {/* Left column: form */}
           <aside className="form-column">
             <div className="card form-card">
-              <CalculatorForm form={form} errors={errors} onChange={handleFormChange} />
+              <CalculatorForm
+                form={form}
+                errors={errors}
+                onChange={handleFormChange}
+                activePresetName={activePresetName}
+                onApplyPreset={handleApplyPreset}
+              />
             </div>
           </aside>
 

@@ -1,10 +1,13 @@
-import { type FC, type ChangeEvent } from 'react';
+import { useState, type FC, type ChangeEvent } from 'react';
 import type { FormState, ValidationErrors } from '../types';
+import { STARTER_PRESETS, type StarterPresetId } from '../lib/presets';
 
 interface Props {
   form: FormState;
   errors: ValidationErrors;
   onChange: (patch: Partial<FormState>) => void;
+  activePresetName: string | null;
+  onApplyPreset: (presetId: StarterPresetId) => void;
 }
 
 // ─── Small reusable atoms ──────────────────────────────────────────────────────
@@ -32,7 +35,9 @@ const Field: FC<{
 
 // ─── Main form ────────────────────────────────────────────────────────────────
 
-export const CalculatorForm: FC<Props> = ({ form, errors, onChange }) => {
+export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePresetName, onApplyPreset }) => {
+  const [selectedPresetId, setSelectedPresetId] = useState<StarterPresetId>(STARTER_PRESETS[0].id);
+
   function field(key: keyof FormState) {
     return (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       onChange({ [key]: e.target.value } as Partial<FormState>);
@@ -45,6 +50,39 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange }) => {
       noValidate
       aria-label="Compound growth calculator"
     >
+      {/* ── Quick Start Presets ───────────────────────────────────────────── */}
+      <fieldset className="form-section">
+        <legend className="form-section-title">Quick Start</legend>
+
+        <div className="quickstart-row">
+          <label className="sr-only" htmlFor="preset-selector">
+            Starter preset
+          </label>
+          <select
+            id="preset-selector"
+            className="form-control quickstart-select"
+            value={selectedPresetId}
+            onChange={(e) => setSelectedPresetId(e.target.value as StarterPresetId)}
+          >
+            {STARTER_PRESETS.map((preset) => (
+              <option key={preset.id} value={preset.id}>
+                {preset.name}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm quickstart-apply"
+            onClick={() => onApplyPreset(selectedPresetId)}
+          >
+            Apply preset
+          </button>
+        </div>
+
+        <p className="form-hint">Example assumptions for planning only.</p>
+        {activePresetName && <p className="form-hint preset-active">Preset: {activePresetName}</p>}
+      </fieldset>
+
       {/* ── Investment Setup ──────────────────────────────────────────────── */}
       <fieldset className="form-section">
         <legend className="form-section-title">Investment</legend>

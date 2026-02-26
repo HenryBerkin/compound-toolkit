@@ -89,6 +89,7 @@ export interface Scenario {
   id: string;
   name: string;
   inputs: CalcInputs;
+  presetName?: string;
   createdAt: string;
   updatedAt: string;
 }

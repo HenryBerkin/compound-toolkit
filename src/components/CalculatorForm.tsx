@@ -1,0 +1,244 @@
+import { type FC, type ChangeEvent } from 'react';
+import type { FormState, ValidationErrors } from '../types';
+
+interface Props {
+  form: FormState;
+  errors: ValidationErrors;
+  onChange: (patch: Partial<FormState>) => void;
+}
+
+// ─── Small reusable atoms ──────────────────────────────────────────────────────
+
+const Field: FC<{
+  id: string;
+  label: string;
+  error?: string;
+  hint?: string;
+  children: React.ReactNode;
+}> = ({ id, label, error, hint, children }) => (
+  <div className={`form-group ${error ? 'form-group--error' : ''}`}>
+    <label htmlFor={id} className="form-label">
+      {label}
+    </label>
+    {children}
+    {hint && !error && <p className="form-hint">{hint}</p>}
+    {error && (
+      <p className="form-error" role="alert" id={`${id}-error`}>
+        {error}
+      </p>
+    )}
+  </div>
+);
+
+// ─── Main form ────────────────────────────────────────────────────────────────
+
+export const CalculatorForm: FC<Props> = ({ form, errors, onChange }) => {
+  function field(key: keyof FormState) {
+    return (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      onChange({ [key]: e.target.value } as Partial<FormState>);
+  }
+
+  return (
+    <form
+      className="calculator-form"
+      onSubmit={(e) => e.preventDefault()}
+      noValidate
+      aria-label="Compound growth calculator"
+    >
+      {/* ── Investment Setup ──────────────────────────────────────────────── */}
+      <fieldset className="form-section">
+        <legend className="form-section-title">Investment</legend>
+
+        <Field
+          id="principal"
+          label="Initial Investment"
+          error={errors.principal}
+          hint="How much you're starting with. Can be £0."
+        >
+          <div className="input-group">
+            <span className="input-prefix">£</span>
+            <input
+              id="principal"
+              type="number"
+              inputMode="decimal"
+              className="form-control"
+              value={form.principal}
+              onChange={field('principal')}
+              min="0"
+              step="any"
+              aria-describedby={errors.principal ? 'principal-error' : undefined}
+              placeholder="0.00"
+            />
+          </div>
+        </Field>
+
+        <div className="form-row">
+          <Field
+            id="contribution"
+            label="Regular Contribution"
+            error={errors.contribution}
+          >
+            <div className="input-group">
+              <span className="input-prefix">£</span>
+              <input
+                id="contribution"
+                type="number"
+                inputMode="decimal"
+                className="form-control"
+                value={form.contribution}
+                onChange={field('contribution')}
+                min="0"
+                step="any"
+                aria-describedby={errors.contribution ? 'contribution-error' : undefined}
+                placeholder="0.00"
+              />
+            </div>
+          </Field>
+
+          <Field id="contributionFrequency" label="Frequency">
+            <select
+              id="contributionFrequency"
+              className="form-control"
+              value={form.contributionFrequency}
+              onChange={field('contributionFrequency')}
+            >
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="annual">Annual</option>
+            </select>
+          </Field>
+        </div>
+      </fieldset>
+
+      {/* ── Growth Rate ───────────────────────────────────────────────────── */}
+      <fieldset className="form-section">
+        <legend className="form-section-title">Growth Rate</legend>
+
+        <div className="form-row">
+          <Field
+            id="apr"
+            label="Annual Interest Rate (APR)"
+            error={errors.apr}
+            hint="Nominal APR before compounding."
+          >
+            <div className="input-group">
+              <input
+                id="apr"
+                type="number"
+                inputMode="decimal"
+                className="form-control"
+                value={form.apr}
+                onChange={field('apr')}
+                min="0"
+                max="999"
+                step="any"
+                aria-describedby={errors.apr ? 'apr-error' : undefined}
+                placeholder="5.00"
+              />
+              <span className="input-suffix">%</span>
+            </div>
+          </Field>
+
+          <Field id="compoundFrequency" label="Compounding">
+            <select
+              id="compoundFrequency"
+              className="form-control"
+              value={form.compoundFrequency}
+              onChange={field('compoundFrequency')}
+            >
+              <option value="daily">Daily</option>
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="annual">Annual</option>
+            </select>
+          </Field>
+        </div>
+      </fieldset>
+
+      {/* ── Time Period ───────────────────────────────────────────────────── */}
+      <fieldset className="form-section">
+        <legend className="form-section-title">Time Period</legend>
+
+        {errors.duration && (
+          <p className="form-error" role="alert">
+            {errors.duration}
+          </p>
+        )}
+
+        <div className="form-row">
+          <Field id="years" label="Years" error={errors.years}>
+            <input
+              id="years"
+              type="number"
+              inputMode="numeric"
+              className="form-control"
+              value={form.years}
+              onChange={field('years')}
+              min="0"
+              max="60"
+              step="1"
+              aria-describedby={errors.years ? 'years-error' : undefined}
+              placeholder="10"
+            />
+          </Field>
+
+          <Field
+            id="months"
+            label="Extra Months"
+            error={errors.months}
+            hint="0–11 additional months"
+          >
+            <input
+              id="months"
+              type="number"
+              inputMode="numeric"
+              className="form-control"
+              value={form.months}
+              onChange={field('months')}
+              min="0"
+              max="11"
+              step="1"
+              aria-describedby={errors.months ? 'months-error' : undefined}
+              placeholder="0"
+            />
+          </Field>
+        </div>
+      </fieldset>
+
+      {/* ── Contribution Timing ───────────────────────────────────────────── */}
+      <fieldset className="form-section">
+        <legend className="form-section-title">Contribution Timing</legend>
+
+        <div className="timing-options" role="radiogroup" aria-label="Contribution timing">
+          <label className={`timing-option ${form.timing === 'end' ? 'timing-option--active' : ''}`}>
+            <input
+              type="radio"
+              name="timing"
+              value="end"
+              checked={form.timing === 'end'}
+              onChange={() => onChange({ timing: 'end' })}
+              className="sr-only"
+            />
+            <span className="timing-icon" aria-hidden="true">⬇</span>
+            <span className="timing-label">End of period</span>
+            <span className="timing-desc">Standard — interest accrues first</span>
+          </label>
+
+          <label className={`timing-option ${form.timing === 'start' ? 'timing-option--active' : ''}`}>
+            <input
+              type="radio"
+              name="timing"
+              value="start"
+              checked={form.timing === 'start'}
+              onChange={() => onChange({ timing: 'start' })}
+              className="sr-only"
+            />
+            <span className="timing-icon" aria-hidden="true">⬆</span>
+            <span className="timing-label">Start of period</span>
+            <span className="timing-desc">Contribution earns full-period interest</span>
+          </label>
+        </div>
+      </fieldset>
+    </form>
+  );
+};

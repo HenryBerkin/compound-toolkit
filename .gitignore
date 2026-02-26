@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# production builds
+dist/
+
+# local env files
+.env
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS junk
+.DS_Store
+
+# editors
+.vscode/
+.idea/
+
+# TypeScript build cache
+*.tsbuildinfo

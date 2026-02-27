@@ -222,7 +222,7 @@ export default function App() {
 
             {result && validInputs && (
               <>
-                <ResultsSummary result={result} />
+                <ResultsSummary result={result} inflationRate={validInputs.inflationRate} />
                 <GrowthChart inputs={validInputs} result={result} />
                 <BreakdownTable result={result} />
               </>

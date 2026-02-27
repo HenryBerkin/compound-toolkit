@@ -614,14 +614,22 @@ select.form-control {
 /* ── Results summary ──────────────────────────────────────────────────────── */
 
 .results-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.results-summary-headline,
+.results-summary-fees {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
 }
 
-@media (min-width: 480px) {
-  .results-summary {
-    grid-template-columns: repeat(3, 1fr);
+@media (min-width: 640px) {
+  .results-summary-headline,
+  .results-summary-fees {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -657,6 +665,43 @@ select.form-control {
   margin-top: 0.1rem;
 }
 
+.summary-breakdown {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.summary-breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: var(--color-text-secondary);
+}
+
+.summary-breakdown__row dt {
+  margin: 0;
+}
+
+.summary-breakdown__row dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-breakdown__row--muted {
+  color: var(--color-text-muted);
+}
+
+.summary-breakdown__row--muted dd {
+  color: var(--color-text-muted);
+}
+
 .summary-card--balance .summary-value {
   color: var(--color-balance-text);
 }
@@ -684,7 +729,7 @@ select.form-control {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.625rem;
+  gap: 0.5rem 0.625rem;
   margin-bottom: 0.75rem;
 }
 
@@ -724,8 +769,8 @@ select.form-control {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
-  padding: 0.75rem 1rem;
-  min-width: 200px;
+  padding: 0.65rem 0.85rem;
+  width: min(88vw, 220px);
 }
 
 .chart-tooltip__label {
@@ -748,7 +793,7 @@ select.form-control {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
 }
 
 .chart-tooltip__dot {
@@ -879,7 +924,7 @@ select.form-control {
 }
 
 .toggle-text {
-  font-size: 0.825rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--color-text-secondary);
 }

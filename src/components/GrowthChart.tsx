@@ -53,8 +53,8 @@ const CustomTooltip: FC<TooltipProps<number, string>> = ({ active, payload, labe
 // ─── Chart ────────────────────────────────────────────────────────────────────
 
 export const GrowthChart: FC<Props> = ({ inputs, result }) => {
-  const [showReal, setShowReal] = useState(false);
-  const [showRealAfterFees, setShowRealAfterFees] = useState(false);
+  const [showReal, setShowReal] = useState(true);
+  const [showRealAfterFees, setShowRealAfterFees] = useState(true);
 
   const data: ChartRow[] = [
     {
@@ -89,7 +89,7 @@ export const GrowthChart: FC<Props> = ({ inputs, result }) => {
         </span>
         <span className="chart-legend-item">
           <span className="chart-legend-dot chart-legend-dot--after-fee" aria-hidden="true" />
-          After Fees
+          After fees
         </span>
         <label className="toggle-label">
           <input
@@ -111,7 +111,7 @@ export const GrowthChart: FC<Props> = ({ inputs, result }) => {
             aria-label="Show real after-fees balance line"
           />
           <span className="toggle-track" aria-hidden="true" />
-          <span className="toggle-text">Real After Fees</span>
+          <span className="toggle-text">Real after fees</span>
         </label>
       </div>
       <div className="chart-wrapper">
@@ -149,7 +149,7 @@ export const GrowthChart: FC<Props> = ({ inputs, result }) => {
             <Line
               type="monotone"
               dataKey="afterFees"
-              name="After Fees"
+              name="After fees"
               stroke="var(--color-chart-interest)"
               dot={false}
               activeDot={{ r: 4 }}
@@ -171,7 +171,7 @@ export const GrowthChart: FC<Props> = ({ inputs, result }) => {
               <Line
                 type="monotone"
                 dataKey="realAfterFees"
-                name="Real After Fees"
+                name="Real after fees"
                 stroke="var(--color-chart-real-after-fee)"
                 strokeDasharray="6 4"
                 dot={false}

@@ -1,4 +1,4 @@
-import { useState, type FC, type ChangeEvent } from 'react';
+import { useEffect, useState, type FC, type ChangeEvent } from 'react';
 import type { FormState, ValidationErrors } from '../types';
 import { STARTER_PRESETS, type StarterPresetId } from '../lib/presets';
 import { formatGroupedNumberInput, normalizeNumericInput } from '../lib/inputFormat';
@@ -73,6 +73,13 @@ const CurrencyInput: FC<{
 
 export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePresetName, onApplyPreset }) => {
   const [selectedPresetId, setSelectedPresetId] = useState<StarterPresetId>(STARTER_PRESETS[0].id);
+  const [showTargetSection, setShowTargetSection] = useState(false);
+
+  useEffect(() => {
+    if ((form.targetToday ?? '').trim() !== '') {
+      setShowTargetSection(true);
+    }
+  }, [form.targetToday]);
 
   function field(key: keyof FormState) {
     return (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -121,6 +128,39 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
 
         <p className="form-hint">Example assumptions for planning only.</p>
         {activePresetName && <p className="form-hint preset-active">Preset: {activePresetName}</p>}
+      </fieldset>
+
+      {/* ── Optional target ───────────────────────────────────────────────── */}
+      <fieldset className="form-section">
+        <button
+          type="button"
+          className="optional-section-toggle"
+          aria-expanded={showTargetSection}
+          onClick={() => setShowTargetSection((open) => !open)}
+        >
+          <span className="form-section-title optional-section-title">Target (Optional)</span>
+          <span className={`chevron ${showTargetSection ? 'chevron--open' : ''}`} aria-hidden="true">
+            ▾
+          </span>
+        </button>
+
+        {showTargetSection && (
+          <Field
+            id="targetToday"
+            label="Target in today&apos;s money"
+            hint="Set a goal in today&apos;s purchasing power."
+          >
+            <div className="input-group">
+              <span className="input-prefix">£</span>
+              <CurrencyInput
+                id="targetToday"
+                value={form.targetToday ?? ''}
+                onValueChange={(value) => onChange({ targetToday: value })}
+                placeholder="e.g. 500,000"
+              />
+            </div>
+          </Field>
+        )}
       </fieldset>
 
       {/* ── Investment Setup ──────────────────────────────────────────────── */}
@@ -357,6 +397,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
           </label>
         </div>
       </fieldset>
+
     </form>
   );
 };

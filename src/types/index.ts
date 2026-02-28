@@ -100,6 +100,8 @@ export interface Scenario {
 export interface FormState {
   principal: string;
   contribution: string;
+  /** Optional savings goal in today's purchasing power. */
+  targetToday?: string;
   contributionFrequency: ContributionFrequency;
   apr: string;
   inflationPercent?: string;

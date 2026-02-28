@@ -3,6 +3,7 @@ import type { CalcInputs, CalcResult, FormState, Scenario } from './types';
 import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/calc';
 import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
 import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
+import { parseLooseNumber } from './lib/inputFormat';
 import { useDebounce } from './hooks/useDebounce';
 import { useTheme } from './hooks/useTheme';
 import { useScenarios } from './hooks/useScenarios';
@@ -116,6 +117,11 @@ export default function App() {
   }, []);
 
   const hasErrors = Object.keys(errors).length > 0;
+  const targetInput = debouncedForm.targetToday?.trim() ?? '';
+  const parsedTargetToday = targetInput === '' ? Number.NaN : parseLooseNumber(targetInput);
+  const targetToday = Number.isFinite(parsedTargetToday) && parsedTargetToday >= 0
+    ? parsedTargetToday
+    : undefined;
 
   return (
     <div className="app">
@@ -222,7 +228,13 @@ export default function App() {
 
             {result && validInputs && (
               <>
-                <ResultsSummary result={result} inflationRate={validInputs.inflationRate} />
+                <ResultsSummary
+                  result={result}
+                  inflationRate={validInputs.inflationRate}
+                  targetToday={targetToday}
+                  targetYears={validInputs.years}
+                  targetMonths={validInputs.months}
+                />
                 <GrowthChart inputs={validInputs} result={result} />
                 <BreakdownTable result={result} />
               </>

@@ -126,6 +126,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
           </button>
         </div>
 
+        <p className="form-hint">Preset fees represent typical all-in retail costs (fund + platform).</p>
         <p className="form-hint">Example assumptions for planning only. Adjust to your situation.</p>
         {activePresetName && <p className="form-hint preset-active">Preset: {activePresetName}</p>}
       </fieldset>

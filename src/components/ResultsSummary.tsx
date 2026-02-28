@@ -4,6 +4,7 @@ import { formatGBP } from '../lib/format';
 
 interface Props {
   result: CalcResult;
+  principal: number;
   inflationRate?: number;
   annualFeeRate?: number;
   targetToday?: number;
@@ -23,6 +24,7 @@ function formatDuration(years: number, months: number): string {
 
 export const ResultsSummary: FC<Props> = ({
   result,
+  principal,
   inflationRate = 0,
   annualFeeRate = 0,
   targetToday,
@@ -45,6 +47,7 @@ export const ResultsSummary: FC<Props> = ({
   const feeImpact = Math.max(0, result.finalBalance - result.finalBalanceAfterFees);
   const inflationIncreasePct =
     inflationRate > 0 && totalYears > 0 ? (Math.pow(1 + inflationRate, totalYears) - 1) * 100 : 0;
+  const startingBalance = Math.abs(principal) < 0.005 ? 0 : principal;
   const contributionsAdded = baseCapital;
   const growthContribution = result.finalBalanceAfterFees - contributionsAdded;
 
@@ -88,7 +91,11 @@ export const ResultsSummary: FC<Props> = ({
 
           <dl className="summary-breakdown" aria-label="Final balance breakdown">
             <div className="summary-breakdown__row">
-              <dt>Contributions</dt>
+              <dt>Starting balance</dt>
+              <dd>{formatGBP(startingBalance)}</dd>
+            </div>
+            <div className="summary-breakdown__row">
+              <dt>Ongoing contributions</dt>
               <dd>{formatGBP(result.totalContributions)}</dd>
             </div>
             <div className="summary-breakdown__row">
@@ -96,7 +103,7 @@ export const ResultsSummary: FC<Props> = ({
               <dd>{formatGBP(interestAfterFees)}</dd>
             </div>
             <div className="summary-breakdown__row summary-breakdown__row--muted">
-              <dt>Before fees</dt>
+              <dt>Total (before fees)</dt>
               <dd>{formatGBP(result.finalBalance)}</dd>
             </div>
           </dl>
@@ -140,12 +147,12 @@ export const ResultsSummary: FC<Props> = ({
           <span className="summary-label">Total Fees Paid (Nominal)</span>
           <span className="summary-value">{formatGBP(result.totalFeesPaidNominal)}</span>
           <span className="summary-sub">cumulative asset-based fees</span>
-        </div>
-
-        <div className="summary-card summary-card--interest">
-          <span className="summary-label">Total Fees Paid (Real)</span>
-          <span className="summary-value">{formatGBP(result.totalFeesPaidReal)}</span>
-          <span className="summary-sub">inflation-adjusted fee total</span>
+          {inflationRate > 0 && (
+            <p className="summary-sub summary-sub--fee-real">
+              Inflation-adjusted fee total (today&apos;s terms): {formatGBP(result.totalFeesPaidReal)} (Assumes{' '}
+              {inflationLabel} annual inflation)
+            </p>
+          )}
         </div>
       </div>
 

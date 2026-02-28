@@ -678,15 +678,6 @@ select.form-control {
   gap: 0.75rem;
 }
 
-.results-summary-tools {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.results-summary-explain-btn {
-  padding-inline: 0.65rem;
-}
-
 .results-summary-headline,
 .results-summary-fees {
   display: grid;
@@ -814,20 +805,59 @@ select.form-control {
   color: var(--color-interest-text);
 }
 
-.summary-card--insights {
-  gap: 0.45rem;
+.summary-insights {
+  margin-top: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.summary-insights__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.summary-insights__title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.summary-insights__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 32px;
+  padding: 0.2rem 0.45rem;
+}
+
+.summary-insights__chevron {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+  transition: transform var(--transition);
+}
+
+.summary-insights__chevron--open {
+  transform: rotate(225deg) translateY(-1px);
 }
 
 .summary-insights-list {
-  margin: 0;
+  margin: 0.2rem 0 0;
   padding-left: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.32rem;
+  padding-top: 0.2rem;
 }
 
 .summary-insights-list li {
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   color: var(--color-text-secondary);
   line-height: 1.4;
 }

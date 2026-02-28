@@ -75,18 +75,6 @@ export const ResultsSummary: FC<Props> = ({
 
   return (
     <div className="results-summary">
-      <div className="results-summary-tools">
-        <button
-          type="button"
-          className="btn btn-ghost btn-sm results-summary-explain-btn"
-          onClick={() => setShowInsights((prev) => !prev)}
-          aria-expanded={showInsights}
-          aria-controls="results-insights"
-        >
-          Explain these results
-        </button>
-      </div>
-
       <div className="results-summary-headline">
         <div className="summary-card summary-card--invested">
           <span className="summary-label">Final Balance (After Fees)</span>
@@ -112,6 +100,33 @@ export const ResultsSummary: FC<Props> = ({
               <dd>{formatGBP(result.finalBalance)}</dd>
             </div>
           </dl>
+
+          <section className="summary-insights" aria-label="Scenario insights">
+            <div className="summary-insights__header">
+              <span className="summary-insights__title">Scenario Insights</span>
+              <button
+                type="button"
+                className="btn btn-ghost btn-xs summary-insights__toggle"
+                onClick={() => setShowInsights((prev) => !prev)}
+                aria-expanded={showInsights}
+                aria-controls="results-insights"
+              >
+                <span>{showInsights ? 'Hide' : 'Show'}</span>
+                <span
+                  className={`summary-insights__chevron ${showInsights ? 'summary-insights__chevron--open' : ''}`}
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
+            {showInsights && (
+              <ul id="results-insights" className="summary-insights-list">
+                {insights.slice(0, 5).map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+
           {!hasTarget && (
             <p className="summary-sub summary-sub--target-empty">
               Add an optional target above to compare this projection with your goal.
@@ -119,17 +134,6 @@ export const ResultsSummary: FC<Props> = ({
           )}
         </div>
       </div>
-
-      {showInsights && (
-        <section id="results-insights" className="summary-card summary-card--insights" aria-label="Insights">
-          <span className="summary-label">Insights</span>
-          <ul className="summary-insights-list">
-            {insights.slice(0, 5).map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       <div className="results-summary-fees">
         <div className="summary-card summary-card--interest">

@@ -371,20 +371,6 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
         <legend className="form-section-title">Contribution Timing</legend>
 
         <div className="timing-options" role="radiogroup" aria-label="Contribution timing">
-          <label className={`timing-option ${form.timing === 'end' ? 'timing-option--active' : ''}`}>
-            <input
-              type="radio"
-              name="timing"
-              value="end"
-              checked={form.timing === 'end'}
-              onChange={() => onChange({ timing: 'end' })}
-              className="sr-only"
-            />
-            <span className="timing-icon" aria-hidden="true">⬇</span>
-            <span className="timing-label">End of period</span>
-            <span className="timing-desc">Growth first, then contribution</span>
-          </label>
-
           <label className={`timing-option ${form.timing === 'start' ? 'timing-option--active' : ''}`}>
             <input
               type="radio"
@@ -394,9 +380,21 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
               onChange={() => onChange({ timing: 'start' })}
               className="sr-only"
             />
-            <span className="timing-icon" aria-hidden="true">⬆</span>
             <span className="timing-label">Start of period</span>
-            <span className="timing-desc">Contribution added before monthly growth</span>
+            <span className="timing-desc">Contribution before growth</span>
+          </label>
+
+          <label className={`timing-option ${form.timing === 'end' ? 'timing-option--active' : ''}`}>
+            <input
+              type="radio"
+              name="timing"
+              value="end"
+              checked={form.timing === 'end'}
+              onChange={() => onChange({ timing: 'end' })}
+              className="sr-only"
+            />
+            <span className="timing-label">End of period</span>
+            <span className="timing-desc">Growth first, then contribution</span>
           </label>
         </div>
       </fieldset>

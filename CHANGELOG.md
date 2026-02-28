@@ -4,6 +4,38 @@ All notable changes to this project will be documented here.
 
 ---
 
+## [v0.8.0] - Compare Mode & Education Layer
+
+### Added
+- Side-by-side scenario comparison (A vs B)
+- Comparability warning for mismatched inputs
+- Education glossary modal ("Understanding the terms")
+- Clearer scenario assumption labels (APR | Fee | Inflation | Duration)
+
+### Improved
+- Compare chart overlays for A/B (nominal + real after fees)
+- Mobile readability and layout tightening
+- Preset labelling clarity
+- Performance via code-splitting
+
+### Internal
+- No changes to calculation engine logic
+- All existing tests passing
+
+## [v0.7.0] - Performance & UX Polish
+- Implemented code-splitting with React.lazy for non-critical panels (Chart, Breakdown, Scenarios, Assumptions).
+- Reduced main bundle size from ~571kB to ~30kB (lazy-loaded vendor and charts chunks).
+- Improved mobile-first spacing, hierarchy, and tone across form and results.
+- Refined form labels and helper text (APR clarified in helper copy).
+- Improved error messaging tone and scenario save wording.
+
+## [v0.6.0] - Target Mode & Product Refinement
+- Added optional “Target in today’s money” analysis with required future balance calculation.
+- Introduced professional UK-focused default assumptions (ETF-style baseline).
+- Added formatted currency input behavior with thousands separators.
+- Refined assumptions and methodology copy for advisor-grade clarity.
+- Updated product naming to “Investment Growth Calculator”.
+
 ## [v0.5.0] - UI: Inflation + Fees
 - Added UI inputs for Inflation rate (%) and Annual fee (%).
 - Updated results summary to show:

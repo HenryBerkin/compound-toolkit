@@ -733,6 +733,12 @@ select.form-control {
   color: var(--color-text-muted);
 }
 
+.summary-sub--fee-real {
+  margin-top: 0.2rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
 .summary-breakdown {
   margin-top: 0.5rem;
   padding-top: 0.5rem;

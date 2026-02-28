@@ -185,7 +185,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
 
         <Field
           id="principal"
-          label="Initial Investment"
+          label="Starting balance (initial investment)"
           error={errors.principal}
           hint="The amount you want to invest now. £0 is fine."
         >

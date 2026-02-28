@@ -309,6 +309,7 @@ export default function App() {
               <>
                 <ResultsSummary
                   result={result}
+                  principal={validInputs.principal}
                   inflationRate={validInputs.inflationRate}
                   annualFeeRate={validInputs.annualFeeRate}
                   targetToday={targetToday}

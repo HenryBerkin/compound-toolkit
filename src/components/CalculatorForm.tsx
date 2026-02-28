@@ -1,7 +1,10 @@
-import { useEffect, useState, type FC, type ChangeEvent } from 'react';
+import { lazy, Suspense, useEffect, useState, type FC, type ChangeEvent } from 'react';
 import type { FormState, ValidationErrors } from '../types';
 import { STARTER_PRESETS, type StarterPresetId } from '../lib/presets';
 import { formatGroupedNumberInput, normalizeNumericInput } from '../lib/inputFormat';
+
+const GlossaryModal = lazy(() =>
+  import('./GlossaryModal').then((m) => ({ default: m.GlossaryModal })));
 
 interface Props {
   form: FormState;
@@ -74,6 +77,7 @@ const CurrencyInput: FC<{
 export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePresetName, onApplyPreset }) => {
   const [selectedPresetId, setSelectedPresetId] = useState<StarterPresetId>(STARTER_PRESETS[0].id);
   const [showTargetSection, setShowTargetSection] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
 
   useEffect(() => {
     if ((form.targetToday ?? '').trim() !== '') {
@@ -125,6 +129,14 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             Apply preset
           </button>
         </div>
+
+        <button
+          type="button"
+          className="quickstart-terms-link"
+          onClick={() => setShowGlossary(true)}
+        >
+          Understanding the terms
+        </button>
 
         <p className="form-hint">Preset fees represent typical all-in retail costs (fund + platform).</p>
         <p className="form-hint">Example assumptions for planning only. Adjust to your situation.</p>
@@ -399,6 +411,12 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
           </label>
         </div>
       </fieldset>
+
+      {showGlossary && (
+        <Suspense fallback={null}>
+          <GlossaryModal onClose={() => setShowGlossary(false)} />
+        </Suspense>
+      )}
 
     </form>
   );

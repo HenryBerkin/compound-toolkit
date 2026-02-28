@@ -476,6 +476,24 @@ body {
   flex-shrink: 0;
 }
 
+.quickstart-terms-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 0.35rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.quickstart-terms-link:hover {
+  color: var(--color-text-secondary);
+}
+
 .preset-active {
   font-weight: 600;
   color: var(--color-text-secondary);
@@ -1397,6 +1415,91 @@ select.form-control {
   opacity: 0.9;
 }
 
+/* ── Modal ───────────────────────────────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  background: rgba(15, 23, 42, 0.62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-dialog {
+  width: min(720px, 100%);
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1rem 1rem 1.1rem;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.modal-close-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close-icon:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.modal-intro {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+}
+
+.glossary-section {
+  margin-bottom: 0.8rem;
+}
+
+.glossary-section h3 {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.2rem;
+}
+
+.glossary-section p {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.modal-actions {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* ── Recharts overrides ──────────────────────────────────────────────────── */
 
 .recharts-default-legend .recharts-legend-item-text {
@@ -1432,7 +1535,15 @@ select.form-control {
     align-items: stretch;
   }
 
+  .quickstart-terms-link {
+    font-size: 0.8rem;
+  }
+
   .quickstart-apply {
     width: 100%;
+  }
+
+  .modal-dialog {
+    padding: 0.9rem;
   }
 }

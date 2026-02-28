@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useCallback, type FC } from 'react';
 import type { CalcInputs, CalcResult, FormState, Scenario } from './types';
 import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/calc';
 import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
@@ -11,12 +11,23 @@ import { useScenarios } from './hooks/useScenarios';
 import { DarkModeToggle } from './components/DarkModeToggle';
 import { CalculatorForm } from './components/CalculatorForm';
 import { ResultsSummary } from './components/ResultsSummary';
-import { GrowthChart } from './components/GrowthChart';
-import { BreakdownTable } from './components/BreakdownTable';
-import { ScenarioManager } from './components/ScenarioManager';
-import { AssumptionsPanel } from './components/AssumptionsPanel';
+
+const GrowthChart = lazy(() =>
+  import('./components/GrowthChart').then((m) => ({ default: m.GrowthChart })));
+const BreakdownTable = lazy(() =>
+  import('./components/BreakdownTable').then((m) => ({ default: m.BreakdownTable })));
+const ScenarioManager = lazy(() =>
+  import('./components/ScenarioManager').then((m) => ({ default: m.ScenarioManager })));
+const AssumptionsPanel = lazy(() =>
+  import('./components/AssumptionsPanel').then((m) => ({ default: m.AssumptionsPanel })));
 
 const ONBOARDING_DISMISSED_KEY = 'cgt-onboarding-dismissed';
+
+const CardFallback: FC<{ minHeight: number; label: string }> = ({ minHeight, label }) => (
+  <div className="card lazy-panel-fallback" style={{ minHeight }}>
+    <p className="lazy-panel-fallback__text">{label}</p>
+  </div>
+);
 
 export default function App() {
   const { theme, toggleTheme } = useTheme();
@@ -235,8 +246,12 @@ export default function App() {
                   targetYears={validInputs.years}
                   targetMonths={validInputs.months}
                 />
-                <GrowthChart inputs={validInputs} result={result} />
-                <BreakdownTable result={result} />
+                <Suspense fallback={<CardFallback minHeight={370} label="Loading chart..." />}>
+                  <GrowthChart inputs={validInputs} result={result} />
+                </Suspense>
+                <Suspense fallback={<CardFallback minHeight={280} label="Loading breakdown..." />}>
+                  <BreakdownTable result={result} />
+                </Suspense>
               </>
             )}
           </section>
@@ -244,18 +259,22 @@ export default function App() {
 
         {/* Full-width lower sections */}
         <div className="app-lower">
-          <ScenarioManager
-            scenarios={scenarios}
-            activeId={activeScenarioId}
-            currentInputs={validInputs}
-            onLoad={handleLoadScenario}
-            onSave={handleSaveScenario}
-            onDelete={deleteScenario}
-            onDuplicate={duplicateScenario}
-          />
+          <Suspense fallback={<CardFallback minHeight={170} label="Loading saved scenarios..." />}>
+            <ScenarioManager
+              scenarios={scenarios}
+              activeId={activeScenarioId}
+              currentInputs={validInputs}
+              onLoad={handleLoadScenario}
+              onSave={handleSaveScenario}
+              onDelete={deleteScenario}
+              onDuplicate={duplicateScenario}
+            />
+          </Suspense>
 
           {validInputs && (
-            <AssumptionsPanel compoundFrequency={validInputs.compoundFrequency} />
+            <Suspense fallback={<CardFallback minHeight={64} label="Loading assumptions..." />}>
+              <AssumptionsPanel compoundFrequency={validInputs.compoundFrequency} />
+            </Suspense>
           )}
         </div>
       </main>

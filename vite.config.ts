@@ -12,6 +12,18 @@ export default defineConfig({
     allowedHosts: true, // allow Cloudflare tunnel host during testing
   },
 
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (id.includes('recharts') || id.includes('/d3-')) return 'charts-vendor';
+          return 'vendor';
+        },
+      },
+    },
+  },
+
   plugins: [
     react(),
     VitePWA({

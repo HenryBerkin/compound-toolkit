@@ -367,6 +367,17 @@ body {
     border-color var(--transition-slow);
 }
 
+.lazy-panel-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lazy-panel-fallback__text {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
 .form-card {
   padding: 1.25rem;
 }

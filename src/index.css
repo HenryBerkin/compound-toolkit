@@ -678,6 +678,15 @@ select.form-control {
   gap: 0.75rem;
 }
 
+.results-summary-tools {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.results-summary-explain-btn {
+  padding-inline: 0.65rem;
+}
+
 .results-summary-headline,
 .results-summary-fees {
   display: grid;
@@ -803,6 +812,24 @@ select.form-control {
 
 .summary-card--interest .summary-value {
   color: var(--color-interest-text);
+}
+
+.summary-card--insights {
+  gap: 0.45rem;
+}
+
+.summary-insights-list {
+  margin: 0;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.summary-insights-list li {
+  font-size: 0.76rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
 }
 
 /* ── Comparison summary ───────────────────────────────────────────────────── */

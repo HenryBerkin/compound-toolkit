@@ -1,10 +1,11 @@
-import type { FC } from 'react';
+import { useState, type FC } from 'react';
 import type { CalcResult } from '../types';
 import { formatGBP } from '../lib/format';
 
 interface Props {
   result: CalcResult;
   inflationRate?: number;
+  annualFeeRate?: number;
   targetToday?: number;
   targetYears?: number;
   targetMonths?: number;
@@ -23,10 +24,12 @@ function formatDuration(years: number, months: number): string {
 export const ResultsSummary: FC<Props> = ({
   result,
   inflationRate = 0,
+  annualFeeRate = 0,
   targetToday,
   targetYears = 0,
   targetMonths = 0,
 }) => {
+  const [showInsights, setShowInsights] = useState(false);
   const baseCapital = result.finalBalance - result.totalInterest;
   const rawInterestAfterFees = result.finalBalanceAfterFees - baseCapital;
   const interestAfterFees = Math.abs(rawInterestAfterFees) < 0.005 ? 0 : rawInterestAfterFees;
@@ -39,9 +42,51 @@ export const ResultsSummary: FC<Props> = ({
   const difference = hasTarget ? result.finalBalanceAfterFees - requiredFutureNominal : 0;
   const absDifference = Math.abs(difference);
   const durationLabel = formatDuration(targetYears, targetMonths);
+  const feeImpact = Math.max(0, result.finalBalance - result.finalBalanceAfterFees);
+  const inflationIncreasePct =
+    inflationRate > 0 && totalYears > 0 ? (Math.pow(1 + inflationRate, totalYears) - 1) * 100 : 0;
+  const contributionsAdded = baseCapital;
+  const growthContribution = result.finalBalanceAfterFees - contributionsAdded;
+
+  const insights: string[] = [];
+  if (inflationRate > 0 && totalYears > 0) {
+    insights.push(
+      `At ${(inflationRate * 100).toFixed(2)}% inflation, prices are about ${Math.round(inflationIncreasePct)}% higher over ${durationLabel}.`,
+    );
+  }
+  if (annualFeeRate > 0 && feeImpact > 0.005) {
+    insights.push(
+      `Fees reduce the final balance by about ${formatGBP(Math.round(feeImpact))} compared with no-fee growth.`,
+    );
+  }
+  insights.push(
+    `Of your final balance (after fees), ${formatGBP(Math.round(contributionsAdded))} is contributions and ${formatGBP(Math.round(growthContribution))} is growth.`,
+  );
+  if (inflationRate > 0) {
+    insights.push(
+      `${formatGBP(result.finalBalanceAfterFees)} in the future has purchasing power similar to ${formatGBP(result.finalBalanceAfterFeesReal)} today.`,
+    );
+  }
+  if (hasTarget) {
+    insights.push(
+      `To hit your target in today’s money, you need about ${formatGBP(requiredFutureNominal)} at the horizon.`,
+    );
+  }
 
   return (
     <div className="results-summary">
+      <div className="results-summary-tools">
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm results-summary-explain-btn"
+          onClick={() => setShowInsights((prev) => !prev)}
+          aria-expanded={showInsights}
+          aria-controls="results-insights"
+        >
+          Explain these results
+        </button>
+      </div>
+
       <div className="results-summary-headline">
         <div className="summary-card summary-card--invested">
           <span className="summary-label">Final Balance (After Fees)</span>
@@ -74,6 +119,17 @@ export const ResultsSummary: FC<Props> = ({
           )}
         </div>
       </div>
+
+      {showInsights && (
+        <section id="results-insights" className="summary-card summary-card--insights" aria-label="Insights">
+          <span className="summary-label">Insights</span>
+          <ul className="summary-insights-list">
+            {insights.slice(0, 5).map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="results-summary-fees">
         <div className="summary-card summary-card--interest">

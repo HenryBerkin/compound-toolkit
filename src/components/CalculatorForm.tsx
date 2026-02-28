@@ -126,7 +126,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
           </button>
         </div>
 
-        <p className="form-hint">Example assumptions for planning only.</p>
+        <p className="form-hint">Example assumptions for planning only. Adjust to your situation.</p>
         {activePresetName && <p className="form-hint preset-active">Preset: {activePresetName}</p>}
       </fieldset>
 
@@ -143,6 +143,9 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             ▾
           </span>
         </button>
+        {!showTargetSection && (
+          <p className="optional-section-note">Set a goal if you want a simple target comparison.</p>
+        )}
 
         {showTargetSection && (
           <Field
@@ -171,7 +174,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
           id="principal"
           label="Initial Investment"
           error={errors.principal}
-          hint="How much you're starting with. Can be £0."
+          hint="The amount you want to invest now. £0 is fine."
         >
           <div className="input-group">
             <span className="input-prefix">£</span>
@@ -225,9 +228,9 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
         <div className="form-row">
           <Field
             id="apr"
-            label="Annual Interest Rate (APR)"
+            label="Annual Interest Rate"
             error={errors.apr}
-            hint="Nominal APR before compounding."
+            hint="Expected annual growth rate before inflation and fees. (APR)"
           >
             <div className="input-group">
               <input
@@ -267,7 +270,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             id="inflationPercent"
             label="Inflation Rate"
             error={errors.inflationPercent}
-            hint="Optional. Used for real-terms projections."
+            hint="Optional. Used to estimate today&apos;s purchasing power."
           >
             <div className="input-group">
               <input
@@ -291,7 +294,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             id="annualFeePercent"
             label="Annual Fee"
             error={errors.annualFeePercent}
-            hint="Optional. Asset-based fee drag."
+            hint="Optional. Estimated ongoing product or platform fee."
           >
             <div className="input-group">
               <input
@@ -379,7 +382,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             />
             <span className="timing-icon" aria-hidden="true">⬇</span>
             <span className="timing-label">End of period</span>
-            <span className="timing-desc">Standard — interest accrues first</span>
+            <span className="timing-desc">Growth first, then contribution</span>
           </label>
 
           <label className={`timing-option ${form.timing === 'start' ? 'timing-option--active' : ''}`}>
@@ -393,7 +396,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             />
             <span className="timing-icon" aria-hidden="true">⬆</span>
             <span className="timing-label">Start of period</span>
-            <span className="timing-desc">Contribution earns full-period interest</span>
+            <span className="timing-desc">Contribution added before monthly growth</span>
           </label>
         </div>
       </fieldset>

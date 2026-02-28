@@ -542,6 +542,235 @@ describe('calculate', () => {
     expect(result.yearlyBreakdown.every((row) => Number.isFinite(row.cumulativeFeesPaid))).toBe(true);
     expect(result.finalBalanceAfterFees).toBeLessThan(result.finalBalance);
   });
+
+  it('advisor-grade accounting identities hold across nominal, fee, and real outputs', () => {
+    const inputs = {
+      principal: 12500,
+      contribution: 275,
+      contributionFrequency: 'weekly' as const,
+      apr: 0.072,
+      annualFeeRate: 0.006,
+      inflationRate: 0.028,
+      compoundFrequency: 'quarterly' as const,
+      years: 17,
+      months: 5,
+      timing: 'start' as const,
+    };
+    const result = calculate(inputs);
+    const totalYears = inputs.years + inputs.months / 12;
+    const discount = Math.pow(1 + (inputs.inflationRate ?? 0), totalYears);
+
+    // Nominal identity
+    expect(result.finalBalance).toBeCloseTo(
+      inputs.principal + result.totalContributions + result.totalInterest,
+      8,
+    );
+
+    // Fee-path reconciliation: final after-fees decomposes into principal,
+    // contributions, and net growth after fees.
+    const netGrowthAfterFees =
+      result.finalBalanceAfterFees - inputs.principal - result.totalContributions;
+    expect(result.finalBalanceAfterFees).toBeCloseTo(
+      inputs.principal + result.totalContributions + netGrowthAfterFees,
+      8,
+    );
+
+    // Real outputs are horizon-discounted versions of nominal outputs.
+    expect(result.finalBalanceReal).toBeCloseTo(result.finalBalance / discount, 12);
+    expect(result.totalContributionsReal).toBeCloseTo(result.totalContributions / discount, 12);
+    expect(result.totalInterestReal).toBeCloseTo(result.totalInterest / discount, 12);
+    expect(result.totalFeesPaidReal).toBeCloseTo(result.totalFeesPaidNominal / discount, 12);
+    expect(result.finalBalanceAfterFeesReal).toBeCloseTo(result.finalBalanceAfterFees / discount, 12);
+
+    // Real identity with discounted principal term.
+    expect(result.finalBalanceReal).toBeCloseTo(
+      inputs.principal / discount + result.totalContributionsReal + result.totalInterestReal,
+      8,
+    );
+
+    // Fee drag in real terms is consistent with nominal fee drag after discounting.
+    expect(result.finalBalanceReal - result.finalBalanceAfterFeesReal).toBeCloseTo(
+      (result.finalBalance - result.finalBalanceAfterFees) / discount,
+      8,
+    );
+  });
+
+  it('enforces ordering invariants for fee and inflation drag', () => {
+    const result = calculate({
+      principal: 20000,
+      contribution: 300,
+      contributionFrequency: 'monthly',
+      apr: 0.065,
+      annualFeeRate: 0.01,
+      inflationRate: 0.03,
+      compoundFrequency: 'monthly',
+      years: 20,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(result.finalBalanceAfterFees).toBeLessThan(result.finalBalance);
+    expect(result.finalBalanceReal).toBeLessThan(result.finalBalance);
+    expect(result.finalBalanceAfterFeesReal).toBeLessThan(result.finalBalanceReal);
+    expect(result.finalBalanceAfterFeesReal).toBeLessThan(result.finalBalanceAfterFees);
+
+    for (const row of result.yearlyBreakdown) {
+      expect(row.endingBalanceAfterFees).toBeLessThanOrEqual(row.endingBalance);
+      expect(row.realEndingBalance).toBeLessThanOrEqual(row.endingBalance);
+    }
+  });
+
+  it('is monotonic in APR for non-negative rates', () => {
+    const base = {
+      principal: 15000,
+      contribution: 250,
+      contributionFrequency: 'monthly' as const,
+      compoundFrequency: 'monthly' as const,
+      years: 25,
+      months: 0,
+      timing: 'end' as const,
+    };
+    const lowApr = calculate({ ...base, apr: 0.03 });
+    const highApr = calculate({ ...base, apr: 0.08 });
+
+    expect(highApr.finalBalance).toBeGreaterThan(lowApr.finalBalance);
+    expect(highApr.finalBalanceAfterFees).toBeGreaterThan(lowApr.finalBalanceAfterFees);
+  });
+
+  it('is monotonic in annual fee drag while nominal path stays unchanged', () => {
+    const base = {
+      principal: 15000,
+      contribution: 250,
+      contributionFrequency: 'monthly' as const,
+      apr: 0.07,
+      inflationRate: 0.02,
+      compoundFrequency: 'monthly' as const,
+      years: 25,
+      months: 0,
+      timing: 'start' as const,
+    };
+    const lowFee = calculate({ ...base, annualFeeRate: 0.002 });
+    const highFee = calculate({ ...base, annualFeeRate: 0.015 });
+
+    // Fee drag should not alter the nominal no-fee projection path.
+    expect(highFee.finalBalance).toBeCloseTo(lowFee.finalBalance, 12);
+    expect(highFee.finalBalanceAfterFees).toBeLessThan(lowFee.finalBalanceAfterFees);
+    expect(highFee.totalFeesPaidNominal).toBeGreaterThan(lowFee.totalFeesPaidNominal);
+  });
+
+  it('is monotonic in inflation for real outputs while nominal stays unchanged', () => {
+    const base = {
+      principal: 15000,
+      contribution: 250,
+      contributionFrequency: 'monthly' as const,
+      apr: 0.07,
+      annualFeeRate: 0.008,
+      compoundFrequency: 'monthly' as const,
+      years: 25,
+      months: 0,
+      timing: 'start' as const,
+    };
+    const lowInflation = calculate({ ...base, inflationRate: 0.01 });
+    const highInflation = calculate({ ...base, inflationRate: 0.04 });
+
+    expect(highInflation.finalBalance).toBeCloseTo(lowInflation.finalBalance, 12);
+    expect(highInflation.finalBalanceAfterFees).toBeCloseTo(lowInflation.finalBalanceAfterFees, 12);
+    expect(highInflation.finalBalanceReal).toBeLessThan(lowInflation.finalBalanceReal);
+    expect(highInflation.finalBalanceAfterFeesReal).toBeLessThan(lowInflation.finalBalanceAfterFeesReal);
+  });
+
+  it('max duration boundary (60 years) remains finite and structurally consistent', () => {
+    const result = calculate({
+      principal: 20000,
+      contribution: 300,
+      contributionFrequency: 'monthly',
+      apr: 0.06,
+      annualFeeRate: 0.01,
+      inflationRate: 0.03,
+      compoundFrequency: 'monthly',
+      years: 60,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(result.monthlyBreakdown.length).toBe(720);
+    expect(result.yearlyBreakdown.length).toBe(60);
+    expect(Number.isFinite(result.finalBalance)).toBe(true);
+    expect(Number.isFinite(result.finalBalanceAfterFees)).toBe(true);
+    expect(Number.isFinite(result.finalBalanceReal)).toBe(true);
+    expect(Number.isFinite(result.finalBalanceAfterFeesReal)).toBe(true);
+    expect(result.finalBalanceAfterFees).toBeLessThan(result.finalBalance);
+  });
+
+  it('handles all-zero numeric inputs without NaN/inf and keeps identities intact', () => {
+    const result = calculate({
+      principal: 0,
+      contribution: 0,
+      contributionFrequency: 'monthly',
+      apr: 0,
+      annualFeeRate: 0,
+      inflationRate: 0,
+      compoundFrequency: 'monthly',
+      years: 1,
+      months: 0,
+      timing: 'end',
+    });
+
+    expect(result.finalBalance).toBe(0);
+    expect(result.finalBalanceAfterFees).toBe(0);
+    expect(result.totalContributions).toBe(0);
+    expect(result.totalInterest).toBe(0);
+    expect(result.totalFeesPaidNominal).toBe(0);
+    expect(result.finalBalanceReal).toBe(0);
+    expect(result.finalBalanceAfterFeesReal).toBe(0);
+    expect(result.monthlyBreakdown.every((row) => row.endingBalance === 0)).toBe(true);
+  });
+
+  it('period indexing and partial-year handling have no off-by-one errors', () => {
+    const result = calculate({
+      principal: 0,
+      contribution: 100,
+      contributionFrequency: 'monthly',
+      apr: 0,
+      annualFeeRate: 0,
+      inflationRate: 0,
+      compoundFrequency: 'monthly',
+      years: 1,
+      months: 1,
+      timing: 'end',
+    });
+
+    expect(result.monthlyBreakdown.length).toBe(13);
+    expect(result.yearlyBreakdown.length).toBe(2);
+
+    expect(result.monthlyBreakdown[0]).toMatchObject({ period: 1, year: 1, month: 1 });
+    expect(result.monthlyBreakdown[11]).toMatchObject({ period: 12, year: 1, month: 12 });
+    expect(result.monthlyBreakdown[12]).toMatchObject({ period: 13, year: 2, month: 1 });
+
+    expect(result.yearlyBreakdown[0].year).toBe(1);
+    expect(result.yearlyBreakdown[1].year).toBe(2);
+    expect(result.yearlyBreakdown[0].contributions).toBeCloseTo(1200, 12);
+    expect(result.yearlyBreakdown[1].contributions).toBeCloseTo(100, 12);
+    expect(result.yearlyBreakdown[1].endingBalance).toBeCloseTo(1300, 12);
+  });
+
+  it('start timing remains greater than end timing even with fee drag', () => {
+    const base = {
+      principal: 0,
+      contribution: 100,
+      contributionFrequency: 'monthly' as const,
+      apr: 0.06,
+      annualFeeRate: 0.01,
+      compoundFrequency: 'monthly' as const,
+      years: 10,
+      months: 0,
+    };
+    const end = calculate({ ...base, timing: 'end' });
+    const start = calculate({ ...base, timing: 'start' });
+
+    expect(start.finalBalance).toBeGreaterThan(end.finalBalance);
+    expect(start.finalBalanceAfterFees).toBeGreaterThan(end.finalBalanceAfterFees);
+  });
 });
 
 // ─── parseAndValidate ─────────────────────────────────────────────────────────

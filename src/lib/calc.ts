@@ -9,6 +9,25 @@
  *    Contribution frequencies are converted to an effective monthly equivalent.
  *    Compounding frequencies are converted to an effective monthly rate so that
  *    the nominal APR is preserved across all compounding modes.
+ *
+ * Math model summary:
+ *  - Compounding interpretation:
+ *    APR is nominal annual rate. We derive an equivalent monthly rate from the
+ *    selected compounding frequency (`daily`, `monthly`, `quarterly`, `annual`)
+ *    and then simulate month-by-month.
+ *  - Contribution timing:
+ *    `start` applies contribution before growth/fee for that month.
+ *    `end` applies growth/fee first, then contribution.
+ *  - Weekly contribution conversion:
+ *    Weekly cash flow is converted to monthly with 52/12.
+ *  - Annual fee drag:
+ *    Fees are charged as an asset-based drag each simulated month after growth
+ *    on that month's fee base (post-growth balance), then timing rules apply.
+ *  - Inflation discounting:
+ *    Nominal values are discounted into "real" terms by dividing by
+ *    (1 + inflationRate)^t, where t is elapsed years as a float. For finals,
+ *    t = years + months/12. For yearly rows, t = monthIndex/12 at row end.
+ *    Real totals are horizon-adjusted (single t), not cashflow-by-cashflow.
  */
 
 import type {

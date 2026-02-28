@@ -67,6 +67,11 @@ export const ResultsSummary: FC<Props> = ({
               <dd>{formatGBP(result.finalBalance)}</dd>
             </div>
           </dl>
+          {!hasTarget && (
+            <p className="summary-sub summary-sub--target-empty">
+              Add an optional target above to compare this projection with your goal.
+            </p>
+          )}
         </div>
       </div>
 
@@ -94,23 +99,23 @@ export const ResultsSummary: FC<Props> = ({
 
           <dl className="summary-breakdown" aria-label="Target analysis values">
             <div className="summary-breakdown__row">
-              <dt>Required future value (before inflation)</dt>
+              <dt>Required balance at horizon</dt>
               <dd>{formatGBP(requiredFutureNominal)}</dd>
             </div>
             <div className="summary-breakdown__row">
-              <dt>Projected final balance (after fees)</dt>
+              <dt>Projected balance (after fees)</dt>
               <dd>{formatGBP(result.finalBalanceAfterFees)}</dd>
             </div>
             <div className="summary-breakdown__row">
-              <dt>Difference</dt>
+              <dt>Gap</dt>
               <dd>{formatGBP(difference)}</dd>
             </div>
           </dl>
 
           <p className="summary-sub summary-sub--target-outcome">
-            {difference < -0.005 && `You are projected to fall short by ${formatGBP(absDifference)}.`}
-            {difference > 0.005 && `You exceed your target by ${formatGBP(absDifference)}.`}
-            {Math.abs(difference) <= 0.005 && 'You are projected to meet your target.'}
+            {difference < -0.005 && `You are currently projected to be ${formatGBP(absDifference)} below this target.`}
+            {difference > 0.005 && `You are currently projected to be ${formatGBP(absDifference)} above this target.`}
+            {Math.abs(difference) <= 0.005 && 'You are currently projected to be on target.'}
           </p>
         </div>
       )}

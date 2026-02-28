@@ -51,7 +51,7 @@ export const ScenarioManager: FC<Props> = ({
           onClick={() => setSaveOpen((o) => !o)}
           disabled={!currentInputs}
         >
-          {saveOpen ? 'Cancel' : '+ Save Current'}
+          {saveOpen ? 'Cancel' : 'Save Scenario'}
         </button>
       </div>
 
@@ -84,7 +84,7 @@ export const ScenarioManager: FC<Props> = ({
 
       {scenarios.length === 0 ? (
         <p className="scenarios-empty">
-          No saved scenarios yet. Configure the calculator and click <strong>Save Current</strong>.
+          No saved scenarios yet. Set your assumptions, then tap <strong>Save Scenario</strong>.
         </p>
       ) : (
         <ul className="scenario-list" role="list">

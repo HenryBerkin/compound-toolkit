@@ -222,7 +222,7 @@ export default function App() {
           <section className="results-column" aria-label="Results">
             {hasErrors && !result && (
               <div className="error-banner" role="alert">
-                <span aria-hidden="true">⚠</span> Please fix the highlighted errors to see results.
+                <span aria-hidden="true">⚠</span> Review the highlighted fields to continue.
               </div>
             )}
 

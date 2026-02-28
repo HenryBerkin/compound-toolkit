@@ -34,13 +34,35 @@ export const AssumptionsPanel: FC<Props> = ({ compoundFrequency }) => {
             <div className="assumption-item">
               <dt>
                 <span className="assumption-emoji" aria-hidden="true">📐</span>
-                Simulation model
+                How the projection runs
               </dt>
               <dd>
-                All calculations step forward one calendar month at a time. The nominal APR is
-                converted to an equivalent monthly rate that preserves the compounding convention
-                you've selected ({COMPOUND_LABELS[compoundFrequency]}). Weekly and annual
-                contributions are converted to effective monthly equivalents using 52 weeks/year.
+                <ul className="assumptions-bullets">
+                  <li>The model advances one month at a time.</li>
+                  <li>
+                    APR is converted into an equivalent monthly growth rate based on your selected
+                    compounding frequency ({COMPOUND_LABELS[compoundFrequency]}).
+                  </li>
+                  <li>Weekly contributions are converted into a monthly equivalent (52 weeks ÷ 12 months).</li>
+                  <li>Annual contributions are spread as a monthly equivalent (amount ÷ 12).</li>
+                </ul>
+              </dd>
+            </div>
+
+            <div className="assumption-item">
+              <dt>
+                <span className="assumption-emoji" aria-hidden="true">💸</span>
+                What “After fees” means
+              </dt>
+              <dd>
+                <ul className="assumptions-bullets">
+                  <li>
+                    Each month, the balance grows first, then the fee drag is applied to assets.
+                  </li>
+                  <li>
+                    “After fees” balances show the projected value after this ongoing fee drag.
+                  </li>
+                </ul>
               </dd>
             </div>
 
@@ -50,46 +72,68 @@ export const AssumptionsPanel: FC<Props> = ({ compoundFrequency }) => {
                 Contribution timing
               </dt>
               <dd>
-                <strong>Start of period:</strong> your contribution is deposited before interest
-                accrues, so it earns a full month of interest.{' '}
-                <strong>End of period:</strong> interest accrues on the existing balance first;
-                the contribution is added afterwards and earns interest from the following month.
+                <ul className="assumptions-bullets">
+                  <li>
+                    <strong>Start of period:</strong> contribution is added before growth for that
+                    month.
+                  </li>
+                  <li>
+                    <strong>End of period:</strong> growth happens first, then the contribution is
+                    added.
+                  </li>
+                </ul>
               </dd>
             </div>
 
             <div className="assumption-item">
               <dt>
                 <span className="assumption-emoji" aria-hidden="true">📊</span>
-                APR, inflation, and fees
+                Purchasing power (“today’s money”)
               </dt>
               <dd>
-                APR is the nominal annual interest rate before compounding. Inflation and annual
-                fee inputs are optional and default to 0%. Inflation is used for real-terms
-                discounting, and fees are applied as an asset-based drag each compounding period.
-                Tax and market volatility are not modelled.
+                <ul className="assumptions-bullets">
+                  <li>
+                    “Today’s money” estimates what the future balance could buy after inflation.
+                  </li>
+                  <li>
+                    If inflation is 0%, this will match the standard (before-inflation) balance.
+                  </li>
+                  <li>
+                    Inflation reduces what money can buy over time, even if the number itself increases.
+                  </li>
+                </ul>
               </dd>
             </div>
 
             <div className="assumption-item">
               <dt>
-                <span className="assumption-emoji" aria-hidden="true">🔢</span>
-                Precision &amp; rounding
+                <span className="assumption-emoji" aria-hidden="true">🧩</span>
+                Input assumptions
               </dt>
               <dd>
-                All internal arithmetic uses full double-precision floating-point. Values are
-                rounded to 2 decimal places only at the point of display, not during calculation.
+                <ul className="assumptions-bullets">
+                  <li>Rates are assumed constant over the full period.</li>
+                  <li>Contributions are assumed constant and on schedule.</li>
+                  <li>Results are deterministic examples, not a forecast of market path.</li>
+                </ul>
               </dd>
             </div>
 
             <div className="assumption-item assumption-item--warning">
               <dt>
-                <span className="assumption-emoji" aria-hidden="true">⚠️</span>
-                Projection only
+                <span className="assumption-emoji" aria-hidden="true">🚫</span>
+                What this projection does not include
               </dt>
               <dd>
-                This tool produces illustrative projections. It assumes a constant interest rate
-                over the full duration. Actual returns will vary. Past performance does not
-                guarantee future results. This is not financial advice.
+                <ul className="assumptions-bullets">
+                  <li>Taxes</li>
+                  <li>Market volatility and sequence risk</li>
+                  <li>Inflation variability</li>
+                  <li>Contribution limits</li>
+                  <li>Platform and transaction costs</li>
+                  <li>Pension rules</li>
+                  <li>Withdrawals and decumulation planning</li>
+                </ul>
               </dd>
             </div>
           </dl>

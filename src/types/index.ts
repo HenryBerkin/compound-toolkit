@@ -90,6 +90,8 @@ export interface Scenario {
   name: string;
   inputs: CalcInputs;
   presetName?: string;
+  /** Optional goal in today's purchasing power saved with the scenario. */
+  targetToday?: number;
   createdAt: string;
   updatedAt: string;
 }

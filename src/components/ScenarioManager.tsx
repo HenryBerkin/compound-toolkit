@@ -6,20 +6,30 @@ interface Props {
   scenarios: Scenario[];
   activeId: string | null;
   currentInputs: CalcInputs | null;
+  compareActive: boolean;
+  compareIds: string[];
   onLoad: (scenario: Scenario) => void;
   onSave: (name: string) => void;
   onDelete: (id: string) => void;
   onDuplicate: (id: string) => void;
+  onToggleCompareId: (id: string) => void;
+  onCompare: () => void;
+  onClearCompare: () => void;
 }
 
 export const ScenarioManager: FC<Props> = ({
   scenarios,
   activeId,
   currentInputs,
+  compareActive,
+  compareIds,
   onLoad,
   onSave,
   onDelete,
   onDuplicate,
+  onToggleCompareId,
+  onCompare,
+  onClearCompare,
 }) => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [name, setName] = useState('');
@@ -41,19 +51,50 @@ export const ScenarioManager: FC<Props> = ({
     }
   }
 
+  function compareSlotLabel(id: string): 'A' | 'B' | null {
+    if (compareIds[0] === id) return 'A';
+    if (compareIds[1] === id) return 'B';
+    return null;
+  }
+
+  const canCompare = compareIds.length === 2;
+  const nextCompareSlot = compareIds.length === 0 ? 'A' : 'B';
+
   return (
     <section className="scenarios-section card" aria-label="Saved scenarios">
       <div className="scenarios-header">
         <h2 className="section-title">Saved Scenarios</h2>
-        <button
-          type="button"
-          className="btn btn-primary btn-sm"
-          onClick={() => setSaveOpen((o) => !o)}
-          disabled={!currentInputs}
-        >
-          {saveOpen ? 'Cancel' : 'Save Scenario'}
-        </button>
+        <div className="scenarios-header-actions">
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={() => setSaveOpen((o) => !o)}
+            disabled={!currentInputs}
+          >
+            {saveOpen ? 'Cancel' : 'Save Scenario'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={onCompare}
+            disabled={!canCompare}
+          >
+            Compare
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={onClearCompare}
+            disabled={!compareActive && compareIds.length === 0}
+          >
+            Clear compare
+          </button>
+        </div>
       </div>
+
+      <p className="comparison-help">
+        Select up to two scenarios ({compareIds.length}/2). {canCompare ? 'Ready to compare.' : `Next selection: ${nextCompareSlot}` }
+      </p>
 
       {saveOpen && (
         <div className="scenario-save-form">
@@ -112,6 +153,15 @@ export const ScenarioManager: FC<Props> = ({
                   </span>
                 </div>
                 <div className="scenario-actions">
+                  <button
+                    type="button"
+                    className={`btn btn-ghost btn-xs ${compareSlotLabel(s.id) ? 'btn-primary-subtle' : ''}`}
+                    onClick={() => onToggleCompareId(s.id)}
+                    aria-label={`Select scenario ${s.name} for comparison`}
+                    disabled={compareIds.length >= 2 && compareSlotLabel(s.id) === null}
+                  >
+                    {compareSlotLabel(s.id) ? `Selected ${compareSlotLabel(s.id)}` : `Select ${nextCompareSlot}`}
+                  </button>
                   <button
                     type="button"
                     className="btn btn-ghost btn-xs"

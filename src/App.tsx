@@ -16,6 +16,8 @@ const GrowthChart = lazy(() =>
   import('./components/GrowthChart').then((m) => ({ default: m.GrowthChart })));
 const BreakdownTable = lazy(() =>
   import('./components/BreakdownTable').then((m) => ({ default: m.BreakdownTable })));
+const ComparisonSummary = lazy(() =>
+  import('./components/ComparisonSummary').then((m) => ({ default: m.ComparisonSummary })));
 const ScenarioManager = lazy(() =>
   import('./components/ScenarioManager').then((m) => ({ default: m.ScenarioManager })));
 const AssumptionsPanel = lazy(() =>
@@ -39,6 +41,8 @@ export default function App() {
   const [errors, setErrors] = useState<ReturnType<typeof parseAndValidate>['errors']>({});
   const [activeScenarioId, setActiveScenarioId] = useState<string | null>(null);
   const [activePresetName, setActivePresetName] = useState<string | null>(null);
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [compareMode, setCompareMode] = useState(false);
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -77,6 +81,16 @@ export default function App() {
     }
   }, [scenarios.length]);
 
+  useEffect(() => {
+    setCompareIds((prev) => prev.filter((id) => scenarios.some((s) => s.id === id)));
+  }, [scenarios]);
+
+  useEffect(() => {
+    if (compareMode && compareIds.length < 2) {
+      setCompareMode(false);
+    }
+  }, [compareMode, compareIds.length]);
+
   const handleFormChange = useCallback((patch: Partial<FormState>) => {
     setForm((prev) => ({ ...prev, ...patch }));
     setActiveScenarioId(null);
@@ -98,18 +112,47 @@ export default function App() {
   }, []);
 
   const handleLoadScenario = useCallback((scenario: Scenario) => {
-    setForm(inputsToForm(scenario.inputs));
+    setForm({
+      ...inputsToForm(scenario.inputs),
+      targetToday: typeof scenario.targetToday === 'number' ? String(scenario.targetToday) : '',
+    });
     setActiveScenarioId(scenario.id);
     setActivePresetName(scenario.presetName ?? null);
   }, []);
 
+  const targetInput = debouncedForm.targetToday?.trim() ?? '';
+  const parsedTargetToday = targetInput === '' ? Number.NaN : parseLooseNumber(targetInput);
+  const targetToday = Number.isFinite(parsedTargetToday) && parsedTargetToday >= 0
+    ? parsedTargetToday
+    : undefined;
+
   const handleSaveScenario = useCallback(
     (name: string) => {
       if (!validInputs) return;
-      saveScenario(name, validInputs, { presetName: activePresetName ?? undefined });
+      saveScenario(name, validInputs, {
+        presetName: activePresetName ?? undefined,
+        targetToday,
+      });
     },
-    [activePresetName, validInputs, saveScenario],
+    [activePresetName, validInputs, saveScenario, targetToday],
   );
+
+  const handleToggleCompareId = useCallback((id: string) => {
+    setCompareIds((prev) => {
+      if (prev.includes(id)) return prev.filter((item) => item !== id);
+      if (prev.length >= 2) return prev;
+      return [...prev, id];
+    });
+  }, []);
+
+  const handleCompare = useCallback(() => {
+    if (compareIds.length === 2) setCompareMode(true);
+  }, [compareIds.length]);
+
+  const handleClearCompare = useCallback(() => {
+    setCompareMode(false);
+    setCompareIds([]);
+  }, []);
 
   const dismissOnboarding = useCallback(() => {
     setShowOnboarding(false);
@@ -128,11 +171,18 @@ export default function App() {
   }, []);
 
   const hasErrors = Object.keys(errors).length > 0;
-  const targetInput = debouncedForm.targetToday?.trim() ?? '';
-  const parsedTargetToday = targetInput === '' ? Number.NaN : parseLooseNumber(targetInput);
-  const targetToday = Number.isFinite(parsedTargetToday) && parsedTargetToday >= 0
-    ? parsedTargetToday
-    : undefined;
+  const selectedCompareScenarios = compareIds
+    .map((id) => scenarios.find((scenario) => scenario.id === id))
+    .filter((scenario): scenario is Scenario => Boolean(scenario));
+  const comparePair = compareMode && selectedCompareScenarios.length === 2
+    ? [selectedCompareScenarios[0], selectedCompareScenarios[1]] as const
+    : null;
+  const compareResults = comparePair
+    ? [
+      { label: 'A' as const, scenario: comparePair[0], result: calculate(comparePair[0].inputs) },
+      { label: 'B' as const, scenario: comparePair[1], result: calculate(comparePair[1].inputs) },
+    ] as const
+    : null;
 
   return (
     <div className="app">
@@ -231,13 +281,31 @@ export default function App() {
 
           {/* Right column: results */}
           <section className="results-column" aria-label="Results">
-            {hasErrors && !result && (
+            {hasErrors && !result && !compareResults && (
               <div className="error-banner" role="alert">
                 <span aria-hidden="true">⚠</span> Review the highlighted fields to continue.
               </div>
             )}
 
-            {result && validInputs && (
+            {compareResults && (
+              <>
+                <Suspense fallback={<CardFallback minHeight={250} label="Loading comparison..." />}>
+                  <ComparisonSummary compared={[compareResults[0], compareResults[1]]} />
+                </Suspense>
+                <Suspense fallback={<CardFallback minHeight={370} label="Loading chart..." />}>
+                  <GrowthChart
+                    inputs={compareResults[0].scenario.inputs}
+                    result={compareResults[0].result}
+                    compare={{
+                      a: compareResults[0],
+                      b: compareResults[1],
+                    }}
+                  />
+                </Suspense>
+              </>
+            )}
+
+            {!compareResults && result && validInputs && (
               <>
                 <ResultsSummary
                   result={result}
@@ -264,10 +332,15 @@ export default function App() {
               scenarios={scenarios}
               activeId={activeScenarioId}
               currentInputs={validInputs}
+              compareActive={compareMode}
+              compareIds={compareIds}
               onLoad={handleLoadScenario}
               onSave={handleSaveScenario}
               onDelete={deleteScenario}
               onDuplicate={duplicateScenario}
+              onToggleCompareId={handleToggleCompareId}
+              onCompare={handleCompare}
+              onClearCompare={handleClearCompare}
             />
           </Suspense>
 

@@ -15,6 +15,10 @@ import { formatGBP, formatGBPCompact } from '../lib/format';
 interface Props {
   inputs: CalcInputs;
   result: CalcResult;
+  compare?: {
+    a: { label: 'A'; scenario: { name: string; inputs: CalcInputs }; result: CalcResult };
+    b: { label: 'B'; scenario: { name: string; inputs: CalcInputs }; result: CalcResult };
+  };
 }
 
 // ─── Custom tooltip ────────────────────────────────────────────────────────────
@@ -52,9 +56,169 @@ const CustomTooltip: FC<TooltipProps<number, string>> = ({ active, payload, labe
 
 // ─── Chart ────────────────────────────────────────────────────────────────────
 
-export const GrowthChart: FC<Props> = ({ inputs, result }) => {
+export const GrowthChart: FC<Props> = ({ inputs, result, compare }) => {
   const [showReal, setShowReal] = useState(true);
   const [showRealAfterFees, setShowRealAfterFees] = useState(true);
+  const [showCompareAfterFees, setShowCompareAfterFees] = useState(true);
+  const [showCompareRealAfterFees, setShowCompareRealAfterFees] = useState(true);
+
+  if (compare) {
+    const aPoints = compare.a.result.yearlyBreakdown;
+    const bPoints = compare.b.result.yearlyBreakdown;
+    const maxYears = Math.max(aPoints.length, bPoints.length);
+
+    const data = Array.from({ length: maxYears + 1 }, (_, index) => {
+      if (index === 0) {
+        return {
+          name: 'Start',
+          aAfterFees: compare.a.scenario.inputs.principal,
+          bAfterFees: compare.b.scenario.inputs.principal,
+          aRealAfterFees: compare.a.scenario.inputs.principal,
+          bRealAfterFees: compare.b.scenario.inputs.principal,
+        };
+      }
+
+      const aRow = aPoints[index - 1];
+      const bRow = bPoints[index - 1];
+      const aDiscount = aRow && aRow.realEndingBalance !== 0 ? aRow.endingBalance / aRow.realEndingBalance : 1;
+      const bDiscount = bRow && bRow.realEndingBalance !== 0 ? bRow.endingBalance / bRow.realEndingBalance : 1;
+
+      return {
+        name: `Yr ${index}`,
+        aAfterFees: aRow ? aRow.endingBalanceAfterFees : null,
+        bAfterFees: bRow ? bRow.endingBalanceAfterFees : null,
+        aRealAfterFees: aRow ? aRow.endingBalanceAfterFees / aDiscount : null,
+        bRealAfterFees: bRow ? bRow.endingBalanceAfterFees / bDiscount : null,
+      };
+    });
+
+    return (
+      <section className="chart-section card" aria-label="Scenario comparison chart">
+        <h2 className="section-title">Growth Over Time (Compare)</h2>
+        <div className="chart-controls">
+          <span className="chart-controls-label">Lines:</span>
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              className="toggle-input"
+              checked={showCompareAfterFees}
+              onChange={(e) => setShowCompareAfterFees(e.target.checked)}
+              aria-label="Show after-fees lines"
+            />
+            <span className="toggle-track" aria-hidden="true" />
+            <span className="toggle-text">After fees (A &amp; B)</span>
+          </label>
+          <label className="toggle-label">
+            <input
+              type="checkbox"
+              className="toggle-input"
+              checked={showCompareRealAfterFees}
+              onChange={(e) => setShowCompareRealAfterFees(e.target.checked)}
+              aria-label="Show real after-fees lines"
+            />
+            <span className="toggle-track" aria-hidden="true" />
+            <span className="toggle-text">Real after fees (A &amp; B)</span>
+          </label>
+        </div>
+
+        <div className="chart-controls chart-controls--compare-legend">
+          <span className="chart-legend-item">
+            <span className="chart-legend-dot chart-legend-dot--compare-a" aria-hidden="true" />
+            A after fees
+          </span>
+          <span className="chart-legend-item">
+            <span className="chart-legend-dot chart-legend-dot--compare-b" aria-hidden="true" />
+            B after fees
+          </span>
+          <span className="chart-legend-item">
+            <span className="chart-legend-dot chart-legend-dot--compare-a-real" aria-hidden="true" />
+            A real after fees
+          </span>
+          <span className="chart-legend-item">
+            <span className="chart-legend-dot chart-legend-dot--compare-b-real" aria-hidden="true" />
+            B real after fees
+          </span>
+        </div>
+
+        <div className="chart-wrapper">
+          <ResponsiveContainer width="100%" height={320}>
+            <LineChart data={data} margin={{ top: 8, right: 16, left: 8, bottom: 0 }}>
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="var(--color-border)"
+                strokeOpacity={0.5}
+              />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 12, fill: 'var(--color-text-secondary)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
+                tickLine={false}
+                interval="preserveStartEnd"
+              />
+              <YAxis
+                tickFormatter={formatGBPCompact}
+                tick={{ fontSize: 12, fill: 'var(--color-text-secondary)' }}
+                axisLine={false}
+                tickLine={false}
+                width={72}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              {showCompareAfterFees && (
+                <>
+                  <Line
+                    type="monotone"
+                    dataKey="aAfterFees"
+                    name="A after fees"
+                    stroke="var(--color-chart-interest)"
+                    dot={false}
+                    activeDot={{ r: 4 }}
+                    strokeWidth={2}
+                    connectNulls={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="bAfterFees"
+                    name="B after fees"
+                    stroke="var(--color-chart-invested)"
+                    dot={false}
+                    activeDot={{ r: 4 }}
+                    strokeWidth={2}
+                    connectNulls={false}
+                  />
+                </>
+              )}
+              {showCompareRealAfterFees && (
+                <>
+                  <Line
+                    type="monotone"
+                    dataKey="aRealAfterFees"
+                    name="A real after fees"
+                    stroke="var(--color-chart-real-after-fee)"
+                    strokeDasharray="6 4"
+                    dot={false}
+                    activeDot={{ r: 4 }}
+                    strokeWidth={2}
+                    connectNulls={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="bRealAfterFees"
+                    name="B real after fees"
+                    stroke="var(--color-chart-real)"
+                    strokeDasharray="6 4"
+                    dot={false}
+                    activeDot={{ r: 4 }}
+                    strokeWidth={2}
+                    connectNulls={false}
+                  />
+                </>
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </section>
+    );
+  }
 
   const data: ChartRow[] = [
     {

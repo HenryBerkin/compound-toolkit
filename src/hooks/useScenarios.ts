@@ -31,7 +31,7 @@ export function useScenarios() {
   function saveScenario(
     name: string,
     inputs: CalcInputs,
-    meta?: { presetName?: string },
+    meta?: { presetName?: string; targetToday?: number },
   ): Scenario {
     const now = new Date().toISOString();
     const scenario: Scenario = {
@@ -39,6 +39,7 @@ export function useScenarios() {
       name: name.trim() || 'Untitled',
       inputs,
       presetName: meta?.presetName,
+      targetToday: meta?.targetToday,
       createdAt: now,
       updatedAt: now,
     };

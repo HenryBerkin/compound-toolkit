@@ -4,6 +4,16 @@ All notable changes to this project will be documented here.
 
 ---
 
+## 0.8.1 – UX Refinement Release
+
+### Improved
+- Consolidated Scenario Results into structured report-style card
+- Integrated fee totals into main results hierarchy
+- Refined semantic colour usage (green primary KPI, neutral fee totals)
+- Collapsible Year-by-Year Breakdown (default collapsed)
+- Improved Scenario Insights empty-state behaviour
+- Reduced layout imbalance on desktop
+
 ## [v0.8.0] - Compare Mode & Education Layer
 
 ### Added

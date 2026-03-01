@@ -611,7 +611,12 @@ body {
 /* Remove default number spinner */
 .form-control[type='number']::-webkit-inner-spin-button,
 .form-control[type='number']::-webkit-outer-spin-button {
-  opacity: 0.6;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-control[type='number'] {
+  -moz-appearance: textfield;
 }
 
 .input-group .form-control {

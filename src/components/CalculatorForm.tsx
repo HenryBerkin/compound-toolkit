@@ -149,7 +149,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
 
         <p className="form-hint">Selecting a preset updates the inputs below.</p>
         <p className="form-hint">Preset fees represent typical fund and platform fees combined.</p>
-        <p className="form-hint">For planning purposes only | adjust to your situation.</p>
+        <p className="form-hint">For planning purposes | adjust to your situation.</p>
       </fieldset>
 
       {/* ── Optional target ───────────────────────────────────────────────── */}

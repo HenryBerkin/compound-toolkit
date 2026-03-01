@@ -678,17 +678,10 @@ select.form-control {
   gap: 0.75rem;
 }
 
-.results-summary-headline,
-.results-summary-fees {
+.results-summary-headline {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
-}
-
-@media (min-width: 640px) {
-  .results-summary-fees {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 .summary-card {
@@ -717,6 +710,13 @@ select.form-control {
   line-height: 1.2;
 }
 
+.summary-kpi-label {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
 .summary-sub {
   font-size: 0.72rem;
   color: var(--color-text-secondary);
@@ -734,7 +734,13 @@ select.form-control {
 }
 
 .summary-sub--fee-real {
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.summary-sub--fee-note {
+  margin-top: 0.12rem;
   color: var(--color-text-muted);
   line-height: 1.4;
 }
@@ -804,11 +810,44 @@ select.form-control {
 }
 
 .summary-card--invested .summary-value {
-  color: var(--color-invested-text);
+  color: var(--color-interest-text);
 }
 
 .summary-card--interest .summary-value {
   color: var(--color-interest-text);
+}
+
+.summary-fees {
+  margin-top: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.summary-fees__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.summary-fees__row + .summary-fees__row {
+  margin-top: 0.35rem;
+}
+
+.summary-fees__label {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.74rem;
+  color: var(--color-text-secondary);
+  line-height: 1.35;
+}
+
+.summary-fees__value {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-warning);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .summary-insights {
@@ -866,6 +905,13 @@ select.form-control {
   font-size: 0.72rem;
   color: var(--color-text-secondary);
   line-height: 1.4;
+}
+
+.summary-insights-helper {
+  margin-top: 0.28rem;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  line-height: 1.35;
 }
 
 /* ── Comparison summary ───────────────────────────────────────────────────── */
@@ -1224,6 +1270,11 @@ select.form-control {
   border: 1px solid var(--color-border);
 }
 
+.table-scroll--expanded {
+  max-height: min(60vh, 420px);
+  overflow: auto;
+}
+
 .breakdown-table {
   width: 100%;
   border-collapse: collapse;
@@ -1329,6 +1380,31 @@ select.form-control {
 
 .breakdown-table--year-sticky tbody tr:hover td.year-cell {
   background: var(--color-surface-raised);
+}
+
+.breakdown-expand-row {
+  margin-top: 0.65rem;
+}
+
+.breakdown-expand-btn {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.breakdown-expand-chevron {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+  transition: transform var(--transition);
+}
+
+.breakdown-expand-chevron--open {
+  transform: rotate(225deg) translateY(-1px);
 }
 
 /* ── Scenarios ───────────────────────────────────────────────────────────── */

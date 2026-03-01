@@ -80,7 +80,8 @@ export const ResultsSummary: FC<Props> = ({
     <div className="results-summary">
       <div className="results-summary-headline">
         <div className="summary-card summary-card--invested">
-          <span className="summary-label">Final Balance (After Fees)</span>
+          <span className="summary-label">Scenario Results</span>
+          <span className="summary-kpi-label">Final balance (after fees)</span>
           <span className="summary-value">{formatGBP(result.finalBalanceAfterFees)}</span>
           <p className="summary-sub summary-sub--context">
             Purchasing power in today&apos;s terms: {formatGBP(result.finalBalanceAfterFeesReal)}
@@ -108,6 +109,25 @@ export const ResultsSummary: FC<Props> = ({
             </div>
           </dl>
 
+          <section className="summary-fees" aria-label="Fee summary">
+            <div className="summary-fees__row">
+              <span className="summary-fees__label">Total fees paid (nominal)</span>
+              <span className="summary-fees__value">{formatGBP(result.totalFeesPaidNominal)}</span>
+            </div>
+            <p className="summary-sub summary-sub--fee-note">cumulative asset-based fees</p>
+            {inflationRate > 0 && (
+              <>
+                <div className="summary-fees__row">
+                  <span className="summary-fees__label">Inflation-adjusted fee total (today&apos;s terms)</span>
+                  <span className="summary-fees__value">{formatGBP(result.totalFeesPaidReal)}</span>
+                </div>
+                <p className="summary-sub summary-sub--fee-real">
+                  (Assumes {inflationLabel} annual inflation)
+                </p>
+              </>
+            )}
+          </section>
+
           <section className="summary-insights" aria-label="Scenario insights">
             <div className="summary-insights__header">
               <span className="summary-insights__title">Scenario Insights</span>
@@ -126,33 +146,20 @@ export const ResultsSummary: FC<Props> = ({
               </button>
             </div>
             {showInsights && (
-              <ul id="results-insights" className="summary-insights-list">
-                {insights.slice(0, 5).map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
+              <>
+                <ul id="results-insights" className="summary-insights-list">
+                  {insights.slice(0, 5).map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+                {!hasTarget && (
+                  <p className="summary-insights-helper">
+                    Add an optional target above to compare this projection with your goal.
+                  </p>
+                )}
+              </>
             )}
           </section>
-
-          {!hasTarget && (
-            <p className="summary-sub summary-sub--target-empty">
-              Add an optional target above to compare this projection with your goal.
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="results-summary-fees">
-        <div className="summary-card summary-card--interest">
-          <span className="summary-label">Total Fees Paid (Nominal)</span>
-          <span className="summary-value">{formatGBP(result.totalFeesPaidNominal)}</span>
-          <span className="summary-sub">cumulative asset-based fees</span>
-          {inflationRate > 0 && (
-            <p className="summary-sub summary-sub--fee-real">
-              Inflation-adjusted fee total (today&apos;s terms): {formatGBP(result.totalFeesPaidReal)} (Assumes{' '}
-              {inflationLabel} annual inflation)
-            </p>
-          )}
         </div>
       </div>
 

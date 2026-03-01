@@ -12,12 +12,17 @@ type TableView = 'nominal' | 'real' | 'afterFees' | 'realAfterFees';
 export const BreakdownTable: FC<Props> = ({ result }) => {
   const [monthly, setMonthly] = useState(false);
   const [view, setView] = useState<TableView>('nominal');
+  const [expanded, setExpanded] = useState(false);
 
   const yearly = result.yearlyBreakdown;
   const months = result.monthlyBreakdown;
 
   const totalMonths = months.length;
   const showMonthly = monthly && totalMonths <= 120 && view === 'nominal'; // cap at 10 years for readability
+  const previewYears = 3;
+  const canCollapseYearly = !showMonthly && yearly.length > previewYears;
+  const showCollapsedYearly = canCollapseYearly && !expanded;
+  const visibleYearly = showCollapsedYearly ? yearly.slice(0, previewYears) : yearly;
 
   function yearEndDiscount(index: number): number {
     const row = yearly[index];
@@ -256,7 +261,10 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
         </div>
       </div>
 
-      <div className="table-scroll">
+      <div
+        id="breakdown-full-table"
+        className={`table-scroll ${expanded && !showMonthly ? 'table-scroll--expanded' : ''}`}
+      >
         <table className={`breakdown-table ${!showMonthly ? 'breakdown-table--year-sticky' : ''}`}>
           <thead>
             <tr>
@@ -286,7 +294,7 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
             </tbody>
           ) : (
             <tbody>
-              {yearly.map((row, idx) => {
+              {visibleYearly.map((row, idx) => {
                 const values = rowValues(idx);
                 return (
                   <tr key={row.year}>
@@ -301,26 +309,46 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
             </tbody>
           )}
 
-          <tfoot>
-            <tr>
-              {showMonthly && <td />}
-              <td className="year-cell">
-                <strong>Total</strong>
-              </td>
-              <td className="num" />
-              <td className="num contrib-cell">
-                <strong>{formatGBP(totalsRow.contributions)}</strong>
-              </td>
-              <td className="num interest-cell">
-                <strong>{formatGBP(totalsRow.middle)}</strong>
-              </td>
-              <td className="num balance-cell">
-                <strong>{formatGBP(totalsRow.closing)}</strong>
-              </td>
-            </tr>
-          </tfoot>
+          {(!showCollapsedYearly || showMonthly) && (
+            <tfoot>
+              <tr>
+                {showMonthly && <td />}
+                <td className="year-cell">
+                  <strong>Total</strong>
+                </td>
+                <td className="num" />
+                <td className="num contrib-cell">
+                  <strong>{formatGBP(totalsRow.contributions)}</strong>
+                </td>
+                <td className="num interest-cell">
+                  <strong>{formatGBP(totalsRow.middle)}</strong>
+                </td>
+                <td className="num balance-cell">
+                  <strong>{formatGBP(totalsRow.closing)}</strong>
+                </td>
+              </tr>
+            </tfoot>
+          )}
         </table>
       </div>
+
+      {canCollapseYearly && (
+        <div className="breakdown-expand-row">
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm breakdown-expand-btn"
+            onClick={() => setExpanded((open) => !open)}
+            aria-expanded={expanded}
+            aria-controls="breakdown-full-table"
+          >
+            <span>{expanded ? 'Show fewer years' : 'View full breakdown'}</span>
+            <span
+              className={`breakdown-expand-chevron ${expanded ? 'breakdown-expand-chevron--open' : ''}`}
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+      )}
     </section>
   );
 };

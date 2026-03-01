@@ -23,7 +23,9 @@ const ScenarioManager = lazy(() =>
 const AssumptionsPanel = lazy(() =>
   import('./components/AssumptionsPanel').then((m) => ({ default: m.AssumptionsPanel })));
 
-const ONBOARDING_DISMISSED_KEY = 'cgt-onboarding-dismissed';
+const ONBOARDING_DISMISSED_KEY = 'cgt-onboarding-dismissed-v1';
+const PRESET_INTERACTED_KEY = 'cgt-preset-interacted-v1';
+const MOBILE_ONBOARDING_QUERY = '(max-width: 768px)';
 
 const CardFallback: FC<{ minHeight: number; label: string }> = ({ minHeight, label }) => (
   <div className="card lazy-panel-fallback" style={{ minHeight }}>
@@ -45,6 +47,8 @@ export default function App() {
   const [compareMode, setCompareMode] = useState(false);
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [presetInteracted, setPresetInteracted] = useState(false);
 
   const debouncedForm = useDebounce(form, 280);
 
@@ -73,13 +77,40 @@ export default function App() {
   useEffect(() => onPwaUpdateAvailable(() => setShowUpdatePrompt(true)), []);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      setIsMobileViewport(false);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia(MOBILE_ONBOARDING_QUERY);
+    const syncViewport = () => setIsMobileViewport(mediaQuery.matches);
+    syncViewport();
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', syncViewport);
+      return () => mediaQuery.removeEventListener('change', syncViewport);
+    }
+
+    mediaQuery.addListener(syncViewport);
+    return () => mediaQuery.removeListener(syncViewport);
+  }, []);
+
+  useEffect(() => {
+    try {
+      setPresetInteracted(localStorage.getItem(PRESET_INTERACTED_KEY) === '1');
+    } catch {
+      setPresetInteracted(false);
+    }
+  }, []);
+
+  useEffect(() => {
     try {
       const dismissed = localStorage.getItem(ONBOARDING_DISMISSED_KEY) === '1';
-      setShowOnboarding(!dismissed && scenarios.length === 0);
+      setShowOnboarding(isMobileViewport && !dismissed && !presetInteracted && scenarios.length === 0);
     } catch {
-      setShowOnboarding(scenarios.length === 0);
+      setShowOnboarding(isMobileViewport && !presetInteracted && scenarios.length === 0);
     }
-  }, [scenarios.length]);
+  }, [isMobileViewport, presetInteracted, scenarios.length]);
 
   useEffect(() => {
     setCompareIds((prev) => prev.filter((id) => scenarios.some((s) => s.id === id)));
@@ -170,6 +201,10 @@ export default function App() {
     select.focus();
   }, []);
 
+  const handlePresetInteracted = useCallback(() => {
+    setPresetInteracted(true);
+  }, []);
+
   const hasErrors = Object.keys(errors).length > 0;
   const selectedCompareScenarios = compareIds
     .map((id) => scenarios.find((scenario) => scenario.id === id))
@@ -232,15 +267,16 @@ export default function App() {
       <main className="app-main">
         {showOnboarding && (
           <section className="onboarding-card card" aria-label="Getting started">
+            <p className="onboarding-title">Quick start (optional)</p>
             <p className="onboarding-copy">
-              Model growth including fees and inflation. Start with a preset, then refine inputs.
+              Choose a preset to load realistic assumptions, then adjust inputs.
             </p>
             <div className="onboarding-actions">
               <button type="button" className="btn btn-primary btn-sm" onClick={focusPresetSelector}>
-                Choose a preset
+                Choose preset
               </button>
               <button type="button" className="btn btn-ghost btn-sm" onClick={dismissOnboarding}>
-                Dismiss
+                Not now
               </button>
             </div>
           </section>
@@ -256,6 +292,7 @@ export default function App() {
                 onChange={handleFormChange}
                 activePresetName={activePresetName}
                 onApplyPreset={handleApplyPreset}
+                onPresetInteracted={handlePresetInteracted}
               />
             </div>
           </aside>

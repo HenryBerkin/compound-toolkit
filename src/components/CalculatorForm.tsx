@@ -12,6 +12,7 @@ interface Props {
   onChange: (patch: Partial<FormState>) => void;
   activePresetName: string | null;
   onApplyPreset: (presetId: StarterPresetId) => void;
+  onPresetInteracted: () => void;
 }
 
 // ─── Small reusable atoms ──────────────────────────────────────────────────────
@@ -74,7 +75,16 @@ const CurrencyInput: FC<{
 
 // ─── Main form ────────────────────────────────────────────────────────────────
 
-export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePresetName, onApplyPreset }) => {
+const PRESET_INTERACTED_KEY = 'cgt-preset-interacted-v1';
+
+export const CalculatorForm: FC<Props> = ({
+  form,
+  errors,
+  onChange,
+  activePresetName,
+  onApplyPreset,
+  onPresetInteracted,
+}) => {
   const [selectedPresetId, setSelectedPresetId] = useState<StarterPresetId>(STARTER_PRESETS[0].id);
   const [showTargetSection, setShowTargetSection] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
@@ -94,9 +104,19 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
     return (value: string) => onChange({ [key]: value } as Partial<FormState>);
   }
 
+  function markPresetInteracted() {
+    onPresetInteracted();
+    try {
+      localStorage.setItem(PRESET_INTERACTED_KEY, '1');
+    } catch {
+      // localStorage unavailable — ignore
+    }
+  }
+
   function handlePresetChange(nextPresetId: string) {
     const preset = STARTER_PRESETS.find((item) => item.id === nextPresetId);
     if (!preset) return;
+    markPresetInteracted();
     setSelectedPresetId(preset.id);
     onApplyPreset(preset.id);
   }
@@ -137,6 +157,7 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
             id="preset-selector"
             className="form-control quickstart-select"
             value={selectedPresetId}
+            onFocus={markPresetInteracted}
             onChange={(e) => handlePresetChange(e.target.value)}
           >
             {STARTER_PRESETS.map((preset) => (

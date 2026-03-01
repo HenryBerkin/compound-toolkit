@@ -214,30 +214,11 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <div className="header-brand">
-            <svg
+            <img
               className="brand-icon"
-              viewBox="0 0 40 40"
-              fill="none"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <rect width="40" height="40" rx="10" fill="var(--color-primary)" />
-              <rect x="5" y="27" width="6" height="9" rx="1.5" fill="rgba(255,255,255,0.6)" />
-              <rect x="13" y="21" width="6" height="15" rx="1.5" fill="rgba(255,255,255,0.75)" />
-              <rect x="21" y="15" width="6" height="21" rx="1.5" fill="rgba(255,255,255,0.88)" />
-              <rect x="29" y="8" width="6" height="28" rx="1.5" fill="rgba(255,255,255,1)" />
-              <polyline
-                points="8,24 16,18 24,12 32,5"
-                stroke="white"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="8" cy="24" r="2" fill="white" />
-              <circle cx="16" cy="18" r="2" fill="white" />
-              <circle cx="24" cy="12" r="2" fill="white" />
-              <circle cx="32" cy="5" r="2" fill="white" />
-            </svg>
+              src="/icons/icon.svg"
+              alt="IGC"
+            />
             <div>
               <h1 className="brand-title">Investment Growth Calculator</h1>
               <p className="brand-subtitle">Model compounding, inflation and fees. Works offline.</p>

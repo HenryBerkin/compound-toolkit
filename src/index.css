@@ -462,13 +462,14 @@ body {
 
 .quickstart-row {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
 }
 
 .quickstart-select {
-  flex: 1;
+  width: 100%;
   min-width: 0;
 }
 
@@ -479,12 +480,14 @@ body {
 .quickstart-terms-link {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   padding: 0;
-  margin-bottom: 0.35rem;
+  margin: 0;
   border: none;
   background: transparent;
   color: var(--color-text-muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
+  line-height: 1.2;
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
@@ -494,9 +497,41 @@ body {
   color: var(--color-text-secondary);
 }
 
+.quickstart-terms-icon {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  color: inherit;
+}
+
 .preset-active {
   font-weight: 600;
   color: var(--color-text-secondary);
+}
+
+.scenario-setup-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+
+.scenario-setup-header .form-section-title {
+  margin-bottom: 0;
+}
+
+.preset-select-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
 }
 
 .form-group {

@@ -94,6 +94,20 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
     return (value: string) => onChange({ [key]: value } as Partial<FormState>);
   }
 
+  function handlePresetChange(nextPresetId: string) {
+    const preset = STARTER_PRESETS.find((item) => item.id === nextPresetId);
+    if (!preset) return;
+    setSelectedPresetId(preset.id);
+    onApplyPreset(preset.id);
+  }
+
+  useEffect(() => {
+    const activePreset = STARTER_PRESETS.find((preset) => preset.name === activePresetName);
+    if (activePreset) {
+      setSelectedPresetId(activePreset.id);
+    }
+  }, [activePresetName]);
+
   return (
     <form
       className="calculator-form"
@@ -101,19 +115,29 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
       noValidate
       aria-label="Investment growth calculator"
     >
-      {/* ── Quick Start Presets ───────────────────────────────────────────── */}
+      {/* ── Scenario Setup Presets ────────────────────────────────────────── */}
       <fieldset className="form-section">
-        <legend className="form-section-title">Quick Start</legend>
+        <div className="scenario-setup-header">
+          <span className="form-section-title">Scenario Setup</span>
+          <button
+            type="button"
+            className="quickstart-terms-link"
+            onClick={() => setShowGlossary(true)}
+          >
+            <span className="quickstart-terms-icon" aria-hidden="true">?</span>
+            <span>Understanding the terms</span>
+          </button>
+        </div>
 
         <div className="quickstart-row">
-          <label className="sr-only" htmlFor="preset-selector">
-            Starter preset
+          <label className="form-label preset-select-label" htmlFor="preset-selector">
+            Preset (Optional)
           </label>
           <select
             id="preset-selector"
             className="form-control quickstart-select"
             value={selectedPresetId}
-            onChange={(e) => setSelectedPresetId(e.target.value as StarterPresetId)}
+            onChange={(e) => handlePresetChange(e.target.value)}
           >
             {STARTER_PRESETS.map((preset) => (
               <option key={preset.id} value={preset.id}>
@@ -121,26 +145,11 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
               </option>
             ))}
           </select>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm quickstart-apply"
-            onClick={() => onApplyPreset(selectedPresetId)}
-          >
-            Apply preset
-          </button>
         </div>
 
-        <button
-          type="button"
-          className="quickstart-terms-link"
-          onClick={() => setShowGlossary(true)}
-        >
-          Understanding the terms
-        </button>
-
-        <p className="form-hint">Preset fees represent typical all-in retail costs (fund + platform).</p>
-        <p className="form-hint">Example assumptions for planning only. Adjust to your situation.</p>
-        {activePresetName && <p className="form-hint preset-active">Preset: {activePresetName}</p>}
+        <p className="form-hint">Selecting a preset updates the inputs below.</p>
+        <p className="form-hint">Preset fees represent typical fund and platform fees combined.</p>
+        <p className="form-hint">For planning purposes only | adjust to your situation.</p>
       </fieldset>
 
       {/* ── Optional target ───────────────────────────────────────────────── */}

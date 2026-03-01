@@ -381,33 +381,30 @@ export const CalculatorForm: FC<Props> = ({ form, errors, onChange, activePreset
 
       {/* ── Contribution Timing ───────────────────────────────────────────── */}
       <fieldset className="form-section">
-        <legend className="form-section-title">Contribution Timing</legend>
-
-        <div className="timing-options" role="radiogroup" aria-label="Contribution timing">
-          <label className={`timing-option ${form.timing === 'start' ? 'timing-option--active' : ''}`}>
+        <span className="timing-radio-label">Contribution timing</span>
+        <div className="timing-radio-group" role="radiogroup" aria-label="Contribution timing">
+          <label className="timing-radio-option">
             <input
               type="radio"
               name="timing"
               value="start"
               checked={form.timing === 'start'}
               onChange={() => onChange({ timing: 'start' })}
-              className="sr-only"
+              className="timing-radio-input"
             />
-            <span className="timing-label">Start of period</span>
-            <span className="timing-desc">Contribution before growth</span>
+            <span>Start of period</span>
           </label>
 
-          <label className={`timing-option ${form.timing === 'end' ? 'timing-option--active' : ''}`}>
+          <label className="timing-radio-option">
             <input
               type="radio"
               name="timing"
               value="end"
               checked={form.timing === 'end'}
               onChange={() => onChange({ timing: 'end' })}
-              className="sr-only"
+              className="timing-radio-input"
             />
-            <span className="timing-label">End of period</span>
-            <span className="timing-desc">Growth first, then contribution</span>
+            <span>End of period</span>
           </label>
         </div>
       </fieldset>

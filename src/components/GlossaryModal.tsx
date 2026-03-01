@@ -1,4 +1,5 @@
 import { useEffect, useRef, type FC, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { createPortal } from 'react-dom';
 
 interface Props {
   onClose: () => void;
@@ -44,7 +45,7 @@ export const GlossaryModal: FC<Props> = ({ onClose }) => {
     }
   }
 
-  return (
+  return createPortal(
     <div
       className="modal-overlay"
       role="presentation"
@@ -145,7 +146,7 @@ export const GlossaryModal: FC<Props> = ({ onClose }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
-

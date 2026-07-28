@@ -98,7 +98,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-005 — Define native design system
 
 - Owner: Designer
-- Status: Ready
+- Status: Ready for review
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004
@@ -106,7 +106,11 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Objective: translate useful IGC identity and workflows into native iOS patterns.
 - Acceptance criteria: implementation-ready hierarchy, components, Dynamic Type,
   VoiceOver, contrast, dark mode, and touch guidance.
-- Verification: Product Manager review against accepted scope.
+- Verification: `docs/DESIGN_SYSTEM.md` covers the required hierarchy, screens,
+  controls, results, scenarios, components, foundations, accessibility, adaptive
+  layouts, state matrix, content guardrails, and implementation/QA handoff. Required
+  sections, repository scope, Markdown links, Apple citations, and whitespace were
+  checked; documentation-only diff checks pass. Product Manager review remains.
 - Branch/worktree: `codex/igc-005-native-design-system` in an isolated worktree from
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 - Standalone prompt: `prompts/IGC-005-NATIVE-DESIGN-SYSTEM.md`.

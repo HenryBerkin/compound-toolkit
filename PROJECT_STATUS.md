@@ -62,6 +62,12 @@ Apple submission gates, provisional local-only App Privacy answers, owner inputs
 financial-content/legal review flags, and phase-gated release evidence; it makes no
 submission or native-compliance claim.
 
+IGC-005 is Ready for review. Its documentation-only native design system defines the
+four-tab hierarchy, Calculator-to-Projection interaction, results and annual-detail
+presentation, local scenario CRUD/recovery, semantic foundations, accessibility and
+adaptive behaviour, and the dependencies requiring Product Manager, QA, and App Store
+review. No native implementation is part of IGC-005.
+
 Native implementation remains not started. Do not create an Xcode project or begin
 IGC-007 until the relevant IGC-005 design inputs are accepted and the Product Owner
 confirms the bundle identifier and Apple Developer Team.

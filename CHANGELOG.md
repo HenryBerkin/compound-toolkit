@@ -27,6 +27,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   release gates without implementing tests or native features.
 - Added IGC-008’s documentation-only App Store, privacy, and phase-gated release-risk
   review with current Apple-source checks and no native or App Store action.
+- Defined the implementation-ready native IGC design system, interaction hierarchy,
+  accessible results and annual-detail presentation, and local scenario recovery flows.
 
 ### Changed
 

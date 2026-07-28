@@ -1,0 +1,6 @@
+DerivedData/
+build/
+*.xcresult
+*.xccheckout
+*.xcuserstate
+xcuserdata/

@@ -48,7 +48,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-003 — Accept cross-platform direction and native iOS 1.0 scope
 
 - Owner: Product Manager and Technical Lead
-- Status: Ready for review
+- Status: Done
 - Priority: P0
 - Platform: Shared / iOS / Web
 - Dependencies: IGC-001
@@ -62,13 +62,14 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   - Premium implementation remains excluded or a separate approved scope replaces that
     exclusion.
 - Verification: accepted decisions recorded in `DECISIONS.md`.
-- Unresolved questions: listed in `docs/PRODUCT_SPEC.md`.
+- Unresolved questions: None for architecture; later commercial and release questions
+  remain separately scoped.
 - Branch: `project/ios-migration-audit`
 
 ## IGC-004 — Propose native iOS architecture
 
 - Owner: iOS Engineer
-- Status: Blocked
+- Status: Ready
 - Priority: P0
 - Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-009
@@ -85,7 +86,8 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     assumed for iOS 1.0.
 - Verification: document review by Product Manager; no build required unless a minimal
   feasibility spike is explicitly approved.
-- Unresolved questions: all blocking IGC-003 decisions and the IGC-009 contract.
+- Unresolved questions: architecture alternatives to be evaluated by the iOS Engineer;
+  no unresolved product input blocks the proposal.
 - Branch/worktree: isolated worktree required; base set in the specialist prompt.
 
 ## IGC-005 — Define native design system
@@ -143,11 +145,11 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-009 — Define shared calculation contract and fixture plan
 
 - Owner: Product Manager and Technical Lead
-- Status: Blocked
+- Status: Done
 - Priority: P0
 - Platform: Shared
 - Dependencies: IGC-003
-- Affected: proposed `docs/CALCULATION_SPEC.md`, fixture schema/location,
+- Affected: `docs/CALCULATION_SPEC.md`, `docs/SCENARIO_SCHEMA.md`, `shared/`,
   `docs/PRODUCT_SPEC.md`, `handoffs/QA_ENGINEER.md`, `handoffs/IOS_ENGINEER.md`
 - Objective: make calculation, validation, rounding, terminology, presets, and example
   outputs a language-neutral product contract consumed by Swift and TypeScript.
@@ -158,10 +160,11 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     client to the other's implementation.
   - TypeScript and future Swift test responsibilities identified.
   - Change-control process distinguishes intentional model changes from regressions.
-- Verification: Product Manager, QA, and iOS Engineer review; representative fixture
-  outputs reproduced by the current TypeScript engine.
-- Unresolved questions: preset/default decision and any approved terminology changes.
-- Branch: to be assigned after IGC-003.
+- Verification: shared JSON is consumed directly by the TypeScript suite; 27 contract
+  tests and the original 58 tests pass, followed by a successful production build.
+- Unresolved questions: None for contract version 1. Any mathematical or terminology
+  change uses the documented change-control process.
+- Branch: `project/ios-migration-audit`
 
 ## IGC-010 — Plan maintained PWA releases and refinement backlog
 
@@ -176,6 +179,8 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   - Supported capabilities and compatibility baseline recorded.
   - Security, accessibility, dependency, correctness, and deployment work prioritised.
   - Non-critical redesign and expansion explicitly deferred.
+  - Correct the visible initial preset state to explicit Custom without changing the
+    verified 7% / 3% / 0.20% baseline or losing legacy browser scenarios.
   - Release-note ownership distinguishes Shared and Web changes.
 - Verification: approved backlog and repeatable web regression checks.
 

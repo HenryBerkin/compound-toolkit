@@ -1,0 +1,796 @@
+{
+  "contractVersion": 1,
+  "currency": "GBP",
+  "tolerances": {
+    "absolute": 0.000001,
+    "relative": 1e-12,
+    "rateAbsolute": 1e-14
+  },
+  "calculationCases": [
+    {
+      "id": "custom-baseline",
+      "description": "Accepted Custom initial state: monthly contributions at start, with inflation and fee drag.",
+      "input": {
+        "principal": 10000,
+        "contribution": 250,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "expectedMonthlyRate": 0.005833333333333334,
+      "expectedMonthlyContribution": 250,
+      "expected": {
+        "finalBalance": 108192.27817179101,
+        "totalContributions": 45000,
+        "totalInterest": 53192.27817179104,
+        "totalFeesPaidNominal": 1507.7709332296072,
+        "finalBalanceAfterFees": 105958.16046332686,
+        "finalBalanceReal": 69444.50636063314,
+        "totalContributionsReal": 28883.787632852283,
+        "totalInterestReal": 34142.0992538137,
+        "totalFeesPaidReal": 967.7807874309217,
+        "finalBalanceAfterFeesReal": 68010.51121756484,
+        "monthlyCount": 180,
+        "yearlyCount": 15
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 1,
+          "year": 1,
+          "month": 1,
+          "startingBalance": 10000,
+          "contributions": 250,
+          "interest": 59.79166666666667,
+          "endingBalance": 10309.791666666666,
+          "cumulativeContributions": 250,
+          "cumulativeInterest": 59.79166666666667
+        },
+        {
+          "period": 180,
+          "year": 15,
+          "month": 12,
+          "startingBalance": 107314.816740803,
+          "contributions": 250,
+          "interest": 627.4614309880175,
+          "endingBalance": 108192.27817179101,
+          "cumulativeContributions": 45000,
+          "cumulativeInterest": 53192.27817179104
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 1,
+          "startingBalance": 10000,
+          "contributions": 3000,
+          "interest": 839.1196511865155,
+          "endingBalance": 13839.119651186515,
+          "cumulativeContributions": 3000,
+          "cumulativeInterest": 839.1196511865155,
+          "yearlyFeesPaid": 24.09335967813059,
+          "cumulativeFeesPaid": 24.09335967813059,
+          "endingBalanceAfterFees": 13814.28369623031,
+          "realEndingBalance": 13436.038496297586,
+          "realCumulativeContributions": 2912.6213592233007,
+          "realCumulativeInterest": 814.679272996617
+        },
+        {
+          "year": 15,
+          "startingBalance": 97992.19558690913,
+          "contributions": 3000,
+          "interest": 7200.08258488188,
+          "endingBalance": 108192.27817179101,
+          "cumulativeContributions": 45000,
+          "cumulativeInterest": 53192.27817179104,
+          "yearlyFeesPaid": 202.80648992856987,
+          "cumulativeFeesPaid": 1507.7709332296072,
+          "endingBalanceAfterFees": 105958.16046332686,
+          "realEndingBalance": 69444.50636063314,
+          "realCumulativeContributions": 28883.787632852283,
+          "realCumulativeInterest": 34142.0992538137
+        }
+      ]
+    },
+    {
+      "id": "zero-growth-weekly-partial",
+      "description": "Weekly-to-monthly conversion, zero-rate identities, and a partial final year.",
+      "input": {
+        "principal": 2500,
+        "contribution": 75,
+        "contributionFrequency": "weekly",
+        "apr": 0,
+        "inflationRate": 0,
+        "annualFeeRate": 0,
+        "compoundFrequency": "daily",
+        "years": 1,
+        "months": 6,
+        "timing": "end"
+      },
+      "expectedMonthlyRate": 0,
+      "expectedMonthlyContribution": 325,
+      "expected": {
+        "finalBalance": 8350,
+        "totalContributions": 5850,
+        "totalInterest": 0,
+        "totalFeesPaidNominal": 0,
+        "finalBalanceAfterFees": 8350,
+        "finalBalanceReal": 8350,
+        "totalContributionsReal": 5850,
+        "totalInterestReal": 0,
+        "totalFeesPaidReal": 0,
+        "finalBalanceAfterFeesReal": 8350,
+        "monthlyCount": 18,
+        "yearlyCount": 2
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 18,
+          "year": 2,
+          "month": 6,
+          "startingBalance": 8025,
+          "contributions": 325,
+          "interest": 0,
+          "endingBalance": 8350,
+          "cumulativeContributions": 5850,
+          "cumulativeInterest": 0
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 2,
+          "startingBalance": 6400,
+          "contributions": 1950,
+          "interest": 0,
+          "endingBalance": 8350,
+          "cumulativeContributions": 5850,
+          "cumulativeInterest": 0,
+          "yearlyFeesPaid": 0,
+          "cumulativeFeesPaid": 0,
+          "endingBalanceAfterFees": 8350,
+          "realEndingBalance": 8350,
+          "realCumulativeContributions": 5850,
+          "realCumulativeInterest": 0
+        }
+      ]
+    },
+    {
+      "id": "monthly-end-one-month",
+      "description": "Closed-form one-month end-of-period timing check.",
+      "input": {
+        "principal": 1000,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.12,
+        "inflationRate": 0,
+        "annualFeeRate": 0,
+        "compoundFrequency": "monthly",
+        "years": 0,
+        "months": 1,
+        "timing": "end"
+      },
+      "expectedMonthlyRate": 0.01,
+      "expectedMonthlyContribution": 100,
+      "expected": {
+        "finalBalance": 1110,
+        "totalContributions": 100,
+        "totalInterest": 10,
+        "totalFeesPaidNominal": 0,
+        "finalBalanceAfterFees": 1110,
+        "finalBalanceReal": 1110,
+        "totalContributionsReal": 100,
+        "totalInterestReal": 10,
+        "totalFeesPaidReal": 0,
+        "finalBalanceAfterFeesReal": 1110,
+        "monthlyCount": 1,
+        "yearlyCount": 1
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 1,
+          "year": 1,
+          "month": 1,
+          "startingBalance": 1000,
+          "contributions": 100,
+          "interest": 10,
+          "endingBalance": 1110,
+          "cumulativeContributions": 100,
+          "cumulativeInterest": 10
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 1,
+          "startingBalance": 1000,
+          "contributions": 100,
+          "interest": 10,
+          "endingBalance": 1110,
+          "cumulativeContributions": 100,
+          "cumulativeInterest": 10,
+          "yearlyFeesPaid": 0,
+          "cumulativeFeesPaid": 0,
+          "endingBalanceAfterFees": 1110,
+          "realEndingBalance": 1110,
+          "realCumulativeContributions": 100,
+          "realCumulativeInterest": 10
+        }
+      ]
+    },
+    {
+      "id": "daily-start-fee-partial",
+      "description": "Daily compounding, weekly contributions, start timing, fee drag, inflation, and a partial year.",
+      "input": {
+        "principal": 12345.67,
+        "contribution": 80,
+        "contributionFrequency": "weekly",
+        "apr": 0.065,
+        "inflationRate": 0.0275,
+        "annualFeeRate": 0.006,
+        "compoundFrequency": "daily",
+        "years": 2,
+        "months": 7,
+        "timing": "start"
+      },
+      "expectedMonthlyRate": 0.005430878461376576,
+      "expectedMonthlyContribution": 346.6666666666667,
+      "expected": {
+        "finalBalance": 26335.971658225673,
+        "totalContributions": 10746.666666666664,
+        "totalInterest": 3243.6349915589803,
+        "totalFeesPaidNominal": 298.1062191731458,
+        "finalBalanceAfterFees": 26015.47648494926,
+        "finalBalanceReal": 24553.474152784274,
+        "totalContributionsReal": 10019.30005290588,
+        "totalInterestReal": 3024.096052345,
+        "totalFeesPaidReal": 277.9294966687102,
+        "finalBalanceAfterFeesReal": 24254.671053538204,
+        "monthlyCount": 31,
+        "yearlyCount": 3
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 31,
+          "year": 3,
+          "month": 7,
+          "startingBalance": 25847.05009935104,
+          "contributions": 346.6666666666667,
+          "interest": 142.25489220796408,
+          "endingBalance": 26335.971658225673,
+          "cumulativeContributions": 10746.666666666664,
+          "cumulativeInterest": 3243.6349915589803
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 3,
+          "startingBalance": 22968.48370639399,
+          "contributions": 2426.6666666666665,
+          "interest": 940.8212851650035,
+          "endingBalance": 26335.971658225673,
+          "cumulativeContributions": 10746.666666666664,
+          "cumulativeInterest": 3243.6349915589803,
+          "yearlyFeesPaid": 86.13728973428624,
+          "cumulativeFeesPaid": 298.1062191731458,
+          "endingBalanceAfterFees": 26015.47648494926,
+          "realEndingBalance": 24553.474152784274,
+          "realCumulativeContributions": 10019.30005290588,
+          "realCumulativeInterest": 3024.096052345
+        }
+      ]
+    },
+    {
+      "id": "quarterly-end-annual-contribution",
+      "description": "Quarterly compounding and annual-to-monthly contribution conversion.",
+      "input": {
+        "principal": 5000,
+        "contribution": 2400,
+        "contributionFrequency": "annual",
+        "apr": 0.08,
+        "inflationRate": 0.02,
+        "annualFeeRate": 0.01,
+        "compoundFrequency": "quarterly",
+        "years": 3,
+        "months": 0,
+        "timing": "end"
+      },
+      "expectedMonthlyRate": 0.006622709560113016,
+      "expectedMonthlyContribution": 200,
+      "expected": {
+        "finalBalance": 14441.875086214572,
+        "totalContributions": 7200,
+        "totalInterest": 2241.87508621457,
+        "totalFeesPaidNominal": 280.5258652977575,
+        "finalBalanceAfterFees": 14132.369492663127,
+        "finalBalanceReal": 13608.901446478512,
+        "totalContributionsReal": 6784.72080873872,
+        "totalInterestReal": 2112.5689650045697,
+        "totalFeesPaidReal": 264.34578828821253,
+        "finalBalanceAfterFeesReal": 13317.247413007746,
+        "monthlyCount": 36,
+        "yearlyCount": 3
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 36,
+          "year": 3,
+          "month": 12,
+          "startingBalance": 14148.17582690755,
+          "contributions": 200,
+          "interest": 93.69925930702051,
+          "endingBalance": 14441.875086214572,
+          "cumulativeContributions": 7200,
+          "cumulativeInterest": 2241.87508621457
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 3,
+          "startingBalance": 11042.259132077163,
+          "contributions": 2400,
+          "interest": 999.6159541374082,
+          "endingBalance": 14441.875086214572,
+          "cumulativeContributions": 7200,
+          "cumulativeInterest": 2241.87508621457,
+          "yearlyFeesPaid": 124.41656706748164,
+          "cumulativeFeesPaid": 280.5258652977575,
+          "endingBalanceAfterFees": 14132.369492663127,
+          "realEndingBalance": 13608.901446478512,
+          "realCumulativeContributions": 6784.72080873872,
+          "realCumulativeInterest": 2112.5689650045697
+        }
+      ]
+    },
+    {
+      "id": "annual-start-principal-only",
+      "description": "Annual compounding with principal only, fee drag, and inflation.",
+      "input": {
+        "principal": 10000,
+        "contribution": 0,
+        "contributionFrequency": "monthly",
+        "apr": 0.1,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.005,
+        "compoundFrequency": "annual",
+        "years": 10,
+        "months": 0,
+        "timing": "start"
+      },
+      "expectedMonthlyRate": 0.007974140428903764,
+      "expectedMonthlyContribution": 0,
+      "expected": {
+        "finalBalance": 25937.42460100007,
+        "totalContributions": 0,
+        "totalInterest": 15937.424601000068,
+        "totalFeesPaidNominal": 817.5533144077496,
+        "finalBalanceAfterFees": 24669.347296203163,
+        "finalBalanceReal": 19299.879813696767,
+        "totalContributionsReal": 0,
+        "totalInterestReal": 11858.940664729515,
+        "totalFeesPaidReal": 608.3364463544555,
+        "finalBalanceAfterFeesReal": 18356.311207578747,
+        "monthlyCount": 120,
+        "yearlyCount": 10
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 120,
+          "year": 10,
+          "month": 12,
+          "startingBalance": 25732.232168142153,
+          "contributions": 0,
+          "interest": 205.1924328579203,
+          "endingBalance": 25937.42460100007,
+          "cumulativeContributions": 0,
+          "cumulativeInterest": 15937.424601000068
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 10,
+          "startingBalance": 23579.47691000006,
+          "contributions": 0,
+          "interest": 2357.947691000013,
+          "endingBalance": 25937.42460100007,
+          "cumulativeContributions": 0,
+          "cumulativeInterest": 15937.424601000068,
+          "yearlyFeesPaid": 118.70772845526882,
+          "cumulativeFeesPaid": 817.5533144077496,
+          "endingBalanceAfterFees": 24669.347296203163,
+          "realEndingBalance": 19299.879813696767,
+          "realCumulativeContributions": 0,
+          "realCumulativeInterest": 11858.940664729515
+        }
+      ]
+    },
+    {
+      "id": "maximum-duration",
+      "description": "Accepted 60-year duration boundary remains finite and structurally complete.",
+      "input": {
+        "principal": 20000,
+        "contribution": 300,
+        "contributionFrequency": "monthly",
+        "apr": 0.06,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.01,
+        "compoundFrequency": "monthly",
+        "years": 60,
+        "months": 0,
+        "timing": "end"
+      },
+      "expectedMonthlyRate": 0.005,
+      "expectedMonthlyContribution": 300,
+      "expected": {
+        "finalBalance": 2841712.9749893867,
+        "totalContributions": 216000,
+        "totalInterest": 2605712.9749893863,
+        "totalFeesPaidNominal": 306685.38373632263,
+        "finalBalanceAfterFees": 1760272.131107356,
+        "finalBalanceReal": 482332.72418469447,
+        "totalContributionsReal": 36662.34744354613,
+        "totalInterestReal": 442275.71494081995,
+        "totalFeesPaidReal": 52054.65784443672,
+        "finalBalanceAfterFeesReal": 298776.4280826355,
+        "monthlyCount": 720,
+        "yearlyCount": 60
+      },
+      "monthlyCheckpoints": [
+        {
+          "period": 720,
+          "year": 60,
+          "month": 12,
+          "startingBalance": 2827276.5920292404,
+          "contributions": 300,
+          "interest": 14136.382960146202,
+          "endingBalance": 2841712.9749893867,
+          "cumulativeContributions": 216000,
+          "cumulativeInterest": 2605712.9749893863
+        }
+      ],
+      "yearlyCheckpoints": [
+        {
+          "year": 60,
+          "startingBalance": 2673138.9453203795,
+          "contributions": 3600,
+          "interest": 164974.02966900714,
+          "endingBalance": 2841712.9749893867,
+          "cumulativeContributions": 216000,
+          "cumulativeInterest": 2605712.9749893863,
+          "yearlyFeesPaid": 17202.02174620943,
+          "cumulativeFeesPaid": 306685.38373632263,
+          "endingBalanceAfterFees": 1760272.131107356,
+          "realEndingBalance": 482332.72418469447,
+          "realCumulativeContributions": 36662.34744354613,
+          "realCumulativeInterest": 442275.71494081995
+        }
+      ]
+    }
+  ],
+  "validationCases": [
+    {
+      "id": "minimum-valid-duration",
+      "candidate": {
+        "principal": 0.01,
+        "contribution": 0,
+        "contributionFrequency": "monthly",
+        "apr": 0,
+        "inflationRate": 0,
+        "annualFeeRate": 0,
+        "compoundFrequency": "monthly",
+        "years": 0,
+        "months": 1,
+        "timing": "end"
+      },
+      "valid": true,
+      "errorFields": []
+    },
+    {
+      "id": "maximum-valid-bounds",
+      "candidate": {
+        "principal": 1000000000,
+        "contribution": 1000000000,
+        "contributionFrequency": "annual",
+        "apr": 9.99,
+        "inflationRate": 0.2,
+        "annualFeeRate": 0.1,
+        "compoundFrequency": "annual",
+        "years": 60,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": true,
+      "errorFields": []
+    },
+    {
+      "id": "zero-principal-and-contribution",
+      "candidate": {
+        "principal": 0,
+        "contribution": 0,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["principal"]
+    },
+    {
+      "id": "negative-principal",
+      "candidate": {
+        "principal": -1,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["principal"]
+    },
+    {
+      "id": "principal-over-maximum",
+      "candidate": {
+        "principal": 1000000000.01,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["principal"]
+    },
+    {
+      "id": "negative-contribution",
+      "candidate": {
+        "principal": 100,
+        "contribution": -1,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["contribution"]
+    },
+    {
+      "id": "contribution-over-maximum",
+      "candidate": {
+        "principal": 100,
+        "contribution": 1000000000.01,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["contribution"]
+    },
+    {
+      "id": "negative-apr",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": -0.0001,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["apr"]
+    },
+    {
+      "id": "apr-over-maximum",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 9.9901,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["apr"]
+    },
+    {
+      "id": "negative-inflation",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": -0.0001,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["inflationPercent"]
+    },
+    {
+      "id": "inflation-over-maximum",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.2001,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["inflationPercent"]
+    },
+    {
+      "id": "negative-fee",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": -0.0001,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["annualFeePercent"]
+    },
+    {
+      "id": "fee-over-maximum",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.1001,
+        "compoundFrequency": "monthly",
+        "years": 15,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["annualFeePercent"]
+    },
+    {
+      "id": "negative-years",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": -1,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["years"]
+    },
+    {
+      "id": "fractional-years",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 1.5,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["years"]
+    },
+    {
+      "id": "negative-months",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 1,
+        "months": -1,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["months"]
+    },
+    {
+      "id": "months-over-maximum",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 1,
+        "months": 12,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["months"]
+    },
+    {
+      "id": "zero-duration",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 0,
+        "months": 0,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["duration"]
+    },
+    {
+      "id": "duration-over-maximum",
+      "candidate": {
+        "principal": 100,
+        "contribution": 100,
+        "contributionFrequency": "monthly",
+        "apr": 0.07,
+        "inflationRate": 0.03,
+        "annualFeeRate": 0.002,
+        "compoundFrequency": "monthly",
+        "years": 60,
+        "months": 1,
+        "timing": "start"
+      },
+      "valid": false,
+      "errorFields": ["duration"]
+    }
+  ]
+}

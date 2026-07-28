@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:igc:schema:scenario:v1",
+  "title": "IGC portable scenario version 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "currency",
+    "inputs",
+    "presetId",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "currency": { "const": "GBP" },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "principal",
+        "contribution",
+        "contributionFrequency",
+        "apr",
+        "inflationRate",
+        "annualFeeRate",
+        "compoundFrequency",
+        "years",
+        "months",
+        "timing"
+      ],
+      "properties": {
+        "principal": { "type": "number", "minimum": 0, "maximum": 1000000000 },
+        "contribution": { "type": "number", "minimum": 0, "maximum": 1000000000 },
+        "contributionFrequency": { "enum": ["weekly", "monthly", "annual"] },
+        "apr": { "type": "number", "minimum": 0, "maximum": 9.99 },
+        "inflationRate": { "type": "number", "minimum": 0, "maximum": 0.2 },
+        "annualFeeRate": { "type": "number", "minimum": 0, "maximum": 0.1 },
+        "compoundFrequency": { "enum": ["daily", "monthly", "quarterly", "annual"] },
+        "years": { "type": "integer", "minimum": 0, "maximum": 60 },
+        "months": { "type": "integer", "minimum": 0, "maximum": 11 },
+        "timing": { "enum": ["start", "end"] }
+      }
+    },
+    "presetId": {
+      "type": ["string", "null"],
+      "enum": [
+        null,
+        "global-index-diy",
+        "balanced-portfolio",
+        "equity-heavy-portfolio",
+        "savings-account"
+      ]
+    },
+    "targetToday": { "type": "number", "minimum": 0 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

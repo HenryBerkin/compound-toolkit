@@ -39,7 +39,7 @@ restored branded assets, and verified that installation is non-mutating.
 The PWA is both:
 
 - the verified evidence source for existing IGC behaviour; and
-- a potentially maintained responsive web edition alongside native iOS.
+- a supported responsive web edition alongside native iOS.
 
 “Reference” therefore does not mean frozen or unsupported. Changes remain permitted
 through separately scoped Web or Shared tasks, with regression checks and cross-platform
@@ -86,8 +86,9 @@ the wider right column. Mobile uses one column. The audit exercised 390×844 and
   and savings (4%/0%); all use 3% inflation and monthly compounding.
 - Finding: the picker initially shows global index as selected, but `DEFAULT_FORM`
   uses a 0.20% fee and no active preset. Selecting the already-visible first option
-  may not fire a change. This is ambiguous product state and must be resolved before
-  native implementation.
+  may not fire a change. IGC-D011 resolves the product rule: the initial state is
+  explicitly Custom at 0.20%, and Global Index applies 0.40% only when selected. The
+  web UI correction remains a separately tested Web change.
 
 ## Inputs and validation
 
@@ -132,9 +133,10 @@ display rounds to two decimal places.
   rather than discounting each historic cash flow separately.
 - Partial years are simulated and represented in the last yearly row.
 
-The test suite covers nominal compounding, frequency conversion, timing, inflation,
-fees, partial durations, long horizons, parsing, boundaries, and invariants. A native
-port needs exact fixtures in addition to narrative parity.
+The original test suite covers nominal compounding, frequency conversion, timing,
+inflation, fees, partial durations, long horizons, parsing, boundaries, and invariants.
+IGC-009 adds 27 tests that consume the shared language-neutral fixture directly, for 85
+passing tests total. Native parity uses the same fixture and tolerances.
 
 ## Results and workflows
 
@@ -197,7 +199,8 @@ Risks:
 
 ## Known ambiguities and risks
 
-- Initial preset mismatch described above.
+- Initial preset mismatch described above is a known Web defect with an accepted
+  resolution, not an open product question.
 - Optional target accepts invalid text without an error.
 - Extreme but permitted 999% APR can generate impractical projections.
 - Annual contributions are modelled as monthly equivalents, which may surprise users.

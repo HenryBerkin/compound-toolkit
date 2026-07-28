@@ -11,12 +11,16 @@ implementation has not started.
 - `igc-ios/` — reserved for the approved native project when implementation begins
 - `docs/` — current product, audit, architecture, design, QA, privacy, and release docs
   as those workstreams become active
+- `shared/` — versioned language-neutral fixtures, schemas, and examples consumed by
+  the independent Swift and TypeScript clients
 - `handoffs/` — concise role-to-role project context
 - `PROJECT_STATUS.md` — current phase, evidence, and gates
 - `TASKS.md` — task ownership, dependencies, acceptance criteria, and status
 - `DECISIONS.md` — accepted and proposed material decisions
 - `ROADMAP.md` — phase-level delivery sequence
 - `docs/PLATFORM_STRATEGY.md` — cross-platform boundaries and premium options
+- `docs/CALCULATION_SPEC.md` — accepted shared calculation and validation contract
+- `docs/SCENARIO_SCHEMA.md` — accepted portable scenario contract
 
 Do not create `igc-ios/` merely as an empty directory. IGC-004 defines the architecture
 before an Xcode project is introduced.
@@ -41,7 +45,10 @@ The verified public baseline is commit
 - Native SwiftUI rather than a web-view wrapper
 - Coherent shared behaviour across native iOS and web, with platform-appropriate UI
 - Local-first calculations and scenario storage
-- Deliberately limited version 1.0
+- Deliberately limited iOS 1.0 targeting iOS 17, iPhone-first with adaptive iPad support
+- GBP-only UK-English presentation with currency-explicit scenario data
+- Native comparison deferred to iOS 1.1; monthly detail and CSV retained on web
+- Premium, accounts, backend, and sync deliberately deferred
 - Correctness, clarity, privacy, accessibility, and maintainability before expansion
 
 Read `AGENTS.md` and the current task/specification files before substantive work.

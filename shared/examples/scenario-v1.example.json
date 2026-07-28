@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "018f4e63-a889-7c64-a3d2-6e8b145c8b18",
+  "name": "My baseline",
+  "currency": "GBP",
+  "inputs": {
+    "principal": 10000,
+    "contribution": 250,
+    "contributionFrequency": "monthly",
+    "apr": 0.07,
+    "inflationRate": 0.03,
+    "annualFeeRate": 0.002,
+    "compoundFrequency": "monthly",
+    "years": 15,
+    "months": 0,
+    "timing": "start"
+  },
+  "presetId": null,
+  "targetToday": 75000,
+  "createdAt": "2026-07-28T12:00:00Z",
+  "updatedAt": "2026-07-28T12:00:00Z"
+}

@@ -5,7 +5,7 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Cross-platform product direction and native version 1.0 scope review.
+- Phase: Shared product contract complete; native architecture proposal ready.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -14,7 +14,9 @@ Owner: Product Manager and Technical Lead
 - Native implementation: not started.
 - PWA status: supported IGC web edition and behavioural reference; maintenance may
   continue alongside the native client.
-- Current product name: **IGC — Investment Growth Calculator**.
+- Public product/App Store name: **Investment Growth Calculator**.
+- Shorthand/icon identity: **IGC**; long-form marketing:
+  **IGC — Investment Growth Calculator**.
 - Historical repository/package names still include `compound-toolkit` and
   `compound-growth-toolkit`.
 
@@ -37,24 +39,29 @@ default-result check, saved-scenario persistence check, desktop load, and fresh 
 console check passed after relocation into `igc-pwa/`. Installation left the branded
 icon hashes unchanged.
 
-## Current gates
+IGC-009 added a direct shared-fixture consumer: 27 cross-platform contract tests pass
+alongside the original 58 tests (85 total), and lint/type-check plus production build
+pass.
 
-1. Resolve or explicitly defer the six product questions in `docs/PRODUCT_SPEC.md`.
-2. Accept the shared-versus-platform-specific product contract and staged premium
-   direction in `docs/PLATFORM_STRATEGY.md`.
-3. Complete IGC-009, the shared calculation specification and fixture plan.
-4. Revise IGC-004 against the agreed direction before returning it to `Ready`.
-5. Do not dispatch IGC-004 or begin substantive SwiftUI implementation before these
-   gates are satisfied.
+## Current gates and next action
 
-## Known issues requiring decisions
+The six product decisions, dual-client direction, staged premium deferral, calculation
+contract, fixture schema, representative outputs, validation cases, and portable
+scenario schema are accepted and complete. IGC-003 and IGC-009 are Done.
+
+IGC-004 is Ready for an isolated iOS Engineer architecture proposal. It remains
+architecture-only: do not create an Xcode project, implement SwiftUI features, or begin
+native delivery until the proposal is reviewed and accepted.
+
+## Known issues and deferred work
 
 - The preset picker initially displays “Global index (DIY)” while the untouched
-  defaults use a different fee, so visible selection and active assumptions disagree.
+  defaults use the accepted Custom 0.20% fee. The decision is resolved; the supported
+  PWA correction belongs to a separately verified Web task.
 - Committed PWA documentation and package naming lag behind product behaviour.
 - The web viewport disables pinch zoom, an accessibility risk not to reproduce natively.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.
-- A canonical cross-platform calculation specification and language-neutral fixtures do
-  not yet exist.
+- Current PWA saved records predate explicit `schemaVersion`, `currency`, and
+  `presetId`; a Web migration must be scoped and tested before changing localStorage.
 - Premium features, pricing, purchase type, entitlement sharing, and account strategy
-  are unapproved and excluded from implementation.
+  remain deliberately deferred and excluded from implementation.

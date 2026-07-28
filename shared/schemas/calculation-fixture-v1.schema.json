@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:igc:schema:calculation-fixture:v1",
+  "title": "IGC calculation fixture contract version 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "currency",
+    "tolerances",
+    "calculationCases",
+    "validationCases"
+  ],
+  "properties": {
+    "contractVersion": { "const": 1 },
+    "currency": { "const": "GBP" },
+    "tolerances": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["absolute", "relative", "rateAbsolute"],
+      "properties": {
+        "absolute": { "type": "number", "exclusiveMinimum": 0 },
+        "relative": { "type": "number", "exclusiveMinimum": 0 },
+        "rateAbsolute": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "calculationCases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/calculationCase" }
+    },
+    "validationCases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/validationCase" }
+    }
+  },
+  "$defs": {
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "principal",
+        "contribution",
+        "contributionFrequency",
+        "apr",
+        "inflationRate",
+        "annualFeeRate",
+        "compoundFrequency",
+        "years",
+        "months",
+        "timing"
+      ],
+      "properties": {
+        "principal": { "type": "number" },
+        "contribution": { "type": "number" },
+        "contributionFrequency": {
+          "enum": ["weekly", "monthly", "annual"]
+        },
+        "apr": { "type": "number" },
+        "inflationRate": { "type": "number" },
+        "annualFeeRate": { "type": "number" },
+        "compoundFrequency": {
+          "enum": ["daily", "monthly", "quarterly", "annual"]
+        },
+        "years": { "type": "number" },
+        "months": { "type": "number" },
+        "timing": { "enum": ["start", "end"] }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finalBalance",
+        "totalContributions",
+        "totalInterest",
+        "totalFeesPaidNominal",
+        "finalBalanceAfterFees",
+        "finalBalanceReal",
+        "totalContributionsReal",
+        "totalInterestReal",
+        "totalFeesPaidReal",
+        "finalBalanceAfterFeesReal",
+        "monthlyCount",
+        "yearlyCount"
+      ],
+      "properties": {
+        "finalBalance": { "type": "number" },
+        "totalContributions": { "type": "number" },
+        "totalInterest": { "type": "number" },
+        "totalFeesPaidNominal": { "type": "number" },
+        "finalBalanceAfterFees": { "type": "number" },
+        "finalBalanceReal": { "type": "number" },
+        "totalContributionsReal": { "type": "number" },
+        "totalInterestReal": { "type": "number" },
+        "totalFeesPaidReal": { "type": "number" },
+        "finalBalanceAfterFeesReal": { "type": "number" },
+        "monthlyCount": { "type": "integer", "minimum": 1 },
+        "yearlyCount": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "monthlyCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "period",
+        "year",
+        "month",
+        "startingBalance",
+        "contributions",
+        "interest",
+        "endingBalance",
+        "cumulativeContributions",
+        "cumulativeInterest"
+      ],
+      "properties": {
+        "period": { "type": "integer", "minimum": 1 },
+        "year": { "type": "integer", "minimum": 1 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "startingBalance": { "type": "number" },
+        "contributions": { "type": "number" },
+        "interest": { "type": "number" },
+        "endingBalance": { "type": "number" },
+        "cumulativeContributions": { "type": "number" },
+        "cumulativeInterest": { "type": "number" }
+      }
+    },
+    "yearlyCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "year",
+        "startingBalance",
+        "contributions",
+        "interest",
+        "endingBalance",
+        "cumulativeContributions",
+        "cumulativeInterest",
+        "yearlyFeesPaid",
+        "cumulativeFeesPaid",
+        "endingBalanceAfterFees",
+        "realEndingBalance",
+        "realCumulativeContributions",
+        "realCumulativeInterest"
+      ],
+      "properties": {
+        "year": { "type": "integer", "minimum": 1 },
+        "startingBalance": { "type": "number" },
+        "contributions": { "type": "number" },
+        "interest": { "type": "number" },
+        "endingBalance": { "type": "number" },
+        "cumulativeContributions": { "type": "number" },
+        "cumulativeInterest": { "type": "number" },
+        "yearlyFeesPaid": { "type": "number" },
+        "cumulativeFeesPaid": { "type": "number" },
+        "endingBalanceAfterFees": { "type": "number" },
+        "realEndingBalance": { "type": "number" },
+        "realCumulativeContributions": { "type": "number" },
+        "realCumulativeInterest": { "type": "number" }
+      }
+    },
+    "calculationCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "input",
+        "expectedMonthlyRate",
+        "expectedMonthlyContribution",
+        "expected",
+        "monthlyCheckpoints",
+        "yearlyCheckpoints"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "input": { "$ref": "#/$defs/input" },
+        "expectedMonthlyRate": { "type": "number" },
+        "expectedMonthlyContribution": { "type": "number" },
+        "expected": { "$ref": "#/$defs/expected" },
+        "monthlyCheckpoints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monthlyCheckpoint" }
+        },
+        "yearlyCheckpoints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/yearlyCheckpoint" }
+        }
+      }
+    },
+    "validationCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "candidate", "valid", "errorFields"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "candidate": { "$ref": "#/$defs/input" },
+        "valid": { "type": "boolean" },
+        "errorFields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "principal",
+              "contribution",
+              "apr",
+              "inflationPercent",
+              "annualFeePercent",
+              "years",
+              "months",
+              "duration"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

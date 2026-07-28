@@ -9,10 +9,10 @@
 
 ## Phase 1 — Shared product definition
 
-- Accept a coherent two-client direction: native iOS and maintained PWA/web.
-- Resolve the six product decisions and accept a deliberately limited iOS 1.0 scope.
-- Define shared calculation, validation, rounding, terminology, scenario-schema, and
-  fixture contracts.
+- Accepted a coherent two-client direction: native iOS and maintained PWA/web.
+- Resolved the six product decisions and accepted a deliberately limited iOS 1.0 scope.
+- Defined version 1 calculation, validation, rounding, terminology, scenario-schema,
+  and portable fixture contracts.
 - Classify requirements and release notes as Shared, iOS, or Web.
 
 ## Phase 2 — Native definition
@@ -24,8 +24,9 @@
 
 - Implement and test the calculation engine first.
 - Build a small end-to-end calculator and results vertical slice.
-- Add saved scenarios, target analysis, comparison, education, accessibility, and
-  appearance support only in the approved sequence.
+- Add saved scenarios, target analysis, education, accessibility, and appearance
+  support only in the approved sequence.
+- Add native two-scenario comparison in iOS 1.1, not 1.0.
 
 ## Phase 4 — iOS release readiness
 

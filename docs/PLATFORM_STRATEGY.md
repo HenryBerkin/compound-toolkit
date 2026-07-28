@@ -1,6 +1,6 @@
 # Cross-platform and premium strategy options
 
-Status: Product Manager recommendation; user acceptance pending
+Status: Accepted direction; premium implementation deferred
 
 ## Supported product shape
 
@@ -11,8 +11,9 @@ IGC should be treated as one product with two platform-appropriate clients:
 
 The repository layout supports this: shared project records remain at the root,
 TypeScript web code lives in `igc-pwa/`, and future Swift code will live in `igc-ios/`.
-The missing layer is a canonical shared product/calculation contract and portable
-fixtures; these should be documentation/data assets, not a shared runtime or backend.
+The canonical shared product/calculation contract and portable fixtures now live in
+`docs/CALCULATION_SPEC.md`, `docs/SCENARIO_SCHEMA.md`, and `shared/`. They are
+documentation/data assets, not a shared runtime or backend.
 
 ## Behaviour boundaries
 
@@ -31,15 +32,16 @@ fixtures; these should be documentation/data assets, not a shared runtime or bac
 - web downloads versus native share/export surfaces;
 - platform-specific onboarding and settings conventions.
 
-Current web capabilities remain supported. Native 1.0 does not need feature-for-feature
-parity: monthly detail and CSV may remain Web-only temporarily if explicitly approved.
+Current web capabilities remain supported. Native 1.0 deliberately defers
+two-scenario comparison to iOS 1.1 and keeps monthly detail and CSV Web-only while the
+native engine still calculates monthly rows.
 
 ## Architecture guardrails
 
 - Maintain separate Swift and TypeScript calculation engines against one versioned,
   language-neutral specification and JSON fixtures.
-- Use stable string UUID scenario identifiers, explicit schema versions, canonical field
-  names/units/enums, and portable timestamps.
+- Use opaque stable string scenario identifiers, UUIDs for new native records, explicit
+  schema versions, canonical field names/units/enums, and portable timestamps.
 - Keep rounding at presentation boundaries and record cross-language numerical
   tolerances.
 - Separate feature availability from UI so a future entitlement provider can be
@@ -99,9 +101,9 @@ parity: monthly detail and CSV may remain Web-only temporarily if explicitly app
   boundaries are stable before the first paid offering.
 - First-release fit: best.
 
-## Recommendation
+## Accepted staged direction
 
-Adopt Option C and exclude premium implementation from initial iOS 1.0. Keep the PWA
+Option C is accepted. Exclude premium implementation from initial iOS 1.0. Keep the PWA
 supported and free during the first native release. Architect only a small replaceable
 entitlement interface with a local “free” provider; do not build StoreKit, accounts,
 web checkout, verification, or a backend yet.

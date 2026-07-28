@@ -331,8 +331,9 @@ record mutation.
    remains usable with the keyboard. Title: **Save scenario**.
 3. Name field is prefilled with a non-authoritative working suggestion such as
    “15-year projection”; the person may replace it. **PM review of suggestion copy.**
-4. Trim on commit; require 1–120 characters after trimming. Show the error below the
-   field; keep the sheet open.
+4. Trim on commit; require a non-empty completed name that passes the authoritative
+   scenario-V1 JSON Schema name rules, including `maxLength: 120`. Show the error below
+   the field and keep the sheet open.
 5. On success, dismiss and show persistent-enough inline status **Saved “[name]”** on
    Projection. On failure, keep input and offer **Try again** and **Cancel**.
 
@@ -351,15 +352,26 @@ It never overwrites merely because a loaded scenario is active. Native 1.0 uses
 
 - Row menu **Duplicate** performs one mutation with no confirmation.
 - Name algorithm: append “ copy”; if occupied, append “ copy 2”, “ copy 3”, and so on.
-  Truncate the original by extended grapheme clusters only as needed to keep the
-  portable 120-character limit and suffix intact.
+  Truncate the original without splitting an extended grapheme cluster, then validate
+  the completed candidate — including its suffix — against the authoritative
+  `shared/schemas/scenario-v1.schema.json` name rules, including `maxLength: 120`.
+  Swift `String.count` or a grapheme count may guide safe truncation but does not, by
+  itself, define or prove the portable schema limit. If the candidate fails, remove
+  another complete grapheme cluster and revalidate; do not persist until the completed
+  name conforms.
 - Preserve all scenario values and truthful `presetId`; create a new UUID and both new
   timestamps. Status: **Created “[duplicate name]”**.
 
 #### Load
 
 - Whole-row activation loads; menu also offers **Load** for discoverability.
-- Copy inputs, target, and preset ID into Calculator. Re-run semantic validation.
+- First validate the saved record against V1 structural and semantic rules. If it
+  otherwise validates but its persisted `presetId` does not match all
+  preset-controlled values, copy the inputs and target into Calculator and present the
+  draft as Custom. Do not modify the saved record or its persisted `presetId`.
+- A preset mismatch alone is not corrupt or unsupported data and does not enter
+  recovery. Use recovery only when the record otherwise fails V1 structural or
+  semantic validation.
 - Select Calculator, pop to root, focus an inline heading/status:
   **Loaded “[name]”**. Helper text: “Review the assumptions, then view the projection.”
 - Loading never changes the saved record. A load failure stays in Saved and offers
@@ -591,8 +603,10 @@ become test snapshots.
   current values; it does not reset the form.
 - Reset calculator restores the accepted Custom initial state, not Global Index.
 - A loaded record displays its persisted preset only if its controlled fields still
-  match; otherwise display Custom and route the mismatch to semantic validation/recovery
-  rather than claiming a preset was applied.
+  match. If the record otherwise passes V1 structural and semantic validation but
+  those values do not match, present the Calculator draft as Custom without modifying
+  the saved record or its persisted `presetId`. The mismatch alone is not corrupt or
+  unsupported data and does not enter recovery.
 
 The visible choices and controlled assumptions are:
 
@@ -616,7 +630,7 @@ selection behaviour are accepted and must not change.
 | --- | --- | --- |
 | 1 | Final balance after fees | Primary KPI in full GBP, two decimals; duration adjacent in words. |
 | 2 | In today’s money | Full GBP, two decimals; visible inflation assumption. |
-| 3 | Target status | Above / Below / Matches target, icon plus words, gap in today’s money. |
+| 3 | Target status | Above / Below / Equal to target, classified from the unrounded raw gap and shown with icon plus words. |
 | 4 | Starting balance | Context row. |
 | 5 | Contributions | Label **Regular contributions added**; value from accepted totals. |
 | 6 | Growth after fees | Derived after-fee balance less capital, labelled plainly; IGC-006 verifies formula. |
@@ -654,13 +668,28 @@ retaining precise definitions:
 
 ### 6.3 Target treatment
 
-Compare `targetToday` with `finalBalanceAfterFeesReal` exactly as accepted.
+Compute the unrounded raw gap as:
+
+`rawGap = finalBalanceAfterFeesReal - targetToday`
+
+Classify status from the raw binary64 value before display formatting. No display
+rounding or tolerance changes the state.
 
 | State | Symbol | Heading | Required fact |
 | --- | --- | --- | --- |
-| Above | `arrow.up.circle.fill` | Above target | “£X above the target in today’s money.” |
-| Below | `arrow.down.circle.fill` | Below target | “£X below the target in today’s money.” |
-| Equal within display penny | `equal.circle.fill` | Matches target | “Projected value matches the target to the nearest penny.” |
+| `rawGap > 0` | `arrow.up.circle.fill` | Above target | “£X above the target in today’s money.” |
+| `rawGap < 0` | `arrow.down.circle.fill` | Below target | “£X below the target in today’s money.” |
+| `rawGap == 0` | `equal.circle.fill` | Equal to target | “Projected value equals the target in today’s money.” |
+
+For a nonzero raw gap whose absolute value formats to £0.00 under the standard
+two-decimal monetary formatter, do not display “£0.00 above/below”. Display **Less than
+£0.01 above the target in today’s money** or **Less than £0.01 below the target in
+today’s money**, preserving the raw sign. Individually formatted target and projection
+amounts may appear equal to the penny; the status text remains truthful about the
+nonzero raw difference.
+
+No target-comparison tolerance is proposed by IGC-005. Adding one would change shared
+target semantics and requires a separately proposed and accepted Shared decision.
 
 Also show the target in today’s money and its nominal horizon equivalent. Green,
 orange, or accent colour may reinforce status only after contrast testing; text and
@@ -685,8 +714,10 @@ The working disclaimer is in section 13 and requires PM/IGC-008 acceptance.
 ### 7.1 List and naming
 
 - Sort by most recently updated, with deterministic fallbacks in 4.7.
-- Scenario names are trimmed, non-empty, and at most 120 characters. Do not impose the
-  PWA’s historical 80-character UI limit.
+- Scenario names are trimmed and non-empty, and the completed persisted name must
+  validate against the authoritative scenario-V1 JSON Schema, including
+  `maxLength: 120`. Do not impose the PWA’s historical 80-character UI limit or treat
+  Swift `String.count` alone as the portable length definition.
 - Display preset name derived from stable ID; otherwise **Custom**. Do not persist the
   display name as identity.
 - Metadata is sufficient to distinguish scenarios without opening comparison:
@@ -717,6 +748,8 @@ future accepted migration policy explicitly supports per-record recovery.
 Recovery design must preserve:
 
 - the distinction between corrupt bytes and an unknown future `schemaVersion`;
+- the distinction between an otherwise-valid preset mismatch, which loads as Custom,
+  and a structural or semantic V1 failure, which enters recovery;
 - the last readable document until atomic replacement succeeds;
 - the recovery copy where practical;
 - the person’s ability to calculate without scenarios; and
@@ -1060,7 +1093,7 @@ Use consistently:
 - Years / Extra months
 - Start of period / End of period
 - Target in today’s money
-- Above target / Below target / Matches target
+- Above target / Below target / Equal to target
 - Preset / Custom
 - Saved scenario / Save as new / Duplicate / Rename / Delete
 - Annual detail / Year N / Partial year
@@ -1162,11 +1195,13 @@ IGC-006 should define reproducible evidence for:
   preservation, and saved-scenario load transition;
 - currency/percent parsing, grouping/paste, exact two-decimal presentation, extreme
   values, negative gaps, partial years, and VoiceOver spoken values;
-- KPI/value derivation, target above/below/equal at display boundary, chart summary,
-  chart mark order, audio graph, series non-colour differentiation, and every annual
-  row/mode;
-- scenario sort, 120-character names, duplicate suffix/truncation, IDs/timestamps,
-  atomic success/failure, mutation announcements, and destructive focus restoration;
+- KPI/value derivation, target above/below/equal from the unrounded raw gap, truthful
+  sub-penny gap display, chart summary, chart mark order, audio graph, series
+  non-colour differentiation, and every annual row/mode;
+- scenario sort, schema-authoritative name validation, completed duplicate
+  suffix/truncation, preset-mismatch Custom presentation without record mutation,
+  IDs/timestamps, atomic success/failure, mutation announcements, and destructive focus
+  restoration;
 - unavailable/protected storage, corrupt data, recovery-copy behaviour, unsupported
   schema, retry, session-only continuation, deletion/reset failure, and re-read;
 - all standard/AX Dynamic Type sizes, light/dark/Increase Contrast, Bold Text, Reduce

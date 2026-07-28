@@ -32,6 +32,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Added the blocked standalone IGC-007 implementation brief for the project foundation,
   pure fixture-backed Swift core, and accessible Calculator-to-Projection vertical
   slice, later cleared for dispatch when the complete Apple Team identity was supplied.
+- Implemented IGC-007’s first-party SwiftUI Calculator-to-Projection vertical slice,
+  pure fixture-parity core, annual detail, accessibility alternatives, and native tests.
 
 ### Changed
 

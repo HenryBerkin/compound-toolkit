@@ -1,20 +1,41 @@
 # iOS Engineer handoff
 
-No native code exists. IGC-004 is Ready for an architecture proposal because IGC-003
-and IGC-009 are Done. Use only the revised standalone prompt issued after the accepted
-2026-07-28 decisions; the earlier prompt is withdrawn. The revised prompt is
-`prompts/IGC-004-IOS-ARCHITECTURE.md`, based at
+## IGC-004 completed proposal context
+
+No native code exists. The completed proposal followed the revised standalone prompt
+in `prompts/IGC-004-IOS-ARCHITECTURE.md`, based at
+`3bf1e517636d543e368b610b8a006cafd271e836`; the earlier prompt remains withdrawn.
+
+IGC-004 is Ready for Product Manager review. The documentation-only proposal is
+`docs/IOS_ARCHITECTURE.md`; its proposal commit is `666314e` on
+`codex/igc-004-ios-architecture`, based on the accepted base
 `3bf1e517636d543e368b610b8a006cafd271e836`.
 
-Read `AGENTS.md`, `PROJECT_STATUS.md`, `TASKS.md`, `DECISIONS.md`,
-`docs/PRODUCT_SPEC.md`, `docs/CALCULATION_SPEC.md`, `docs/SCENARIO_SCHEMA.md`,
-`docs/PWA_AUDIT.md`, `docs/PLATFORM_STRATEGY.md`, and this file before work. Inspect
-`shared/fixtures/calculation-v1.json` and both schemas directly.
+The recommendation is a single SwiftUI app module with feature-local state, a pure
+Swift binary64 calculation engine, direct test-bundle consumption of the version-1
+shared fixture, an actor-backed Codable Application Support scenario store, and a
+small local-free feature-availability seam. It defers SwiftData, packages, third-party
+dependencies, StoreKit, accounts, networking, sync, analytics, remote configuration,
+and backend work.
 
-The proposal must address two maintained clients, direct Swift consumption of portable
-fixtures, schema version 1, GBP-explicit scenarios, future native comparison, and a
-proportionate replaceable feature-availability boundary. It must not add payments,
-StoreKit, accounts, sync, a backend, analytics, or remote configuration.
+Native V1 scenarios map exactly to the portable schema: UUID opaque IDs, explicit GBP,
+decimal rates, stable preset IDs, optional today-value target, and UTC timestamps.
+Unknown future versions must fail safely and be preserved for recovery. PWA legacy
+localStorage migration is a separately tested Web concern. Native comparison remains
+deferred to 1.1; annual detail is native 1.0 only while monthly rows remain required in
+the engine and parity tests.
 
-IGC-004 is documentation-only. Do not implement features, create `igc-ios/`, generate
-an Xcode project, or modify the PWA.
+## Review decisions and verification
+
+Product Manager must accept or revise the proposed persistence choice, single-module
+and first-party dependency policy, direct shared-resource parity gate, local-free
+availability seam, and owner-controlled bundle/signing identifiers before project
+creation. No bundle ID, team ID, App Store SKU, app group, or iCloud entitlement is
+proposed as final.
+
+Verification completed: required project/specification/fixture/PWA evidence read;
+official Apple primary sources checked for current upload SDK, data, testing, and
+accessibility claims; all architecture sections present; cited Apple links opened;
+`git diff --check` passed; no `igc-ios/`, Xcode project, Swift source, dependency, or
+generated artifact was added; shared assets, accepted decisions, and PWA files remain
+unchanged. No native build was run because native project creation is out of scope.

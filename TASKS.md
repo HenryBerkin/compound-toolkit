@@ -69,7 +69,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-004 — Propose native iOS architecture
 
 - Owner: iOS Engineer
-- Status: Ready
+- Status: Ready for review
 - Priority: P0
 - Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-009

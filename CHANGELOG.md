@@ -17,6 +17,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   fixture-consumer tests.
 - Revised standalone IGC-004 brief for a documentation-only native iOS architecture
   proposal based on the accepted shared contract.
+- Proposed the documentation-only native iOS architecture: a SwiftUI feature structure,
+  pure fixture-backed calculation engine, Codable local scenario store, local-free
+  feature-availability boundary, and staged accessibility, test, and delivery plan.
 
 ### Changed
 

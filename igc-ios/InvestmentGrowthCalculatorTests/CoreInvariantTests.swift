@@ -32,6 +32,75 @@ final class CoreInvariantTests: XCTestCase {
         }
     }
 
+    func testPresetReconciliationIgnoresInvalidOrEditedUncontrolledDraftFields() {
+        var draft = CalculatorDraft.customBaseline
+        draft.selectPreset(.globalIndexDIY)
+
+        draft.principal = "invalid"
+        draft.reconcilePreset()
+        XCTAssertEqual(draft.presetID, .globalIndexDIY)
+
+        draft.contribution = "1£2"
+        draft.reconcilePreset()
+        XCTAssertEqual(draft.presetID, .globalIndexDIY)
+
+        draft.contributionFrequency = .weekly
+        draft.reconcilePreset()
+        XCTAssertEqual(draft.presetID, .globalIndexDIY)
+
+        draft.years = "+15"
+        draft.months = "11"
+        draft.reconcilePreset()
+        XCTAssertEqual(draft.presetID, .globalIndexDIY)
+
+        draft.timing = .end
+        draft.target = "NaN"
+        draft.reconcilePreset()
+        XCTAssertEqual(draft.presetID, .globalIndexDIY)
+    }
+
+    func testIOSInputAcceptsOnlySafelyGroupedUKMoney() throws {
+        var draft = CalculatorDraft.customBaseline
+        draft.principal = "£1,234,567.89"
+        draft.contribution = "12 345.67"
+        draft.target = "1\u{00A0}234.50"
+
+        let parsed = draft.parsed()
+        let candidate = try XCTUnwrap(parsed.candidate)
+        let target = try XCTUnwrap(parsed.targetToday)
+        XCTAssertEqual(candidate.principal, 1_234_567.89, accuracy: 0.000_001)
+        XCTAssertEqual(candidate.contribution, 12_345.67, accuracy: 0.000_001)
+        XCTAssertEqual(target, 1_234.50, accuracy: 0.000_001)
+        XCTAssertTrue(parsed.errors.isEmpty)
+    }
+
+    func testIOSInputRejectsMalformedMoneyWithoutCoercion() {
+        for invalid in [
+            "1,2", "1 2", "1£2", "+7", "-7", "1e3", "NaN", "Infinity",
+            "££7", "7£", "1,23,456", "1 234,567", "١٢٣",
+        ] {
+            var draft = CalculatorDraft.customBaseline
+            draft.principal = invalid
+            let parsed = draft.parsed()
+            XCTAssertNil(parsed.candidate, "Unexpectedly accepted \(invalid)")
+            XCTAssertNotNil(parsed.errors[.principal], "Missing error for \(invalid)")
+        }
+    }
+
+    func testIOSInputRejectsSignsExponentAndCharactersInRatesAndDuration() {
+        for invalid in ["+7", "-7", "7%", "1e2", "NaN", "Infinity", "1,000"] {
+            var draft = CalculatorDraft.customBaseline
+            draft.apr = invalid
+            XCTAssertNotNil(draft.parsed().errors[.apr], "Unexpected APR \(invalid)")
+        }
+
+        for invalid in ["+15", "-1", "1e1", "15.0", "1 5"] {
+            var draft = CalculatorDraft.customBaseline
+            draft.years = invalid
+            XCTAssertNotNil(draft.parsed().errors[.years], "Unexpected years \(invalid)")
+        }
+    }
+
     func testOneTwelveThirteenAndSevenHundredTwentyPeriodAggregation() throws {
         for duration in [1, 12, 13, 720] {
             var input = PresetCatalog.customBaseline

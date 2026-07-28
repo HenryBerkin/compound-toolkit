@@ -7,7 +7,9 @@ struct CalculatorView: View {
 
     @State private var errors: [CalculatorField: String] = [:]
     @State private var calculationError: String?
+    @State private var showsRemoveTargetConfirmation = false
     @FocusState private var focusedField: CalculatorField?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private let fieldOrder: [CalculatorField] = [
         .principal, .contribution, .apr, .inflation, .fee, .years, .target,
@@ -126,15 +128,9 @@ struct CalculatorView: View {
                     }
                     .accessibilityIdentifier("calculator.months")
                     if let error = errors[.months] {
-                        errorLabel(error)
+                        errorLabel(error, field: .months)
                     }
-                    Picker("Contribution timing", selection: $draft.timing) {
-                        ForEach(ContributionTiming.allCases) { timing in
-                            Text(timing.title).tag(timing)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .accessibilityIdentifier("calculator.timing")
+                    contributionTimingPicker
                     Text(draft.timing == .start
                          ? "Each monthly-equivalent contribution is added before that month’s growth and fee."
                          : "Each monthly-equivalent contribution is added after that month’s growth and fee.")
@@ -161,10 +157,14 @@ struct CalculatorView: View {
                         )
                         if !draft.target.isEmpty {
                             Button("Remove target", role: .destructive) {
-                                draft.target = ""
-                                errors[.target] = nil
+                                showsRemoveTargetConfirmation = true
                             }
                             .frame(minHeight: 44)
+                            .accessibilityIdentifier("calculator.removeTarget")
+                            .accessibilityHint(
+                                "Current target \(currentTargetDescription). "
+                                    + "Asks for confirmation before removing it."
+                            )
                         }
                     }
                 }
@@ -197,15 +197,32 @@ struct CalculatorView: View {
                 ToolbarItemGroup(placement: .keyboard) {
                     Button("Previous") { moveFocus(by: -1) }
                         .disabled(previousField == nil)
-                    Button("Next") { moveFocus(by: 1) }
+                    Button("Next") { validateAndMoveToNextField() }
                         .disabled(nextField == nil)
                     Spacer()
-                    Button("Done") { focusedField = nil }
+                    Button("Done") { validateAndDismissKeyboard() }
                 }
+            }
+            .alert(
+                "Remove target?",
+                isPresented: $showsRemoveTargetConfirmation,
+            ) {
+                Button("Remove target", role: .destructive) {
+                    removeTarget()
+                }
+                .accessibilityIdentifier("calculator.confirmRemoveTarget")
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Discard the current target \(currentTargetDescription)?")
             }
             .onChange(of: draft.apr) { draft.reconcilePreset() }
             .onChange(of: draft.inflation) { draft.reconcilePreset() }
             .onChange(of: draft.fee) { draft.reconcilePreset() }
+            .onChange(of: focusedField) { oldField, newField in
+                if let oldField, oldField != newField {
+                    validateField(oldField)
+                }
+            }
         }
     }
 
@@ -232,6 +249,39 @@ struct CalculatorView: View {
 
     private var activeFieldOrder: [CalculatorField] {
         fieldOrder.filter { $0 != .target || draft.targetIsExpanded }
+    }
+
+    @ViewBuilder
+    private var contributionTimingPicker: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            timingMenu
+        } else {
+            ViewThatFits(in: .horizontal) {
+                timingSegments
+                    .fixedSize(horizontal: true, vertical: false)
+                timingMenu
+            }
+        }
+    }
+
+    private var timingSegments: some View {
+        Picker("Contribution timing", selection: $draft.timing) {
+            ForEach(ContributionTiming.allCases) { timing in
+                Text(timing.title).tag(timing)
+            }
+        }
+        .pickerStyle(.segmented)
+        .accessibilityIdentifier("calculator.timing.segmented")
+    }
+
+    private var timingMenu: some View {
+        Picker("Contribution timing", selection: $draft.timing) {
+            ForEach(ContributionTiming.allCases) { timing in
+                Text(timing.title).tag(timing)
+            }
+        }
+        .pickerStyle(.menu)
+        .accessibilityIdentifier("calculator.timing.menu")
     }
 
     private func moveFocus(by offset: Int) {
@@ -266,6 +316,9 @@ struct CalculatorView: View {
                     .focused($focusedField, equals: field)
                     .accessibilityIdentifier(identifier)
                     .accessibilityValue(accessibilityValue(text.wrappedValue, unit: unit))
+                    .onChange(of: text.wrappedValue) {
+                        clearResolvedErrors(affectedBy: field)
+                    }
                 if unit == "%" {
                     Text("%")
                         .foregroundStyle(.secondary)
@@ -278,7 +331,7 @@ struct CalculatorView: View {
                     .foregroundStyle(.secondary)
             }
             if let error = errors[field] {
-                errorLabel(error)
+                errorLabel(error, field: field)
             }
         }
         .id(field)
@@ -292,44 +345,18 @@ struct CalculatorView: View {
         }
     }
 
-    private func errorLabel(_ message: String) -> some View {
+    private func errorLabel(_ message: String, field: CalculatorField) -> some View {
         Label(message, systemImage: "exclamationmark.circle.fill")
             .font(.footnote)
             .foregroundStyle(.red)
-            .accessibilityIdentifier("calculator.error")
+            .accessibilityIdentifier("calculator.error.\(field.rawValue)")
     }
 
     private func submit(using proxy: ScrollViewProxy) {
         calculationError = nil
-        let parsed = draft.parsed()
-        var newErrors = parsed.errors
-
-        if let target = parsed.targetToday, target < 0 {
-            newErrors[.target] = "Enter a target of £0 or more, or remove the target."
-        }
-
-        var validatedInput: CalculationInput?
-        if let candidate = parsed.candidate {
-            let validation = CalculationValidator.validate(candidate)
-            validatedInput = validation.input
-            for issue in validation.issues {
-                let field: CalculatorField = switch issue.field {
-                case .principal: .principal
-                case .contribution: .contribution
-                case .apr: .apr
-                case .inflationPercent: .inflation
-                case .annualFeePercent: .fee
-                case .years, .duration: .years
-                case .months: .months
-                }
-                if newErrors[field] == nil {
-                    newErrors[field] = issue.message
-                }
-            }
-        }
-
-        errors = newErrors
-        guard newErrors.isEmpty, let input = validatedInput else {
+        let validation = draft.validation()
+        errors = validation.errors
+        guard validation.errors.isEmpty, let input = validation.input else {
             focusFirstError(using: proxy)
             return
         }
@@ -342,7 +369,7 @@ struct CalculatorView: View {
             let snapshot = try ProjectionSnapshot(
                 input: input,
                 presetID: draft.presetID,
-                targetToday: parsed.targetToday
+                targetToday: validation.parsed.targetToday
             )
             focusedField = nil
             onProjection(snapshot)
@@ -358,14 +385,76 @@ struct CalculatorView: View {
     private func focusFirstError(using proxy: ScrollViewProxy) {
         let first = CalculatorField.allCases.first(where: { errors[$0] != nil })
         guard let first else { return }
-        withAnimation {
-            proxy.scrollTo(first, anchor: .center)
+        if first == .target, !draft.targetIsExpanded {
+            draft.targetIsExpanded = true
         }
-        focusedField = first
         let firstMessage = errors[first] ?? "Review the first field."
         UIAccessibility.post(
             notification: .announcement,
             argument: "Can’t view projection. \(errors.count) fields need attention. \(firstMessage)"
         )
+        Task { @MainActor in
+            await Task.yield()
+            withAnimation {
+                proxy.scrollTo(first, anchor: .center)
+            }
+            focusedField = first
+        }
+    }
+
+    private func validateAndMoveToNextField() {
+        guard let current = focusedField else { return }
+        validateField(current)
+        moveFocus(by: 1)
+    }
+
+    private func validateAndDismissKeyboard() {
+        if let focusedField {
+            validateField(focusedField)
+        }
+        focusedField = nil
+    }
+
+    private func validateField(_ field: CalculatorField) {
+        let validationErrors = draft.validation().errors
+        for affectedField in fieldsAffected(by: field) {
+            errors[affectedField] = validationErrors[affectedField]
+        }
+    }
+
+    private func clearResolvedErrors(affectedBy field: CalculatorField) {
+        guard focusedField == field else { return }
+        let validationErrors = draft.validation().errors
+        for affectedField in fieldsAffected(by: field)
+        where errors[affectedField] != nil && validationErrors[affectedField] == nil {
+            errors[affectedField] = nil
+        }
+    }
+
+    private func fieldsAffected(by field: CalculatorField) -> [CalculatorField] {
+        switch field {
+        case .principal, .contribution:
+            [.principal, .contribution]
+        case .years, .months:
+            [.years, .months]
+        default:
+            [field]
+        }
+    }
+
+    private var currentTargetDescription: String {
+        guard let value = CalculatorInputParser.money(draft.target) else {
+            return "\(draft.target) pounds"
+        }
+        return IGCFormatters.gbp(value)
+    }
+
+    private func removeTarget() {
+        draft.target = ""
+        draft.targetIsExpanded = false
+        errors[.target] = nil
+        if focusedField == .target {
+            focusedField = nil
+        }
     }
 }

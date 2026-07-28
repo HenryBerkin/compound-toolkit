@@ -22,6 +22,10 @@ struct RootTabView: View {
             initialDraft.targetIsExpanded = true
             initialDraft.target = "100000"
         }
+        if arguments.contains("-uiCollapsedInvalidTarget") {
+            initialDraft.targetIsExpanded = false
+            initialDraft.target = "1£2"
+        }
         _draft = State(initialValue: initialDraft)
     }
 

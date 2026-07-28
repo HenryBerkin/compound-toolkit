@@ -187,6 +187,10 @@ struct ProjectionView: View {
                 ProjectionChartPoint.Series.afterFees.rawValue: Color.indigo,
                 ProjectionChartPoint.Series.todayMoney.rawValue: Color.teal,
             ])
+            .chartSymbolScale([
+                ProjectionChartPoint.Series.afterFees.rawValue: .circle,
+                ProjectionChartPoint.Series.todayMoney.rawValue: .diamond,
+            ])
             .chartYAxis {
                 AxisMarks { value in
                     AxisGridLine()

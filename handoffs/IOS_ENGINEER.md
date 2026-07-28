@@ -55,12 +55,11 @@ local-only, no-unapproved-capabilities boundary and treat privacy manifest, expo
 network, storage-protection, and archive assertions as evidence to establish from the
 actual implementation rather than assumed compliance.
 
-IGC-007 is Ready for dispatch after the Product Manager issues the final standalone
-copy from an exact base containing the complete signing identity. Do not create the
-project on the integration branch.
+IGC-007 is Ready for dispatch. Do not create the project on the integration branch.
 
-The prepared implementation contract is
-`prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation on
-`0b71bc3fdf7260a48c1751da21c45d78283d3da9`. It is intentionally non-dispatchable:
-the Product Manager must insert Team Name `Henry Berkin` and a new exact base before
-issuing it. Team ID `2FKVFS8X67` is confirmed.
+The final implementation contract is
+`prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, issued from exact base
+`dc521186d9d0f30add2f45c06cb02d6d98d35195`. Use the required
+`/private/tmp/igc-007-native-vertical-slice` worktree and
+`codex/igc-007-native-vertical-slice` branch. Team Name `Henry Berkin`, Team ID
+`2FKVFS8X67`, and bundle identifier `uk.co.mochadesigns.igc` are fixed inputs.

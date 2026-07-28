@@ -1,21 +1,10 @@
-# Prepared specialist brief — IGC-007 native vertical slice
+# Standalone specialist prompt — IGC-007 native vertical slice
 
-Status: **Prepared, blocked — do not dispatch or begin implementation**
+Status: **Ready for dispatch**
 
-This brief records the intended IGC-007 implementation contract. It is not executable
-authorisation while the exact Apple Developer Team Name is pending. Team ID
-`2FKVFS8X67` is owner-confirmed. Before this prompt is pasted into a specialist task,
-the Product Manager must:
-
-1. record the owner-provided Apple Developer Team Name in `DECISIONS.md`,
-   `PROJECT_STATUS.md`, and the relevant handoffs;
-2. replace the remaining Team Name marker below with that exact value;
-3. replace the preparation base with the new exact commit containing that decision;
-4. change the task status from Blocked to Ready and explicitly issue the revised
-   prompt.
-
-Do not create an Xcode project, use a Personal Team, infer a Team Name, substitute a
-different Team ID, or begin native implementation from this prepared copy.
+The owner-controlled project identity is complete. Use only the exact bundle
+identifier, Team Name, Team ID, base commit, branch, and worktree below. Do not use a
+Personal Team, placeholder, different Team ID, or different signing identity.
 
 ## Dispatch metadata
 
@@ -23,20 +12,18 @@ different Team ID, or begin native implementation from this prepared copy.
 - Recommended model: `gpt-5.6-sol`
 - Recommended reasoning effort: `xhigh`
 - Repository: `HenryBerkin/compound-toolkit`
-- Preparation base commit:
-  `0b71bc3fdf7260a48c1751da21c45d78283d3da9`
 - Exact implementation base commit:
-  **BLOCKED — PM MUST INSERT AFTER TEAM NAME DECISION**
-- Worktree: required after the dispatch gate is cleared
+  `dc521186d9d0f30add2f45c06cb02d6d98d35195`
+- Worktree: required
 - Worktree path: `/private/tmp/igc-007-native-vertical-slice`
 - Branch: `codex/igc-007-native-vertical-slice`
 - Application bundle identifier: `uk.co.mochadesigns.igc`
-- Apple Developer Team Name: **BLOCKED — PENDING OWNER CONFIRMATION**
+- Apple Developer Team Name: `Henry Berkin`
 - Apple Developer Team ID: `2FKVFS8X67`
 
-When this brief is reissued, create the isolated worktree and named branch from the
-exact implementation base. Do not work on or merge into
-`project/ios-migration-audit`. Do not alter another specialist branch.
+Create the isolated worktree and named branch from the exact implementation base. Do
+not work on or merge into `project/ios-migration-audit`. Do not alter another
+specialist branch.
 
 ## Role and task
 
@@ -85,7 +72,7 @@ display defect, legacy persistence records, or Web-only functionality.
 
 At task start, recheck the current upload toolchain requirement against Apple's
 [Upcoming SDK minimum requirements](https://developer.apple.com/news/?id=ueeok6yw).
-At preparation time, uploads require the iOS 26 SDK or later from 28 April 2026.
+At prompt issue time, uploads require the iOS 26 SDK or later from 28 April 2026.
 This is separate from the accepted iOS 17 deployment target. Record the Xcode, Swift,
 SDK, and macOS versions actually used; do not silently weaken either requirement.
 
@@ -95,6 +82,7 @@ SDK, and macOS versions actually used; do not silently weaken either requirement
 - Shorthand and icon identity: `IGC`.
 - Optional long-form marketing name: `IGC — Investment Growth Calculator`.
 - Application bundle identifier: `uk.co.mochadesigns.igc`.
+- Apple Developer Team Name: `Henry Berkin`.
 - The application target must use Team ID `2FKVFS8X67`. Do not use a Personal Team,
   placeholder, wildcard App ID, different Team ID, or different namespace.
 - Native 1.0 uses UK English and GBP only. Scenario-compatible data identifies GBP
@@ -371,7 +359,7 @@ path.
 
 Before marking IGC-007 Ready for review:
 
-1. Confirm the working tree began at the exact reissued base and remained on
+1. Confirm the working tree began at the exact implementation base and remained on
    `codex/igc-007-native-vertical-slice`.
 2. Record `xcodebuild -version`, the selected SDK, and
    `xcodebuild -showdestinations` output summary.

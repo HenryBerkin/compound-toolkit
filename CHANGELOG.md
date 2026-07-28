@@ -32,6 +32,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Added the blocked standalone IGC-007 implementation brief for the project foundation,
   pure fixture-backed Swift core, and accessible Calculator-to-Projection vertical
   slice, later cleared for dispatch when the complete Apple Team identity was supplied.
+- Issued the final IGC-007 specialist prompt from exact base
+  `dc521186d9d0f30add2f45c06cb02d6d98d35195`.
 
 ### Changed
 

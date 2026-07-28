@@ -22,8 +22,9 @@ until binary evidence. IGC-D018 fixes the native application bundle identifier a
 ID `2FKVFS8X67`. The owner-controlled project signing gate is complete. Native work
 must still begin only in the specialist worktree from the exact issued base.
 
-The prepared brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation
-on `0b71bc3fdf7260a48c1751da21c45d78283d3da9`. It deliberately contains a blocking
-Team Name marker and is superseded by the now-confirmed Team Name `Henry Berkin`.
-Commit the complete signing identity, then replace that marker and preparation base
-and explicitly issue the final standalone copy.
+The final standalone brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, issued from
+exact implementation base `dc521186d9d0f30add2f45c06cb02d6d98d35195`. Dispatch it
+in thread `IGC-007 — Native Vertical Slice` using `gpt-5.6-sol` at `xhigh` reasoning,
+with the required `/private/tmp/igc-007-native-vertical-slice` worktree and
+`codex/igc-007-native-vertical-slice` branch. Do not begin the implementation on the
+integration branch.

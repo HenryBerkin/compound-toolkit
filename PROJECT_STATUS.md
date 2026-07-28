@@ -85,9 +85,9 @@ head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
 IGC-007 is Ready. Its implementation contract is defined in
-`prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`. The Product Manager must issue the final
-standalone copy with an exact base containing the complete signing identity before the
-specialist creates the required worktree or Xcode project.
+`prompts/IGC-007-NATIVE-VERTICAL-SLICE.md` and issued from exact implementation base
+`dc521186d9d0f30add2f45c06cb02d6d98d35195`. The iOS Engineer may now create the
+required isolated worktree and begin only the prompt's bounded implementation scope.
 
 The accepted architecture prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.

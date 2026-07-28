@@ -19,7 +19,8 @@
 
 - Approved the SwiftUI architecture, Codable persistence, fixture gate, dependency
   policy, and local-free availability boundary.
-- Produce a lightweight native design system and behavioural QA inventory.
+- Accepted the cross-platform behavioural QA inventory and release-gate model.
+- Produce and accept the lightweight native design system.
 
 ## Phase 3 — Native build
 

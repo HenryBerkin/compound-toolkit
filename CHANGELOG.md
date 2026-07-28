@@ -41,6 +41,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted the IGC-004 native architecture under IGC-D014, including the single-module
   SwiftUI structure, actor-backed Codable scenario store, direct fixture parity gate,
   first-party dependency policy, and local-free availability seam.
+- Accepted the IGC-006 behavioural QA inventory under IGC-D015, including direct
+  cross-client fixture parity, intentional platform-difference testing, evidence
+  classification, accessibility/persistence coverage, and staged release gates.
 
 ### Not changed
 

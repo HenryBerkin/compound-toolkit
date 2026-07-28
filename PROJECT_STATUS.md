@@ -5,8 +5,8 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Native product contract and architecture accepted; design, QA, and early
-  release-risk definition next.
+- Phase: Native product contract, architecture, and QA inventory accepted; design and
+  early release-risk definition next.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -55,19 +55,19 @@ head is `1940e3f95427f5fc0b3ca2dab07801e887650821`; the proposal was integrated 
 `project/ios-migration-audit` by merge commit `856f156`.
 
 Native implementation remains not started. Do not create an Xcode project or begin
-IGC-007 until the relevant IGC-005 design and IGC-006 QA inputs are accepted and the
-Product Owner confirms the bundle identifier and Apple Developer Team.
+IGC-007 until the relevant IGC-005 design inputs are accepted and the Product Owner
+confirms the bundle identifier and Apple Developer Team.
 
-IGC-005, IGC-006, and IGC-008 are Ready from the same accepted base
-`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`. They may proceed concurrently in their
-named isolated worktrees. Their standalone prompts are in `prompts/`. IGC-007 remains
-Proposed and must not begin.
+IGC-006 is Done and its behavioural inventory is accepted in IGC-D015. The specialist
+head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
+`project/ios-migration-audit` by merge commit `c895476`.
+
+IGC-005 and IGC-008 remain Ready from
+`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a` in their named isolated worktrees. Their
+standalone prompts are in `prompts/`. IGC-007 remains Proposed and must not begin.
 
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
-
-IGC-006 is Ready for review with the documentation-only behavioural QA inventory in
-`docs/QA_PLAN.md`; it adds no native or PWA implementation.
 
 ## Known issues and deferred work
 

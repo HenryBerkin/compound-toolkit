@@ -6,9 +6,10 @@ Read `docs/PLATFORM_STRATEGY.md` for the shared-versus-platform-specific boundar
 Read `docs/IOS_ARCHITECTURE.md` for accepted native boundaries and proposed test
 layers.
 
-IGC-003, IGC-004, and IGC-009 are complete. IGC-006 is Ready for review from
-`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`; its standalone prompt is
-`prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md`.
+IGC-003, IGC-004, IGC-006, and IGC-009 are complete. IGC-006 is accepted under
+IGC-D015; its specialist head is
+`7e4f462ef6ec78fa22dea81dbda772e9032af2f9`, based on
+`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 
 `docs/QA_PLAN.md` defines the Shared/iOS/Web behavioural inventory, direct-fixture
 parity protocol, platform boundaries, persistence recovery, accessibility evidence,

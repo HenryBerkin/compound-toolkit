@@ -40,3 +40,7 @@ accessibility claims; all architecture sections present; cited Apple links opene
 `git diff --check` passed; no `igc-ios/`, Xcode project, Swift source, dependency, or
 generated artifact was added; shared assets, accepted decisions, and PWA files remain
 unchanged. No native build was run because native project creation is out of scope.
+
+Before future implementation work, read the accepted behavioural inventory in
+`docs/QA_PLAN.md` and preserve its direct-fixture gate and planned-versus-executed
+evidence rules.

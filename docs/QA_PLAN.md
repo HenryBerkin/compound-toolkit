@@ -1,6 +1,6 @@
 # IGC behavioural QA inventory
 
-Status: Ready for review
+Status: Accepted under IGC-D015
 Task: IGC-006 — Shared / iOS / Web
 Scope: quality planning only; this file does not claim execution of future native tests.
 
@@ -238,7 +238,7 @@ Fixture/specification changes require an accepted Shared decision, compatibility
 
 | Gate | Objective exit evidence | Current state |
 | --- | --- | --- |
-| Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Architecture accepted; QA/design review pending. |
+| Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Architecture and QA inventory accepted; design review pending. |
 | Calculation-core parity | Both V1 consumers, every fixture/schema/checkpoint/validation and invariants pass; raw tolerance evidence. | TypeScript evidence exists; Swift unimplemented. |
 | Vertical slice | Native validated draft → raw result → annual accessible alternative; local-free/offline and fixture gate. | Planned. |
 | Scenario lifecycle | V1 CRUD, atomic/recovery/failure/reset/relaunch evidence and truthful backup wording. | Planned. |
@@ -249,4 +249,13 @@ Fixture/specification changes require an accepted Shared decision, compatibility
 
 ### Current evidence versus planned evidence
 
-Current evidence is documentary/PWA-only: accepted V1 specs/schemas/fixtures, direct TypeScript fixture consumer reported as 27 tests alongside 58 existing tests (85), historical lint/build/browser audit, and documented PWA risks. This task executes no native implementation or native tests and does not rerun/certify historical PWA checks. All `IOS-*` execution and future manual/device/App Store evidence remains planned. Product Manager review decisions are to accept this inventory/traceability, prioritise/scope known Web defects, incorporate accepted IGC-005 assertions later, and use IGC-008 for privacy/submission evidence.
+Current evidence is documentary/PWA-only: accepted V1 specs/schemas/fixtures, direct
+TypeScript fixture consumer reported as 27 tests alongside 58 existing tests (85),
+historical lint/build/browser audit, and documented PWA risks. This task executes no
+native implementation or native tests and does not rerun/certify historical PWA checks.
+All `IOS-*` execution and future manual/device/App Store evidence remains planned.
+
+Product Manager/Technical Lead review accepted this inventory and traceability under
+IGC-D015. Known Web defects still require separate prioritisation, accepted IGC-005
+assertions must be incorporated later, and IGC-008 remains the authority for current
+privacy/submission evidence.

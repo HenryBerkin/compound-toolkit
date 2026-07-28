@@ -212,3 +212,25 @@
   identifier and Apple Developer Team before Xcode project creation. App Store SKU is
   confirmed before creating the App Store Connect record. App Groups and iCloud remain
   absent from 1.0 unless a later accepted decision introduces them.
+
+## IGC-D015 — Adopt the cross-platform behavioural QA inventory
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: IGC-006 translated the accepted Shared, iOS, and Web behavior into traceable
+  test identifiers, evidence requirements, platform-specific matrices, defect handling,
+  and staged release gates.
+- Decision: adopt `docs/QA_PLAN.md` as the version 1 behavioural QA inventory. Require
+  independent Swift and TypeScript consumers of the root shared fixtures, exact
+  platform-difference testing, explicit planned-versus-executed evidence, and the
+  documented calculation, persistence, accessibility, Web regression, and release
+  gates.
+- Rationale: prevents fixture drift, makes intentional Web/iOS differences testable,
+  and stops observed PWA defects or unexecuted native plans from being reported as
+  accepted or passing behavior.
+- Alternatives: separate untraced platform checklists; fixture-only parity; treating
+  PWA behavior as the complete native oracle.
+- Consequences: accepted IGC-005 design assertions and IGC-008 privacy/App Store
+  requirements must later be traced into the marked QA areas. Browser-support policy
+  and known Web-defect prioritisation remain separate Product Manager decisions; this
+  inventory does not claim that future native or release tests have executed.

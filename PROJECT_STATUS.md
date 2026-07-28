@@ -54,6 +54,11 @@ IGC-004 is Done and its architecture is accepted in IGC-D014. The corrected spec
 head is `1940e3f95427f5fc0b3ca2dab07801e887650821`; the proposal was integrated into
 `project/ios-migration-audit` by merge commit `856f156`.
 
+IGC-008 is Ready for review. Its documentation-only early App Store/privacy review
+records current Apple submission gates, local-only provisional App Privacy answers,
+owner inputs, financial-content/legal review flags, and phase-gated release evidence.
+It makes no submission or native-compliance claim.
+
 Native implementation remains not started. Do not create an Xcode project or begin
 IGC-007 until the relevant IGC-005 design inputs are accepted and the Product Owner
 confirms the bundle identifier and Apple Developer Team.

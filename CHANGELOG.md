@@ -25,6 +25,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Added the IGC-006 behavioural QA inventory covering V1 fixture parity, platform
   boundaries, persistence recovery, accessibility evidence, known Web findings, and
   release gates without implementing tests or native features.
+- Added IGC-008’s documentation-only App Store, privacy, and phase-gated release-risk
+  review with current Apple-source checks and no native or App Store action.
 
 ### Changed
 

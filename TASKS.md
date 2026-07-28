@@ -145,7 +145,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-007 — Implement native vertical slice
 
 - Owner: iOS Engineer
-- Status: Ready
+- Status: Ready for review
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-008
@@ -172,13 +172,34 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   - Build, unit, fixture, UI smoke, simulator, accessibility, and offline evidence is
     reported as executed, failed, skipped, or untested; no unexecuted plan is called
     passing.
-- Verification: exact commands and destinations are specified in the standalone brief;
-  implementation has not started.
+- Verification:
+  - Xcode 26.2 (17C52), Swift 6.2.3, and the iOS 26.2 SDK built the iOS 17 project
+    in Debug and Release simulator configurations.
+  - After Product Manager corrections, the canonical iPhone 17 result bundle passed
+    27/27 tests: 18 unit/fixture tests and 9 UI tests. Focused regressions cover strict
+    en-GB input parsing, preset reconciliation with invalid unrelated drafts, the
+    Next/Done/focus-loss/correction lifecycle, collapsed invalid target focus, confirmed
+    target removal, and adaptive contribution-timing presentation. The fixture suite
+    consumed the root calculation fixture and both
+    root schemas directly and covered all 7 calculation cases, 8 monthly checkpoints,
+    8 annual checkpoints, and 19 validation expectations.
+  - Calculator-to-Projection and annual-detail smoke flows passed on iPhone 16e,
+    iPhone 17, iPhone 17 Pro Max, and iPad Pro 13-inch simulators. Dark appearance,
+    AX XXXL text, Reduce Motion, VoiceOver-enabled semantics, landscape, and a French
+    system locale retaining explicit GBP formatting also passed focused checks.
+  - Source and Release-binary inventory found only first-party Foundation, Charts,
+    SwiftUI, and UIKit application linkage; no networking, persistence, analytics,
+    third-party SDK, entitlement, collected-data, tracking, or required-reason API
+    surface was added. No privacy manifest is required for this implemented slice.
+  - Physical-device and StoreKit/manual purchase checks were skipped because this
+    local-only free slice has no StoreKit path and no authorised device run was made.
 - Signing inputs: Apple Developer Team Name `Henry Berkin` and Team ID `2FKVFS8X67`
   are owner-confirmed. Do not use a Personal Team, placeholder, different Team ID, or
   different signing identity.
 - Branch/worktree: `codex/igc-007-native-vertical-slice` in an isolated worktree from
-  the exact base named in the standalone prompt.
+  exact base `dc521186d9d0f30add2f45c06cb02d6d98d35195`; initial implementation commit
+  `ab45c935853fc4edab0fce2d25291d74255b49d1` and Product Manager correction commit
+  `76b1e39db01830642b4de7481ea7efc85ae568f1`.
 - Standalone prompt: `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`.
 
 ## IGC-008 — Early privacy and App Store risk review

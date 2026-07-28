@@ -34,6 +34,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   slice, later cleared for dispatch when the complete Apple Team identity was supplied.
 - Issued the final IGC-007 specialist prompt from exact base
   `dc521186d9d0f30add2f45c06cb02d6d98d35195`.
+- Implemented IGC-007’s first-party SwiftUI Calculator-to-Projection vertical slice,
+  pure fixture-parity core, annual detail, accessibility alternatives, and native tests.
 
 ### Changed
 

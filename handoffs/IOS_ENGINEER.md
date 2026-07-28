@@ -58,3 +58,9 @@ actual implementation rather than assumed compliance.
 IGC-007 is Blocked. Do not create the project until Apple activates the Product
 Owner's programme membership, the owner provides the resulting Team Name and Team ID,
 and the standalone IGC-007 brief is explicitly unblocked.
+
+The prepared implementation contract is
+`prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation on
+`ef7e3914362df0bfb571fb0180c7216fbbe1cdaa`. It is intentionally non-dispatchable:
+the Product Manager must insert the activated Team Name, Team ID, and a new exact base
+before issuing it.

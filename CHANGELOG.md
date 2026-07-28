@@ -29,6 +29,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   review with current Apple-source checks and no native or App Store action.
 - Defined the implementation-ready native IGC design system, interaction hierarchy,
   accessible results and annual-detail presentation, and local scenario recovery flows.
+- Added the blocked standalone IGC-007 implementation brief for the project foundation,
+  pure fixture-backed Swift core, and accessible Calculator-to-Projection vertical
+  slice; dispatch remains gated on the activated Apple Team Name and Team ID.
 
 ### Changed
 

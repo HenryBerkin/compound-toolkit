@@ -6,8 +6,8 @@ Owner: Product Manager and Technical Lead
 ## Current state
 
 - Phase: Native product contract, architecture, design system, QA inventory, and early
-  release-risk planning accepted; bundle identifier confirmed; native implementation
-  brief preparation and Apple Developer Team activation are next.
+  release-risk planning accepted; bundle identifier and blocked native implementation
+  brief prepared; Apple Developer Team activation is next.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -85,9 +85,12 @@ head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
 IGC-007 is Blocked and must not begin. Its implementation contract is defined; the
-remaining pre-dispatch owner gate is the activated Team Name and Team ID.
+prepared standalone brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`. The remaining
+pre-dispatch owner gate is the activated Team Name and Team ID. After those values are
+recorded, the Product Manager must revise the prompt with a new exact base and
+explicitly unblock it before a worktree or Xcode project is created.
 
-The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
+The accepted architecture prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
 
 ## Known issues and deferred work

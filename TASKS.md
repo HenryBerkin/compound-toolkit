@@ -88,9 +88,10 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   decision areas in IGC-D014. Specialist range
   `3bf1e517636d543e368b610b8a006cafd271e836..1940e3f95427f5fc0b3ca2dab07801e887650821`
   passes `git diff --check`; no native build was applicable.
-- Unresolved questions: exact bundle identifier and Apple Developer Team before project
-  creation; App Store SKU before its App Store Connect record. These owner-controlled
-  values do not block architecture acceptance.
+- Unresolved questions: IGC-D018 has since confirmed the application bundle identifier;
+  activated Apple Developer Team Name and Team ID remain required before project
+  creation, and App Store SKU remains required before its App Store Connect record.
+  These owner-controlled values did not block architecture acceptance.
 - Branch/worktree: `codex/igc-004-ios-architecture` in an isolated worktree from
   `3bf1e517636d543e368b610b8a006cafd271e836`.
 - Standalone prompt: `prompts/IGC-004-IOS-ARCHITECTURE.md`.

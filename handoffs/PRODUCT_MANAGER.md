@@ -1,8 +1,8 @@
 # Product Manager handoff
 
 Current phase: native product contract, architecture, design system, QA inventory, and
-early release-risk planning accepted; bundle identifier confirmed; native
-implementation brief preparation and Apple Developer Team activation are next.
+early release-risk planning accepted; bundle identifier and blocked native
+implementation brief prepared; Apple Developer Team activation is next.
 Branch: `project/ios-migration-audit`.
 Baseline: `recovered-pwa-baseline-2026-07-28`.
 
@@ -22,3 +22,9 @@ until binary evidence. IGC-D018 fixes the native application bundle identifier a
 activates the Product Owner's programme membership, the owner provides the resulting
 Team Name and Team ID, and the standalone implementation brief is explicitly
 unblocked.
+
+The prepared brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation
+on `ef7e3914362df0bfb571fb0180c7216fbbe1cdaa`. It deliberately contains blocking Team
+markers and is not ready to paste. When the owner provides the activated Team Name and
+Team ID, record both, update the prompt with the new exact base, change IGC-007 from
+Blocked to Ready, and explicitly issue the revised copy.

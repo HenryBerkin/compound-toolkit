@@ -15,6 +15,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted version 1 shared calculation specification, portable scenario schema, JSON
   Schemas, representative calculation/validation fixtures, and direct TypeScript
   fixture-consumer tests.
+- Revised standalone IGC-004 brief for a documentation-only native iOS architecture
+  proposal based on the accepted shared contract.
 
 ### Changed
 

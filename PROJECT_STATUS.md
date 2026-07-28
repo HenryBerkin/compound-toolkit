@@ -53,6 +53,9 @@ IGC-004 is Ready for an isolated iOS Engineer architecture proposal. It remains
 architecture-only: do not create an Xcode project, implement SwiftUI features, or begin
 native delivery until the proposal is reviewed and accepted.
 
+The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
+accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
+
 ## Known issues and deferred work
 
 - The preset picker initially displays “Global index (DIY)” while the untouched

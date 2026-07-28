@@ -2,7 +2,9 @@
 
 No native code exists. IGC-004 is Ready for an architecture proposal because IGC-003
 and IGC-009 are Done. Use only the revised standalone prompt issued after the accepted
-2026-07-28 decisions; the earlier prompt is withdrawn.
+2026-07-28 decisions; the earlier prompt is withdrawn. The revised prompt is
+`prompts/IGC-004-IOS-ARCHITECTURE.md`, based at
+`3bf1e517636d543e368b610b8a006cafd271e836`.
 
 Read `AGENTS.md`, `PROJECT_STATUS.md`, `TASKS.md`, `DECISIONS.md`,
 `docs/PRODUCT_SPEC.md`, `docs/CALCULATION_SPEC.md`, `docs/SCENARIO_SCHEMA.md`,

@@ -88,7 +88,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   feasibility spike is explicitly approved.
 - Unresolved questions: architecture alternatives to be evaluated by the iOS Engineer;
   no unresolved product input blocks the proposal.
-- Branch/worktree: isolated worktree required; base set in the specialist prompt.
+- Branch/worktree: `codex/igc-004-ios-architecture` in an isolated worktree from
+  `3bf1e517636d543e368b610b8a006cafd271e836`.
+- Standalone prompt: `prompts/IGC-004-IOS-ARCHITECTURE.md`.
 
 ## IGC-005 — Define native design system
 

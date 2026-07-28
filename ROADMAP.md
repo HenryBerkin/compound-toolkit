@@ -17,7 +17,8 @@
 
 ## Phase 2 — Native definition
 
-- Approve the SwiftUI architecture and persistence approach.
+- Approved the SwiftUI architecture, Codable persistence, fixture gate, dependency
+  policy, and local-free availability boundary.
 - Produce a lightweight native design system and behavioural QA inventory.
 
 ## Phase 3 — Native build

@@ -6,9 +6,10 @@ No native code exists. The completed proposal followed the revised standalone pr
 in `prompts/IGC-004-IOS-ARCHITECTURE.md`, based at
 `3bf1e517636d543e368b610b8a006cafd271e836`; the earlier prompt remains withdrawn.
 
-IGC-004 is Ready for Product Manager review. The documentation-only proposal is
-`docs/IOS_ARCHITECTURE.md`; its proposal commit is `666314e` on
-`codex/igc-004-ios-architecture`, based on the accepted base
+IGC-004 is Done and accepted in IGC-D014. The documentation-only proposal is
+`docs/IOS_ARCHITECTURE.md`; its corrected specialist head is
+`1940e3f95427f5fc0b3ca2dab07801e887650821` on
+`codex/igc-004-ios-architecture`, based on
 `3bf1e517636d543e368b610b8a006cafd271e836`.
 
 The recommendation is a single SwiftUI app module with feature-local state, a pure
@@ -25,13 +26,13 @@ localStorage migration is a separately tested Web concern. Native comparison rem
 deferred to 1.1; annual detail is native 1.0 only while monthly rows remain required in
 the engine and parity tests.
 
-## Review decisions and verification
+## Accepted decisions and verification
 
-Product Manager must accept or revise the proposed persistence choice, single-module
-and first-party dependency policy, direct shared-resource parity gate, local-free
-availability seam, and owner-controlled bundle/signing identifiers before project
-creation. No bundle ID, team ID, App Store SKU, app group, or iCloud entitlement is
-proposed as final.
+Product Manager accepted the persistence choice, single-module and first-party
+dependency policy, direct shared-resource parity gate, and local-free availability
+seam. Product Owner confirmation of the reverse-DNS bundle identifier and Apple
+Developer Team remains a gate before project creation. App Store SKU waits until the
+App Store Connect record; App Groups and iCloud remain absent from 1.0.
 
 Verification completed: required project/specification/fixture/PWA evidence read;
 official Apple primary sources checked for current upload SDK, data, testing, and

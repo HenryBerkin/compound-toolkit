@@ -33,6 +33,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   export, with two-scenario comparison deferred to iOS 1.1.
 - Established Investment Growth Calculator as the public/App Store name, IGC as the
   shorthand/icon identity, and an explicit Custom 7% / 3% / 0.20% baseline.
+- Accepted the IGC-004 native architecture under IGC-D014, including the single-module
+  SwiftUI structure, actor-backed Codable scenario store, direct fixture parity gate,
+  first-party dependency policy, and local-free availability seam.
 
 ### Not changed
 

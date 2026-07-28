@@ -3,6 +3,8 @@
 QA implementation work has not started. The verified PWA evidence is in
 `docs/PWA_AUDIT.md`; calculation tests live in `igc-pwa/src/lib/calc.test.ts`.
 Read `docs/PLATFORM_STRATEGY.md` for the shared-versus-platform-specific boundary.
+Read `docs/IOS_ARCHITECTURE.md` for accepted native boundaries and proposed test
+layers.
 
 IGC-003 and IGC-009 are complete; IGC-006 remains Proposed pending assignment.
 `docs/CALCULATION_SPEC.md` and `shared/fixtures/calculation-v1.json` are the accepted

@@ -188,3 +188,27 @@
 - Consequences: architecture and QA must cover supported iPhone sizes, Dynamic Type,
   rotation where supported, and sensible adaptive iPad layouts. App Store uploads use
   the then-required current Xcode and SDK independently of this deployment target.
+
+## IGC-D014 — Adopt the proportionate native iOS architecture
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: IGC-004 evaluated native structure, persistence, shared-fixture parity,
+  feature availability, accessibility, privacy, testing, and delivery sequencing for
+  the accepted local-first iOS 1.0.
+- Decision: use one SwiftUI app module with feature folders and feature-local state,
+  first-party frameworks only, a pure binary64 calculation core, direct consumption of
+  the root shared fixtures by native tests, an actor-backed Codable Application Support
+  scenario store, and a minimal local-free feature-availability seam. Defer SwiftData,
+  packages, third-party dependencies, StoreKit, accounts, networking, sync, analytics,
+  remote configuration, and backend services until an accepted requirement justifies
+  them.
+- Rationale: fits the small offline product, preserves calculation and scenario
+  boundaries that are expensive to recover later, and avoids speculative infrastructure.
+- Alternatives: SwiftData persistence; multiple Swift packages; third-party routing,
+  dependency-injection, persistence, or entitlement frameworks; no availability seam.
+- Consequences: the native engine and validator must pass the version 1 shared fixture
+  gate before feature expansion. The Product Owner must confirm the reverse-DNS bundle
+  identifier and Apple Developer Team before Xcode project creation. App Store SKU is
+  confirmed before creating the App Store Connect record. App Groups and iCloud remain
+  absent from 1.0 unless a later accepted decision introduces them.

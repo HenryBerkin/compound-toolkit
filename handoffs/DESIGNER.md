@@ -6,4 +6,5 @@ Use the PWA as evidence, not a pixel-for-pixel native template. Preserve recogni
 IGC identity while prioritising native hierarchy, Dynamic Type, VoiceOver, contrast,
 dark mode, reduced motion, and standard touch behaviour.
 
-Read `docs/PWA_AUDIT.md` and `docs/PRODUCT_SPEC.md` before proposing changes.
+Read `docs/PWA_AUDIT.md`, `docs/PRODUCT_SPEC.md`, and
+`docs/IOS_ARCHITECTURE.md` before proposing changes.

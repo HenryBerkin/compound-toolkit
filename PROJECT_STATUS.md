@@ -5,7 +5,8 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Shared product contract complete; native architecture proposal ready.
+- Phase: Native product contract and architecture accepted; design, QA, and early
+  release-risk definition next.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -49,11 +50,13 @@ The six product decisions, dual-client direction, staged premium deferral, calcu
 contract, fixture schema, representative outputs, validation cases, and portable
 scenario schema are accepted and complete. IGC-003 and IGC-009 are Done.
 
-IGC-004 is Ready for Product Manager review. The documentation-only proposal is in
-`docs/IOS_ARCHITECTURE.md` on `codex/igc-004-ios-architecture` (proposal commit
-`666314e`). Native implementation remains not started: do not create an Xcode project,
-implement SwiftUI features, or begin native delivery until the proposal is reviewed and
-accepted.
+IGC-004 is Done and its architecture is accepted in IGC-D014. The corrected specialist
+head is `1940e3f95427f5fc0b3ca2dab07801e887650821`; the proposal was integrated into
+`project/ios-migration-audit` by merge commit `856f156`.
+
+Native implementation remains not started. Do not create an Xcode project or begin
+IGC-007 until the relevant IGC-005 design and IGC-006 QA inputs are accepted and the
+Product Owner confirms the bundle identifier and Apple Developer Team.
 
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.

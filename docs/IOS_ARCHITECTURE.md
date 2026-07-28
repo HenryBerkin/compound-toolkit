@@ -1,6 +1,6 @@
 # IGC native iOS architecture proposal
 
-Status: Proposed for Product Manager review
+Status: Accepted under IGC-D014
 Task: IGC-004 — iOS / Shared
 Date: 2026-07-28
 Scope: Architecture only. No iOS project, Swift source, dependency, or generated artifact is created by this proposal.
@@ -260,19 +260,23 @@ IGC-005 defines hierarchy/copy/chart/accessibility presentation before slice pol
 | Scenario migration | Native V1 immediately; preserve/reject unknown; no web migration. | Silent legacy-web interpretation risks semantic drift/loss. | Test every future native migration; web separate. |
 | Fixture packaging | Test target references root shared resources. | Copying values causes drift; network fixture violates local scope. | Low-cost if source remains direct. |
 | Availability seam | Small local-free FeatureAvailability. | No seam spreads future checks; commerce design now is unused risk. | Cheap now/costly later. Decide before features. |
-| Bundle/product naming | Display name Investment Growth Calculator; module convention InvestmentGrowthCalculator; reverse-DNS pattern owned by team. | Historical compound-toolkit exposes tooling identity; inventing identifiers/team/SKU is invalid. | Bundle ID costly after distribution. Owner confirms namespace, exact ID, team, SKU, app-group/iCloud IDs before creation. |
+| Bundle/product naming | Display name Investment Growth Calculator; module convention InvestmentGrowthCalculator; reverse-DNS pattern owned by team. | Historical compound-toolkit exposes tooling identity; inventing identifiers/team/SKU is invalid. | Bundle ID is costly after distribution. Owner confirms bundle namespace/ID and team before project creation; SKU before the App Store Connect record. No App Group/iCloud capability in 1.0. |
 
-### Proposed decisions for Product Manager acceptance
+### Accepted architecture decisions
 
 1. Adopt this single-module, feature-folder SwiftUI structure and first-party-only dependency policy for native 1.0.
 2. Adopt the actor-backed Codable Application Support scenario store for native V1; defer SwiftData unless later requirements justify it.
 3. Adopt direct root shared test-resource consumption and specified tolerance/version failure behaviour as native parity gate.
 4. Adopt local-free FeatureAvailability and defer richer entitlement architecture until a commercial decision.
-5. Confirm owner-controlled identifiers/signing inputs before any Xcode project. Exact bundle ID, Developer Team, App Store SKU, app group, and iCloud capability intentionally remain undecided.
+5. Confirm the reverse-DNS bundle identifier and Apple Developer Team before Xcode
+   project creation, and the App Store SKU before creating its App Store Connect
+   record. App Groups and iCloud remain absent from 1.0 unless later approved.
 
 ## Review checklist and references
 
-No conflict among accepted scope, calculation, and scenario requirements was discovered. Product Manager should confirm the five proposed decisions, especially persistence/backup wording and owner-controlled identifiers. Designer, QA, and App Store Reviewer should review their dependencies in section 10.
+No conflict among accepted scope, calculation, and scenario requirements was
+discovered. Product Manager review accepted the five decisions above in IGC-D014.
+Designer, QA, and App Store Reviewer should review their dependencies in section 10.
 
 Primary Apple references:
 
@@ -284,4 +288,5 @@ Primary Apple references:
 - [Xcode testing strategy](https://developer.apple.com/documentation/xcode/testing)
 - [SwiftUI accessibility fundamentals](https://developer.apple.com/documentation/swiftui/accessibility-fundamentals)
 
-Apple requirements are rechecked at implementation/release. All other choices are recommendations pending Product Manager review.
+Apple requirements are rechecked at implementation/release. Material architecture
+changes require Product Manager review and a new or superseding decision.

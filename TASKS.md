@@ -69,7 +69,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-004 — Propose native iOS architecture
 
 - Owner: iOS Engineer
-- Status: Ready for review
+- Status: Done
 - Priority: P0
 - Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-009
@@ -84,10 +84,13 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     replaceable entitlement boundaries, and future synchronisation constraints covered.
   - No backend, account, payment, analytics, or third-party dependency is implemented or
     assumed for iOS 1.0.
-- Verification: document review by Product Manager; no build required unless a minimal
-  feasibility spike is explicitly approved.
-- Unresolved questions: architecture alternatives to be evaluated by the iOS Engineer;
-  no unresolved product input blocks the proposal.
+- Verification: Product Manager review accepted the corrected proposal and its five
+  decision areas in IGC-D014. Specialist range
+  `3bf1e517636d543e368b610b8a006cafd271e836..1940e3f95427f5fc0b3ca2dab07801e887650821`
+  passes `git diff --check`; no native build was applicable.
+- Unresolved questions: exact bundle identifier and Apple Developer Team before project
+  creation; App Store SKU before its App Store Connect record. These owner-controlled
+  values do not block architecture acceptance.
 - Branch/worktree: `codex/igc-004-ios-architecture` in an isolated worktree from
   `3bf1e517636d543e368b610b8a006cafd271e836`.
 - Standalone prompt: `prompts/IGC-004-IOS-ARCHITECTURE.md`.

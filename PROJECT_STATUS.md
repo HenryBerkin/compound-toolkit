@@ -58,6 +58,11 @@ Native implementation remains not started. Do not create an Xcode project or beg
 IGC-007 until the relevant IGC-005 design and IGC-006 QA inputs are accepted and the
 Product Owner confirms the bundle identifier and Apple Developer Team.
 
+IGC-005, IGC-006, and IGC-008 are Ready from the same accepted base
+`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`. They may proceed concurrently in their
+named isolated worktrees. Their standalone prompts are in `prompts/`. IGC-007 remains
+Proposed and must not begin.
+
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
 

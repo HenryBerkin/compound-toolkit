@@ -1,7 +1,11 @@
 # App Store Reviewer handoff
 
-Submission work has not started. Product scope is accepted; IGC-008 remains Proposed
-pending assignment. The accepted native data handling and delivery assumptions are in
+Submission work has not started. Product scope and architecture are accepted; IGC-008
+is Ready from `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`. Use the standalone prompt
+`prompts/IGC-008-EARLY-PRIVACY-APP-STORE-REVIEW.md` in branch
+`codex/igc-008-app-store-privacy-review`.
+
+The accepted native data handling and delivery assumptions are in
 `docs/IOS_ARCHITECTURE.md`. Current evidence indicates local-only scenario data, no
 account, no backend, no analytics, and no device permissions.
 

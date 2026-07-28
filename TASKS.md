@@ -98,29 +98,35 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-005 — Define native design system
 
 - Owner: Designer
-- Status: Proposed
+- Status: Ready
 - Priority: P1
 - Platform: iOS
-- Dependencies: IGC-003
+- Dependencies: IGC-003, IGC-004
 - Affected: `docs/DESIGN_SYSTEM.md`, design assets, `handoffs/DESIGNER.md`
 - Objective: translate useful IGC identity and workflows into native iOS patterns.
 - Acceptance criteria: implementation-ready hierarchy, components, Dynamic Type,
   VoiceOver, contrast, dark mode, and touch guidance.
 - Verification: Product Manager review against accepted scope.
+- Branch/worktree: `codex/igc-005-native-design-system` in an isolated worktree from
+  `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
+- Standalone prompt: `prompts/IGC-005-NATIVE-DESIGN-SYSTEM.md`.
 
 ## IGC-006 — Create behavioural QA inventory
 
 - Owner: QA Engineer
-- Status: Proposed
+- Status: Ready
 - Priority: P1
 - Platform: Shared / iOS / Web
-- Dependencies: IGC-003, IGC-009
+- Dependencies: IGC-003, IGC-004, IGC-009
 - Affected: `docs/QA_PLAN.md`, `handoffs/QA_ENGINEER.md`
 - Objective: turn approved shared requirements and platform-specific behaviour into
   reproducible cross-platform tests.
 - Acceptance criteria: canonical fixtures, input boundaries, persistence, comparison,
   accessibility, platform-difference, and regression cases defined.
 - Verification: Product Manager and iOS Engineer review.
+- Branch/worktree: `codex/igc-006-behavioural-qa-inventory` in an isolated worktree from
+  `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
+- Standalone prompt: `prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md`.
 
 ## IGC-007 — Implement native vertical slice
 
@@ -136,7 +142,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-008 — Early privacy and App Store risk review
 
 - Owner: App Store Reviewer
-- Status: Proposed
+- Status: Ready
 - Priority: P1
 - Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-004
@@ -146,6 +152,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Acceptance criteria: confirmed requirements separated from recommendations and open
   questions, with official Apple sources where requirements are time-sensitive.
 - Verification: Product Manager review.
+- Branch/worktree: `codex/igc-008-app-store-privacy-review` in an isolated worktree from
+  `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
+- Standalone prompt: `prompts/IGC-008-EARLY-PRIVACY-APP-STORE-REVIEW.md`.
 
 ## IGC-009 — Define shared calculation contract and fixture plan
 

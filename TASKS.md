@@ -88,10 +88,10 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   decision areas in IGC-D014. Specialist range
   `3bf1e517636d543e368b610b8a006cafd271e836..1940e3f95427f5fc0b3ca2dab07801e887650821`
   passes `git diff --check`; no native build was applicable.
-- Unresolved questions: IGC-D018 has since confirmed the application bundle identifier;
-  activated Apple Developer Team Name and Team ID remain required before project
-  creation, and App Store SKU remains required before its App Store Connect record.
-  These owner-controlled values did not block architecture acceptance.
+- Unresolved questions: IGC-D018 has since confirmed the application bundle identifier
+  and Team ID `2FKVFS8X67`; the exact Apple Developer Team Name remains required before
+  project creation, and App Store SKU remains required before its App Store Connect
+  record. These owner-controlled values did not block architecture acceptance.
 - Branch/worktree: `codex/igc-004-ios-architecture` in an isolated worktree from
   `3bf1e517636d543e368b610b8a006cafd271e836`.
 - Standalone prompt: `prompts/IGC-004-IOS-ARCHITECTURE.md`.
@@ -174,10 +174,10 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     passing.
 - Verification: exact commands and destinations are specified in the standalone brief;
   implementation has not started.
-- Blocker: Product Owner must provide the activated Apple Developer Team Name and
-  Apple-assigned Team ID. Do not use a Personal Team, placeholder, or inferred signing
-  identity and do not create the Xcode project before the brief is explicitly
-  unblocked.
+- Signing input: Apple Developer Team ID `2FKVFS8X67` is owner-confirmed.
+- Blocker: Product Owner must provide the exact Apple Developer Team Name. Do not use
+  an inferred name, Personal Team, placeholder, or different signing identity and do
+  not create the Xcode project before the brief is explicitly unblocked.
 - Branch/worktree when unblocked: `codex/igc-007-native-vertical-slice` in an isolated
   worktree from the exact base named in the standalone prompt.
 - Standalone prompt: `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md` (prepared separately;
@@ -200,7 +200,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a..1bc787858ae991a706d009214b14bc3867f36baf`
   passes `git diff --check`; current Apple primary sources were independently
   rechecked 2026-07-28.
-- Unresolved questions: owner-controlled Team Name and Team ID, SKU, publisher, URLs,
+- Unresolved questions: exact owner-controlled Team Name, SKU, publisher, URLs,
   category, territories and trader status; legal review of final positioning;
   binary-dependent privacy, manifest, export, accessibility, metadata and submission
   evidence.

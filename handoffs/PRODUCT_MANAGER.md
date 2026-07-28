@@ -2,7 +2,8 @@
 
 Current phase: native product contract, architecture, design system, QA inventory, and
 early release-risk planning accepted; bundle identifier and blocked native
-implementation brief prepared; Apple Developer Team activation is next.
+implementation brief prepared; exact Apple Developer Team Name is the remaining
+pre-dispatch input.
 Branch: `project/ios-migration-audit`.
 Baseline: `recovered-pwa-baseline-2026-07-28`.
 
@@ -18,13 +19,12 @@ calculation fixtures and scenario schema version 1.
 IGC-004 is accepted in IGC-D014, IGC-006 in IGC-D015, IGC-008 in IGC-D016, and the
 corrected IGC-005 native design system in IGC-D017. Privacy answers remain provisional
 until binary evidence. IGC-D018 fixes the native application bundle identifier as
-`uk.co.mochadesigns.igc`. Do not begin IGC-007 or create an Xcode project until Apple
-activates the Product Owner's programme membership, the owner provides the resulting
-Team Name and Team ID, and the standalone implementation brief is explicitly
-unblocked.
+`uk.co.mochadesigns.igc`. Do not begin IGC-007 or create an Xcode project until the
+owner provides the exact Team Name and the standalone implementation brief is
+explicitly unblocked. Team ID `2FKVFS8X67` is owner-confirmed.
 
 The prepared brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation
 on `ef7e3914362df0bfb571fb0180c7216fbbe1cdaa`. It deliberately contains blocking Team
-markers and is not ready to paste. When the owner provides the activated Team Name and
-Team ID, record both, update the prompt with the new exact base, change IGC-007 from
-Blocked to Ready, and explicitly issue the revised copy.
+markers and is not ready to paste. Team ID `2FKVFS8X67` is now confirmed. When the
+owner provides the exact Team Name, record it, update the prompt with the new exact
+base, change IGC-007 from Blocked to Ready, and explicitly issue the revised copy.

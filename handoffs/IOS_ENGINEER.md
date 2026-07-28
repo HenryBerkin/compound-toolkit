@@ -31,9 +31,9 @@ the engine and parity tests.
 Product Manager accepted the persistence choice, single-module and first-party
 dependency policy, direct shared-resource parity gate, and local-free availability
 seam. IGC-D018 fixes the native application bundle identifier as
-`uk.co.mochadesigns.igc`. Apple Developer Programme activation and Product Owner
-confirmation of the resulting Team Name and Team ID remain the gate before project
-creation; do not use a Personal Team or placeholder. App Store SKU waits until the App
+`uk.co.mochadesigns.igc`. Product Owner confirmation of the exact Team Name remains
+the gate before project creation. Team ID `2FKVFS8X67` is owner-confirmed; do not use a
+different Team ID, a Personal Team, or placeholder. App Store SKU waits until the App
 Store Connect record; App Groups and iCloud remain absent from 1.0.
 
 Verification completed: required project/specification/fixture/PWA evidence read;
@@ -55,12 +55,12 @@ local-only, no-unapproved-capabilities boundary and treat privacy manifest, expo
 network, storage-protection, and archive assertions as evidence to establish from the
 actual implementation rather than assumed compliance.
 
-IGC-007 is Blocked. Do not create the project until Apple activates the Product
-Owner's programme membership, the owner provides the resulting Team Name and Team ID,
-and the standalone IGC-007 brief is explicitly unblocked.
+IGC-007 is Blocked. Do not create the project until the Product Owner provides the
+exact Team Name and the standalone IGC-007 brief is explicitly unblocked. The
+confirmed Team ID is `2FKVFS8X67`.
 
 The prepared implementation contract is
 `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation on
 `ef7e3914362df0bfb571fb0180c7216fbbe1cdaa`. It is intentionally non-dispatchable:
-the Product Manager must insert the activated Team Name, Team ID, and a new exact base
-before issuing it.
+the Product Manager must insert the exact Team Name and a new exact base before
+issuing it. Team ID `2FKVFS8X67` is confirmed.

@@ -7,14 +7,14 @@ Owner: Product Manager and Technical Lead
 
 - Phase: Native product contract, architecture, design system, QA inventory, and early
   release-risk planning accepted; bundle identifier and Apple Developer Team confirmed;
-  the IGC-007 native vertical slice is Ready for review.
+  the IGC-007 native vertical slice is accepted and integrated.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
 - Verified structural migration commit: `78f2415`.
-- Native implementation: IGC-007 Calculator-to-Projection vertical slice complete on
-  specialist branch `codex/igc-007-native-vertical-slice`.
+- Native implementation: IGC-007 Calculator-to-Projection vertical slice integrated
+  into `project/ios-migration-audit`.
 - PWA status: supported IGC web edition and behavioural reference; maintenance may
   continue alongside the native client.
 - Public product/App Store name: **Investment Growth Calculator**.
@@ -74,21 +74,24 @@ hierarchy, explicit Calculator-to-Projection flow, scenario interaction/recovery
 results and annual detail, accessibility intent, adaptive behaviour, and semantic
 visual foundations without adding native implementation.
 
-The IGC-007 native implementation is complete in its required specialist worktree from
-exact base `dc521186d9d0f30add2f45c06cb02d6d98d35195`. It uses bundle identifier
+The IGC-007 native implementation was completed in its required specialist worktree
+from exact base `dc521186d9d0f30add2f45c06cb02d6d98d35195`. It uses bundle identifier
 `uk.co.mochadesigns.igc`, Apple Developer Team Name `Henry Berkin`, and Team ID
-`2FKVFS8X67`. The implementation commit is
-`ab45c935853fc4edab0fce2d25291d74255b49d1`; no integration, push, archive, or App
-Store action has been performed.
+`2FKVFS8X67`. Initial implementation commit
+`ab45c935853fc4edab0fce2d25291d74255b49d1` and correction commit
+`76b1e39db01830642b4de7481ea7efc85ae568f1` are integrated by merge commit
+`c26d25a13a65d47f487fc55cebaeb216b7a8eb62`.
 
 IGC-006 is Done and its behavioural inventory is accepted in IGC-D015. The specialist
 head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
-IGC-007 is Ready for review. Its SwiftUI Calculator-to-Projection slice, pure calculation
-core, direct root-fixture parity tests, annual detail, adaptive tab navigation, and
-accessibility alternatives pass 19/19 canonical tests. Focused simulator checks passed
-on representative small, standard, large, and iPad devices plus Dark Mode, AX XXXL,
+IGC-007 is Done. Product Manager review accepted its corrected SwiftUI
+Calculator-to-Projection slice, pure calculation core, direct root-fixture parity
+tests, annual detail, adaptive tab navigation, and accessibility alternatives. The
+independent review gate passed 27/27 tests with no failures or skips, plus the Release
+simulator build and store-bundle validation. Focused simulator evidence covers
+representative small, standard, large, and iPad devices plus Dark Mode, AX XXXL,
 Reduce Motion, VoiceOver-enabled semantics, supported landscape, and a non-UK locale
 retaining GBP. Release inspection found no third-party SDK, network, persistence,
 analytics, entitlement, collected-data, tracking, or required-reason API surface, so

@@ -40,6 +40,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 ### Changed
 
 - Isolated the preserved PWA under `igc-pwa/`.
+- Accepted and integrated IGC-007 after its Product Manager correction review; the
+  independent gate passed 27/27 tests and the Release simulator build.
 - Removed automatic placeholder-icon generation from PWA dependency installation so
   normal setup preserves the branded IGC assets.
 - Reclassified the PWA from frozen legacy reference to a supported IGC web

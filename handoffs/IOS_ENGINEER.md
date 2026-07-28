@@ -2,16 +2,15 @@
 
 ## IGC-007 native vertical slice completed
 
-Status: **Ready for review**.
+Status: **Done — accepted and integrated**.
 
 The native vertical slice is implemented on
 `codex/igc-007-native-vertical-slice` in
 `/private/tmp/igc-007-native-vertical-slice`, created from exact base
 `dc521186d9d0f30add2f45c06cb02d6d98d35195`. The exact implementation commit before
-this reporting-only handoff update is
+the first reporting-only handoff update is
 `ab45c935853fc4edab0fce2d25291d74255b49d1`
-(`feat(ios): build native calculator vertical slice`). Nothing was pushed, merged,
-archived, or uploaded.
+(`feat(ios): build native calculator vertical slice`).
 
 Product Manager review returned **Changes requested**. All seven scoped findings were
 corrected in
@@ -46,6 +45,12 @@ review**:
 The correction remained within Calculator/Projection and test scope. Persistence,
 comparison, export, networking, premium, StoreKit, App Store, and all other deferred
 work remain unchanged.
+
+Product Manager re-review accepted all seven corrections after an independent 27/27
+test run and Release simulator build. The specialist history is integrated into
+`project/ios-migration-audit` by merge commit
+`c26d25a13a65d47f487fc55cebaeb216b7a8eb62`. Nothing was pushed, archived, uploaded,
+or submitted to App Store Connect.
 
 ### Delivered scope
 
@@ -275,6 +280,6 @@ local-only, no-unapproved-capabilities boundary and treat privacy manifest, expo
 network, storage-protection, and archive assertions as evidence to establish from the
 actual implementation rather than assumed compliance.
 
-IGC-007 is implemented and Ready for review. Its current implementation and verification
+IGC-007 is Done, accepted, and integrated. Its current implementation and verification
 evidence are recorded at the top of this handoff. Team Name `Henry Berkin`, Team ID
 `2FKVFS8X67`, and bundle identifier `uk.co.mochadesigns.igc` remain fixed inputs.

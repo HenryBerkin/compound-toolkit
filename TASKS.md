@@ -145,7 +145,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-007 — Implement native vertical slice
 
 - Owner: iOS Engineer
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-008
@@ -199,7 +199,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Branch/worktree: `codex/igc-007-native-vertical-slice` in an isolated worktree from
   exact base `dc521186d9d0f30add2f45c06cb02d6d98d35195`; initial implementation commit
   `ab45c935853fc4edab0fce2d25291d74255b49d1` and Product Manager correction commit
-  `76b1e39db01830642b4de7481ea7efc85ae568f1`.
+  `76b1e39db01830642b4de7481ea7efc85ae568f1`; accepted and integrated into
+  `project/ios-migration-audit` by merge commit
+  `c26d25a13a65d47f487fc55cebaeb216b7a8eb62`.
 - Standalone prompt: `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`.
 
 ## IGC-008 — Early privacy and App Store risk review

@@ -6,7 +6,7 @@ Changes requested, Ready for acceptance, Done, Deferred.
 ## IGC-001 — Recover and audit the PWA
 
 - Owner: Product Manager and Technical Lead
-- Status: Ready for acceptance
+- Status: Done
 - Priority: P0
 - Dependencies: None
 - Affected: original root PWA, `docs/PWA_AUDIT.md`
@@ -21,11 +21,12 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Unresolved questions: see `docs/PRODUCT_SPEC.md`.
 - Branch: `project/ios-migration-audit`
 - Baseline: `428fb46432fedab770ae90934b537587a32d70f6`
+- Relevant commit: `78f2415`
 
 ## IGC-002 — Reorganise the repository
 
 - Owner: Product Manager and Technical Lead
-- Status: In progress
+- Status: Done
 - Priority: P0
 - Dependencies: IGC-001
 - Affected: root layout, `igc-pwa/`, project documentation
@@ -39,6 +40,7 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Verification: commands in `AGENTS.md`; post-move browser smoke test.
 - Unresolved questions: deployment destination is not configured in this repository.
 - Branch: `project/ios-migration-audit`
+- Relevant commit: `78f2415`
 
 ## IGC-003 — Accept native iOS 1.0 scope
 

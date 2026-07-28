@@ -186,7 +186,7 @@ Risks:
 - PWA dependency vulnerabilities remain; many concern development/build tooling, but
   impact has not been individually triaged.
 
-## Approved reorganisation plan
+## Executed reorganisation plan
 
 The following plan implements accepted decision IGC-D002 without product refactoring.
 
@@ -242,4 +242,9 @@ calculation output, saved-scenario persistence, and no browser errors.
 
 Rollback is non-destructive: inspect or branch from
 `recovered-pwa-baseline-2026-07-28`; after commit, revert the structural commit rather
-than rewriting shared history.
+than rewriting shared history. The verified structural commit is `78f2415`.
+
+All listed command checks passed from `igc-pwa/`. A fresh install preserved every
+branded-icon hash. The mobile default remained 0.20% fee and £105,958.16 final balance,
+saved scenarios survived the path move, and a fresh desktop browser tab produced no
+warnings or errors.

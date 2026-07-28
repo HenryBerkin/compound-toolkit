@@ -5,11 +5,12 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: PWA recovery, audit, and repository reorganisation.
+- Phase: Native version 1.0 scope review and architecture preparation.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
+- Verified structural migration commit: `78f2415`.
 - Native implementation: not started.
 - Current product name: **IGC — Investment Growth Calculator**.
 - Historical repository/package names still include `compound-toolkit` and
@@ -29,12 +30,16 @@ Owner: Product Manager and Technical Lead
 
 No audit fix or dependency upgrade has been applied.
 
+The same install, lint/type-check, 58-test suite, build, development server, mobile
+default-result check, saved-scenario persistence check, desktop load, and fresh browser
+console check passed after relocation into `igc-pwa/`. Installation left the branded
+icon hashes unchanged.
+
 ## Current gates
 
-1. Complete and verify the move into `igc-pwa/`.
-2. Review the proposed native version 1.0 scope with the user.
-3. Complete `IGC-004`, the proportionate SwiftUI architecture proposal.
-4. Do not begin substantive SwiftUI implementation until these gates are accepted.
+1. Review the proposed native version 1.0 scope with the user.
+2. Complete `IGC-004`, the proportionate SwiftUI architecture proposal.
+3. Do not begin substantive SwiftUI implementation until these gates are accepted.
 
 ## Known issues requiring decisions
 

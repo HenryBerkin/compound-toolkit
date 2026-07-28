@@ -1,8 +1,8 @@
 # IGC native iOS architecture proposal
 
-Status: Proposed for Product Manager review  
-Task: IGC-004 — iOS / Shared  
-Date: 2026-07-28  
+Status: Proposed for Product Manager review
+Task: IGC-004 — iOS / Shared
+Date: 2026-07-28
 Scope: Architecture only. No iOS project, Swift source, dependency, or generated artifact is created by this proposal.
 
 ## 1. Executive recommendation
@@ -285,4 +285,3 @@ Primary Apple references:
 - [SwiftUI accessibility fundamentals](https://developer.apple.com/documentation/swiftui/accessibility-fundamentals)
 
 Apple requirements are rechecked at implementation/release. All other choices are recommendations pending Product Manager review.
-

@@ -49,9 +49,11 @@ The six product decisions, dual-client direction, staged premium deferral, calcu
 contract, fixture schema, representative outputs, validation cases, and portable
 scenario schema are accepted and complete. IGC-003 and IGC-009 are Done.
 
-IGC-004 is Ready for an isolated iOS Engineer architecture proposal. It remains
-architecture-only: do not create an Xcode project, implement SwiftUI features, or begin
-native delivery until the proposal is reviewed and accepted.
+IGC-004 is Ready for Product Manager review. The documentation-only proposal is in
+`docs/IOS_ARCHITECTURE.md` on `codex/igc-004-ios-architecture` (proposal commit
+`666314e`). Native implementation remains not started: do not create an Xcode project,
+implement SwiftUI features, or begin native delivery until the proposal is reviewed and
+accepted.
 
 ## Known issues and deferred work
 

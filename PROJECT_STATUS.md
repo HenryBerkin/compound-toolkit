@@ -66,6 +66,9 @@ Proposed and must not begin.
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
 
+IGC-006 is Ready for review with the documentation-only behavioural QA inventory in
+`docs/QA_PLAN.md`; it adds no native or PWA implementation.
+
 ## Known issues and deferred work
 
 - The preset picker initially displays “Global index (DIY)” while the untouched

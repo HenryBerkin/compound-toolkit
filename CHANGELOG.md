@@ -22,6 +22,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   feature-availability boundary, and staged accessibility, test, and delivery plan.
 - Added standalone concurrent specialist briefs for IGC-005 native design, IGC-006
   behavioural QA planning, and IGC-008 privacy/App Store review.
+- Added the IGC-006 behavioural QA inventory covering V1 fixture parity, platform
+  boundaries, persistence recovery, accessibility evidence, known Web findings, and
+  release gates without implementing tests or native features.
 
 ### Changed
 

@@ -114,7 +114,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-006 — Create behavioural QA inventory
 
 - Owner: QA Engineer
-- Status: Ready
+- Status: Ready for review
 - Priority: P1
 - Platform: Shared / iOS / Web
 - Dependencies: IGC-003, IGC-004, IGC-009
@@ -123,7 +123,8 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   reproducible cross-platform tests.
 - Acceptance criteria: canonical fixtures, input boundaries, persistence, comparison,
   accessibility, platform-difference, and regression cases defined.
-- Verification: Product Manager and iOS Engineer review.
+- Verification: Product Manager and iOS Engineer review; QA inventory and
+  documentation-only diff checks complete.
 - Branch/worktree: `codex/igc-006-behavioural-qa-inventory` in an isolated worktree from
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 - Standalone prompt: `prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md`.

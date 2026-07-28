@@ -6,10 +6,15 @@ Read `docs/PLATFORM_STRATEGY.md` for the shared-versus-platform-specific boundar
 Read `docs/IOS_ARCHITECTURE.md` for accepted native boundaries and proposed test
 layers.
 
-IGC-003, IGC-004, and IGC-009 are complete; IGC-006 is Ready from
-`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`. Use the standalone prompt
-`prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md` in branch
-`codex/igc-006-behavioural-qa-inventory`.
+IGC-003, IGC-004, and IGC-009 are complete. IGC-006 is Ready for review from
+`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`; its standalone prompt is
+`prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md`.
+
+`docs/QA_PLAN.md` defines the Shared/iOS/Web behavioural inventory, direct-fixture
+parity protocol, platform boundaries, persistence recovery, accessibility evidence,
+change control, and release gates. It records current PWA
+selector/target/storage/accessibility risks as findings rather than requirements; no
+native test or product implementation began.
 `docs/CALCULATION_SPEC.md` and `shared/fixtures/calculation-v1.json` are the accepted
 version 1 parity sources. The TypeScript client consumes that JSON directly: 27 contract
 tests plus 58 existing tests pass. Future Swift tests must consume the same file without
@@ -19,3 +24,7 @@ Native comparison is deferred to iOS 1.1; native 1.0 presents annual detail only
 export, while monthly engine parity remains required. Do not silently turn current PWA
 quirks into requirements; distinguish approved behaviour, observed behaviour,
 platform-specific behaviour, and defects.
+
+IGC-005 should add only accepted design assertions to the marked Design-pending cases.
+IGC-008 should supply the current privacy/App Store evidence before the corresponding
+release gate can pass.

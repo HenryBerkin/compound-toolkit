@@ -1,4 +1,4 @@
-# IGC legacy PWA
+# IGC web edition
 
 Historical repository/package name: **Compound Toolkit**.
 
@@ -6,8 +6,9 @@ A progressive web app (PWA) for modelling compound growth scenarios with configu
 
 Built with Vite, React, and TypeScript.
 
-This is the preserved behavioural reference for the native IGC rebuild. Project-wide
-status, scope, tasks, and decisions live one directory above.
+This is a supported responsive IGC product surface and the verified behavioural
+reference for the native rebuild. Project-wide status, shared specifications, tasks,
+and decisions live one directory above.
 
 ---
 

@@ -5,13 +5,15 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Native version 1.0 scope review and architecture preparation.
+- Phase: Cross-platform product direction and native version 1.0 scope review.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
 - Verified structural migration commit: `78f2415`.
 - Native implementation: not started.
+- PWA status: supported IGC web edition and behavioural reference; maintenance may
+  continue alongside the native client.
 - Current product name: **IGC — Investment Growth Calculator**.
 - Historical repository/package names still include `compound-toolkit` and
   `compound-growth-toolkit`.
@@ -37,9 +39,13 @@ icon hashes unchanged.
 
 ## Current gates
 
-1. Review the proposed native version 1.0 scope with the user.
-2. Complete `IGC-004`, the proportionate SwiftUI architecture proposal.
-3. Do not begin substantive SwiftUI implementation until these gates are accepted.
+1. Resolve or explicitly defer the six product questions in `docs/PRODUCT_SPEC.md`.
+2. Accept the shared-versus-platform-specific product contract and staged premium
+   direction in `docs/PLATFORM_STRATEGY.md`.
+3. Complete IGC-009, the shared calculation specification and fixture plan.
+4. Revise IGC-004 against the agreed direction before returning it to `Ready`.
+5. Do not dispatch IGC-004 or begin substantive SwiftUI implementation before these
+   gates are satisfied.
 
 ## Known issues requiring decisions
 
@@ -48,3 +54,7 @@ icon hashes unchanged.
 - Committed PWA documentation and package naming lag behind product behaviour.
 - The web viewport disables pinch zoom, an accessibility risk not to reproduce natively.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.
+- A canonical cross-platform calculation specification and language-neutral fixtures do
+  not yet exist.
+- Premium features, pricing, purchase type, entitlement sharing, and account strategy
+  are unapproved and excluded from implementation.

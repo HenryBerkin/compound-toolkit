@@ -30,9 +30,31 @@ Reference tag: `recovered-pwa-baseline-2026-07-28`
 - `npm audit --audit-level=low`: 15 transitive findings (1 low, 5 moderate, 8 high,
   1 critical). No fix was applied.
 
-The automatic placeholder-icon generation is a recovery defect. The reorganisation
-will remove only the automatic `postinstall` hook, preserve the manual generator,
-restore branded assets, and verify that installation is non-mutating.
+The automatic placeholder-icon generation was a recovery defect. The reorganisation
+removed only the automatic `postinstall` hook, preserved the manual generator,
+restored branded assets, and verified that installation is non-mutating.
+
+## Product role after recovery
+
+The PWA is both:
+
+- the verified evidence source for existing IGC behaviour; and
+- a potentially maintained responsive web edition alongside native iOS.
+
+“Reference” therefore does not mean frozen or unsupported. Changes remain permitted
+through separately scoped Web or Shared tasks, with regression checks and cross-platform
+contract review. The native iOS release remains the immediate priority.
+
+Current supported web capabilities are the audited calculator and validation, target
+analysis, results and insights, chart, annual/monthly breakdown, CSV export, saved
+scenarios, comparison, glossary/methodology, responsive layout, dark mode, and offline
+operation.
+
+Shared behaviour should include formulas, operation order, validation bounds, rounding,
+terminology, defaults/presets, target/comparison semantics, scenario field meaning, and
+canonical examples. Web-specific behaviour may include service-worker updates,
+browser-local persistence mechanics, responsive layout, CSV download interaction, and
+web accessibility implementation.
 
 ## Product topology
 
@@ -185,6 +207,8 @@ Risks:
   regulated-financial-content review.
 - PWA dependency vulnerabilities remain; many concern development/build tooling, but
   impact has not been individually triaged.
+- Supporting two clients adds parity, fixture, release coordination, browser
+  compatibility, dependency maintenance, and dual-surface accessibility QA.
 
 ## Executed reorganisation plan
 

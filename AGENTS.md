@@ -8,9 +8,12 @@ and specification files before substantive work.
 - Use task IDs in the form `IGC-###`; one role owns an implementation task at a time.
 - Do not change approved scope, calculation behaviour, financial terminology, or
   persistence semantics silently. Record material proposals in `DECISIONS.md`.
-- The legacy reference PWA belongs in `igc-pwa/`. Native iOS work belongs in
-  `igc-ios/`. Project-wide coordination and accepted specifications stay at the root
-  or in `docs/`.
+- The maintained PWA/web edition belongs in `igc-pwa/`. Native iOS work belongs in
+  `igc-ios/`. Shared product contracts, coordination, and accepted specifications stay
+  at the root or in `docs/`.
+- Label substantive tasks and release notes as Shared, iOS, or Web. Platform-specific
+  UI may differ; shared calculation, validation, terminology, and schema behaviour may
+  not drift silently.
 - Work from the branch or isolated worktree named in the task. Do not merge directly
   into an integration branch without Product Manager review.
 - Preserve user changes and Git history. Do not rewrite shared history, overwrite

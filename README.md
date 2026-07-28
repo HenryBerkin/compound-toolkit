@@ -1,12 +1,13 @@
 # IGC — Investment Growth Calculator
 
-IGC is being rebuilt as a native SwiftUI application for eventual Apple App Store
-release. The verified React PWA remains in this repository as the functional and
-behavioural reference; the native implementation has not started.
+IGC is one product with a responsive PWA/web edition and a planned native SwiftUI
+application for eventual Apple App Store release. The verified React PWA remains both
+a supported product surface and the current behavioural reference; native
+implementation has not started.
 
 ## Repository map
 
-- `igc-pwa/` — preserved PWA source, tests, assets, and historical PWA docs
+- `igc-pwa/` — maintained PWA/web source, tests, assets, and web-specific docs
 - `igc-ios/` — reserved for the approved native project when implementation begins
 - `docs/` — current product, audit, architecture, design, QA, privacy, and release docs
   as those workstreams become active
@@ -15,11 +16,12 @@ behavioural reference; the native implementation has not started.
 - `TASKS.md` — task ownership, dependencies, acceptance criteria, and status
 - `DECISIONS.md` — accepted and proposed material decisions
 - `ROADMAP.md` — phase-level delivery sequence
+- `docs/PLATFORM_STRATEGY.md` — cross-platform boundaries and premium options
 
 Do not create `igc-ios/` merely as an empty directory. IGC-004 defines the architecture
 before an Xcode project is introduced.
 
-## PWA reference setup
+## PWA/web edition setup
 
 ```sh
 cd igc-pwa
@@ -37,6 +39,7 @@ The verified public baseline is commit
 ## Current product direction
 
 - Native SwiftUI rather than a web-view wrapper
+- Coherent shared behaviour across native iOS and web, with platform-appropriate UI
 - Local-first calculations and scenario storage
 - Deliberately limited version 1.0
 - Correctness, clarity, privacy, accessibility, and maintainability before expansion

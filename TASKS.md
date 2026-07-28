@@ -3,6 +3,9 @@
 Statuses use: Proposed, Ready, In progress, Blocked, Ready for review, Ready for QA,
 Changes requested, Ready for acceptance, Done, Deferred.
 
+Each new task must identify its platform as `Shared`, `iOS`, or `Web`. A task may list
+more than one only when its acceptance criteria genuinely span those surfaces.
+
 ## IGC-001 — Recover and audit the PWA
 
 - Owner: Product Manager and Technical Lead
@@ -42,16 +45,22 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Branch: `project/ios-migration-audit`
 - Relevant commit: `78f2415`
 
-## IGC-003 — Accept native iOS 1.0 scope
+## IGC-003 — Accept cross-platform direction and native iOS 1.0 scope
 
 - Owner: Product Manager and Technical Lead
 - Status: Ready for review
 - Priority: P0
+- Platform: Shared / iOS / Web
 - Dependencies: IGC-001
 - Affected: `docs/PRODUCT_SPEC.md`, `DECISIONS.md`
-- Objective: agree a small, complete native release before architecture or feature work.
-- Acceptance criteria: user resolves the open product questions and accepts or amends the
-  proposed inclusions and exclusions.
+- Objective: agree a coherent two-client product direction and a small, complete native
+  release before architecture or feature work.
+- Acceptance criteria:
+  - User resolves or explicitly defers all six product questions.
+  - Shared and platform-specific behaviour boundaries are accepted.
+  - Maintained-PWA scope and iOS release priority are accepted.
+  - Premium implementation remains excluded or a separate approved scope replaces that
+    exclusion.
 - Verification: accepted decisions recorded in `DECISIONS.md`.
 - Unresolved questions: listed in `docs/PRODUCT_SPEC.md`.
 - Branch: `project/ios-migration-audit`
@@ -59,9 +68,10 @@ Changes requested, Ready for acceptance, Done, Deferred.
 ## IGC-004 — Propose native iOS architecture
 
 - Owner: iOS Engineer
-- Status: Ready
+- Status: Blocked
 - Priority: P0
-- Dependencies: IGC-001, IGC-002; architecture must label IGC-003 scope assumptions
+- Platform: iOS / Shared
+- Dependencies: IGC-003, IGC-009
 - Affected: `docs/IOS_ARCHITECTURE.md`, `handoffs/IOS_ENGINEER.md`
 - Objective: propose a proportionate SwiftUI architecture and test strategy without
   implementing product features.
@@ -69,10 +79,13 @@ Changes requested, Ready for acceptance, Done, Deferred.
   - Supported iOS/Xcode assumptions, app structure, calculation-engine porting,
     persistence, navigation, dependency policy, accessibility, and test layers covered.
   - Expensive-to-reverse choices and alternatives identified.
-  - No backend, account, analytics, or third-party dependency is assumed.
+  - Dual-client maintenance, shared fixture consumption, versioned scenario schema,
+    replaceable entitlement boundaries, and future synchronisation constraints covered.
+  - No backend, account, payment, analytics, or third-party dependency is implemented or
+    assumed for iOS 1.0.
 - Verification: document review by Product Manager; no build required unless a minimal
   feasibility spike is explicitly approved.
-- Unresolved questions: inherit unresolved scope items from IGC-003.
+- Unresolved questions: all blocking IGC-003 decisions and the IGC-009 contract.
 - Branch/worktree: isolated worktree required; base set in the specialist prompt.
 
 ## IGC-005 — Define native design system
@@ -80,6 +93,7 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Owner: Designer
 - Status: Proposed
 - Priority: P1
+- Platform: iOS
 - Dependencies: IGC-003
 - Affected: `docs/DESIGN_SYSTEM.md`, design assets, `handoffs/DESIGNER.md`
 - Objective: translate useful IGC identity and workflows into native iOS patterns.
@@ -92,11 +106,13 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Owner: QA Engineer
 - Status: Proposed
 - Priority: P1
-- Dependencies: IGC-003
+- Platform: Shared / iOS / Web
+- Dependencies: IGC-003, IGC-009
 - Affected: `docs/QA_PLAN.md`, `handoffs/QA_ENGINEER.md`
-- Objective: turn approved requirements and verified PWA behaviour into reproducible tests.
-- Acceptance criteria: formula fixtures, input boundaries, persistence, comparison,
-  accessibility, and regression cases defined.
+- Objective: turn approved shared requirements and platform-specific behaviour into
+  reproducible cross-platform tests.
+- Acceptance criteria: canonical fixtures, input boundaries, persistence, comparison,
+  accessibility, platform-difference, and regression cases defined.
 - Verification: Product Manager and iOS Engineer review.
 
 ## IGC-007 — Implement native vertical slice
@@ -104,6 +120,7 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Owner: iOS Engineer
 - Status: Proposed
 - Priority: P1
+- Platform: iOS
 - Dependencies: IGC-003, IGC-004, relevant portions of IGC-005 and IGC-006
 - Affected: `igc-ios/`
 - Objective: native input-to-result flow with tested calculation parity.
@@ -114,6 +131,7 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Owner: App Store Reviewer
 - Status: Proposed
 - Priority: P1
+- Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-004
 - Affected: `docs/APP_STORE_SUBMISSION.md`, `docs/PRIVACY.md`,
   `docs/RELEASE_CHECKLIST.md`
@@ -121,3 +139,61 @@ Changes requested, Ready for acceptance, Done, Deferred.
 - Acceptance criteria: confirmed requirements separated from recommendations and open
   questions, with official Apple sources where requirements are time-sensitive.
 - Verification: Product Manager review.
+
+## IGC-009 — Define shared calculation contract and fixture plan
+
+- Owner: Product Manager and Technical Lead
+- Status: Blocked
+- Priority: P0
+- Platform: Shared
+- Dependencies: IGC-003
+- Affected: proposed `docs/CALCULATION_SPEC.md`, fixture schema/location,
+  `docs/PRODUCT_SPEC.md`, `handoffs/QA_ENGINEER.md`, `handoffs/IOS_ENGINEER.md`
+- Objective: make calculation, validation, rounding, terminology, presets, and example
+  outputs a language-neutral product contract consumed by Swift and TypeScript.
+- Acceptance criteria:
+  - Canonical input/output fields, units, enum values, validation bounds, formulas,
+    operation order, rounding rules, and versioning defined.
+  - Portable fixture format and numerical tolerances defined without coupling either
+    client to the other's implementation.
+  - TypeScript and future Swift test responsibilities identified.
+  - Change-control process distinguishes intentional model changes from regressions.
+- Verification: Product Manager, QA, and iOS Engineer review; representative fixture
+  outputs reproduced by the current TypeScript engine.
+- Unresolved questions: preset/default decision and any approved terminology changes.
+- Branch: to be assigned after IGC-003.
+
+## IGC-010 — Plan maintained PWA releases and refinement backlog
+
+- Owner: Product Manager and Technical Lead
+- Status: Proposed
+- Priority: P1
+- Platform: Web / Shared
+- Dependencies: IGC-003, IGC-009
+- Affected: `igc-pwa/`, root and web changelogs, web deployment planning
+- Objective: keep the PWA supported without distracting from the first iOS release.
+- Acceptance criteria:
+  - Supported capabilities and compatibility baseline recorded.
+  - Security, accessibility, dependency, correctness, and deployment work prioritised.
+  - Non-critical redesign and expansion explicitly deferred.
+  - Release-note ownership distinguishes Shared and Web changes.
+- Verification: approved backlog and repeatable web regression checks.
+
+## IGC-011 — Select premium model and entitlement boundary
+
+- Owner: Product Manager and Technical Lead
+- Status: Deferred
+- Priority: P2
+- Platform: Shared / iOS / Web
+- Dependencies: evidence of premium demand; IGC-008 before implementation
+- Affected: `docs/PLATFORM_STRATEGY.md`, future product and architecture decisions
+- Objective: choose independent, unified, or staged premium access only when commercial
+  requirements justify the operational cost.
+- Acceptance criteria:
+  - Premium value, purchase type, platform availability, account need, entitlement
+    source of truth, pricing, migration, support, privacy, and current store compliance
+    accepted.
+  - App Store Reviewer verifies then-current official Apple requirements.
+- Verification: formal accepted decision and separately scoped implementation tasks.
+- Unresolved questions: premium feature set, pricing, one-time purchase versus
+  subscription, web commercial model, and account strategy.

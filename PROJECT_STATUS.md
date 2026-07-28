@@ -5,8 +5,9 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Native product contract, architecture, QA inventory, and early release-risk
-  planning accepted; native design next.
+- Phase: Native product contract, architecture, design system, QA inventory, and early
+  release-risk planning accepted; owner-controlled project identifiers and the native
+  implementation brief are next.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -62,23 +63,23 @@ Apple submission gates, provisional local-only App Privacy answers, owner inputs
 financial-content/legal review flags, and phase-gated release evidence; it makes no
 submission or native-compliance claim.
 
-IGC-005 is Ready for review. Its documentation-only native design system defines the
-four-tab hierarchy, Calculator-to-Projection interaction, results and annual-detail
-presentation, local scenario CRUD/recovery, semantic foundations, accessibility and
-adaptive behaviour, and the dependencies requiring Product Manager, QA, and App Store
-review. No native implementation is part of IGC-005.
+IGC-005 is Done and its corrected native design system is accepted in IGC-D017. The
+specialist head `3f176284a0badeb342bf48bfa737a0c6fd52543b` is integrated into
+`project/ios-migration-audit` by merge commit `004af38`. It fixes the four-tab
+hierarchy, explicit Calculator-to-Projection flow, scenario interaction/recovery,
+results and annual detail, accessibility intent, adaptive behaviour, and semantic
+visual foundations without adding native implementation.
 
-Native implementation remains not started. Do not create an Xcode project or begin
-IGC-007 until the relevant IGC-005 design inputs are accepted and the Product Owner
-confirms the bundle identifier and Apple Developer Team.
+Native implementation remains not started. IGC-004, IGC-005, IGC-006, and IGC-008
+definition inputs are accepted, but do not create an Xcode project or begin IGC-007
+until the Product Owner confirms the bundle identifier and Apple Developer Team and a
+standalone implementation brief is accepted.
 
 IGC-006 is Done and its behavioural inventory is accepted in IGC-D015. The specialist
 head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
-IGC-005 remains Ready from `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`
-in its named isolated worktree. Its standalone prompt is in `prompts/`. IGC-007 remains
-Proposed and must not begin.
+IGC-007 remains Proposed and must not begin.
 
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.

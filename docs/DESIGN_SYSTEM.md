@@ -1,6 +1,6 @@
 # Investment Growth Calculator native design system
 
-Status: Ready for Product Manager review
+Status: Accepted under IGC-D017
 Task: IGC-005 — iOS
 Date: 2026-07-28
 Applies to: Native iOS 1.0, minimum iOS 17
@@ -103,7 +103,7 @@ The distinction is structural, not a footer-only disclaimer:
 - Calculator introduction: “Explore an illustrative projection using your
   assumptions.” **Draft — PM/App Store review.**
 - Results navigation title: **Projection**, not “Forecast”, “Plan”, “Portfolio”, or
-  “Recommendation”. **PM review DS-03.**
+  “Recommendation”. **Accepted DS-03 under IGC-D017.**
 - KPI label: **Final balance after fees**, followed by the selected duration.
 - Result context: “Based on constant rates and contributions.”
 - Education and Results each expose the projection disclaimer and exclusions.
@@ -121,11 +121,11 @@ The distinction is structural, not a footer-only disclaimer:
 | Assumptions, methodology, glossary | **Preserve as Education routes and contextual links** | Makes dense content findable without hiding it in tooltips. |
 | Indigo accent, quiet cards, light/dark appearance | **Adapt semantically** | Keep recognition, use system colours/materials and Dynamic Type. |
 | One responsive page with sticky form and dense result dashboard | **Reject for native** | Tabs and stacks create a clearer small-screen hierarchy. |
-| Results recalculate after a debounce | **Adapt to explicit View projection** | Prevents route churn, invalid intermediate outputs, and VoiceOver noise. **PM review DS-02.** |
+| Results recalculate after a debounce | **Adapt to explicit View projection** | Prevents route churn, invalid intermediate outputs, and VoiceOver noise. **Accepted DS-02 under IGC-D017.** |
 | Four chart lines and visual-only chart | **Reduce to two primary series and add summary/data alternatives** | Improves legibility and fixes the audited accessibility risk. |
 | Monthly table, CSV and scenario comparison | **Reject in native 1.0** | Explicit accepted platform difference. |
 | Custom web toggles, modal glossary and inline two-step delete | **Replace with system controls/routes/dialogs** | Native behaviour and assistive-technology support. |
-| Optional mobile quick-start card | **Adapt to one non-blocking coach card** | Keeps immediate calculator access. **PM review DS-01.** |
+| Optional mobile quick-start card | **Adapt to one non-blocking coach card** | Keeps immediate calculator access. **Accepted DS-01 under IGC-D017.** |
 | Disabled browser zoom | **Do not reproduce** | Native layout must scale through accessibility sizes. |
 
 ## 3. Information architecture and navigation
@@ -188,7 +188,7 @@ selection affordance, locked row, empty state, copy, or destination view in 1.0.
   Calculator; selects the Calculator tab; pops that stack to its root; moves focus to
   the loaded-status heading; and does not mutate the saved record.
 - Loading does not automatically push Projection. The person reviews the assumptions
-  and selects **View projection**. **PM review DS-04.**
+  and selects **View projection**. **Accepted DS-04 under IGC-D017.**
 - A new projection replaces the previous result snapshot only after validation passes.
   It pushes one Projection route; repeated taps must not stack duplicate Projection
   routes.
@@ -215,7 +215,7 @@ order unless an explicit grouping rule says otherwise.
 | Failure / recovery | If onboarding preference cannot be written, dismiss for the current session and do not block calculation. |
 | Architecture | Calculator feature owns presentation state; persistence stores only the accepted onboarding preference, not calculation data. |
 
-**Design specification / PM review DS-01:** retain this one non-blocking coach card.
+**Accepted DS-01 under IGC-D017:** retain this one non-blocking coach card.
 Do not reproduce the PWA’s viewport or saved-scenario eligibility rules; the native
 card appears once, is always optional, and leaves the initial Custom values untouched.
 
@@ -318,7 +318,7 @@ and annual route.
 | Error / recovery | Storage unavailable, corrupt, and unsupported states use the recovery specifications in 4.10 and never masquerade as an empty list. |
 | Architecture | `Features/SavedScenarios` awaits `ScenarioStore` snapshots/mutations and never reaches the file system directly. |
 
-**Design specification / PM review DS-05:** sort descending by `updatedAt`, then
+**Accepted DS-05 under IGC-D017:** sort descending by `updatedAt`, then
 `createdAt`, then stable `id`. Loading does not update timestamps because it is not a
 record mutation.
 
@@ -433,7 +433,8 @@ Use a separate confirmation from deleting one scenario:
 - Title: **Delete all app data?**
 - Working body: “This deletes saved scenarios and resets appearance, onboarding, and
   calculator state on this device. This can’t be undone. Device backups have their own
-  lifecycle.” **Draft — PM/IGC-008 must approve backup and deletion wording.**
+  lifecycle.” **Draft — final PM/legal and release review remains required under
+  IGC-D016.**
 - Buttons: **Delete all app data** (destructive), **Cancel**.
 - After successful store and preference reset, restore the accepted Custom initial
   calculator values, clear navigation snapshots, choose Calculator, and announce
@@ -542,7 +543,7 @@ units.
   unresolved error.
 - **View projection** is the only calculation/navigation trigger. It parses and
   validates the whole draft, creates an immutable canonical snapshot, calculates
-  synchronously, and pushes Projection. **PM review DS-02.**
+  synchronously, and pushes Projection. **Accepted DS-02 under IGC-D017.**
 
 ### 5.4 Validation
 
@@ -1112,10 +1113,10 @@ The following is a design placeholder, not approved legal copy:
 > forecast. Rates and contributions are held constant, and the calculation excludes
 > taxes, market volatility, and other costs described in the assumptions.
 
-**PM and IGC-008 review required.** Verify financial-content positioning, exclusions,
-support/privacy links, App Store metadata consistency, and whether investment-loss
-language is required. Do not claim the disclaimer alone resolves regulated-financial
-or App Review obligations.
+**Draft only — final PM/legal and release-time App Store review remain required under
+IGC-D016.** Verify financial-content positioning, exclusions, support/privacy links,
+App Store metadata consistency, and whether investment-loss language is required. Do
+not claim the disclaimer alone resolves regulated-financial or App Review obligations.
 
 Placement:
 
@@ -1208,9 +1209,9 @@ IGC-006 should define reproducible evidence for:
   Motion, Reduce Transparency, VoiceOver, Switch Control, Voice Control, hardware
   keyboard, touch targets, orientation, iPad Split View, and offline operation.
 
-### 14.4 IGC-008 review required
+### 14.4 IGC-008 baseline and release review
 
-IGC-008 must verify:
+IGC-008 is accepted under IGC-D016. The release reviewer must still verify:
 
 - projection, APR, preset/fee, exclusions, and investment-risk copy;
 - Privacy and Support URLs/content and App Store metadata alignment;
@@ -1222,18 +1223,18 @@ IGC-008 must verify:
 
 ### 14.5 Expensive-to-reverse design choices
 
-| Choice | Why costly later | Recommendation |
+| Choice | Why costly later | Accepted treatment |
 | --- | --- | --- |
-| Four-tab IA and typed route map | Drives app state, deep links, UI tests, and iPad adaptation | Accept before IGC-007 foundation. |
-| Explicit View projection rather than live routed results | Drives draft/snapshot state and accessibility announcements | Accept DS-02 before Calculator state implementation. |
-| Scenario load and Save-as-new semantics | Affects timestamps, user trust, tests, and future update flow | Accept DS-04 before persistence UI. |
+| Four-tab IA and typed route map | Drives app state, deep links, UI tests, and iPad adaptation | Accepted under IGC-D017 before IGC-007 foundation. |
+| Explicit View projection rather than live routed results | Drives draft/snapshot state and accessibility announcements | DS-02 accepted before Calculator state implementation. |
+| Scenario load and Save-as-new semantics | Affects timestamps, user trust, tests, and future update flow | DS-04 accepted before persistence UI. |
 | Corrupt/unsupported recovery UX | Must align with store envelope and preservation behaviour | Implement with store, not after beta data exists. |
 | Full Dynamic Type and compact annual disclosure model | Affects component anatomy and data navigation | Build into first vertical slice, not polish. |
-| Chart series and textual alternative | Affects presentation projection and accessibility test shape | Accept before chart work. |
+| Chart series and textual alternative | Affects presentation projection and accessibility test shape | DS-07 accepted before chart work. |
 
-### 14.6 Proposed decisions requiring Product Manager acceptance
+### 14.6 Accepted Product Manager decisions
 
-| ID | Proposal | Reason / consequence |
+| ID | Accepted choice | Reason / consequence |
 | --- | --- | --- |
 | DS-01 | Use one non-blocking first-launch coach card, not a modal onboarding flow. | Preserves immediate access and records only dismissal. |
 | DS-02 | Recalculate/navigate only on **View projection**, not on every keystroke. | Creates a stable validated snapshot and reduces invalid/VoiceOver churn; differs from PWA debounce. |
@@ -1262,7 +1263,7 @@ the compact annual alternative.
 
 ## 15. Review checklist
 
-Before IGC-005 acceptance, confirm:
+The IGC-D017 acceptance record confirms:
 
 - accepted product, calculation, target, preset, validation, scenario, architecture,
   and platform differences are unchanged;
@@ -1274,9 +1275,9 @@ Before IGC-005 acceptance, confirm:
 - components, semantic foundations, Dynamic Type, VoiceOver, contrast, non-colour,
   motion/transparency, touch, keyboard, Switch Control, and adaptive layouts are
   specified;
-- PM decisions DS-01 through DS-07 are accepted or explicitly revised;
-- IGC-006 owns later test evidence and IGC-008 owns current legal/privacy/App Store
-  review; and
+- PM decisions DS-01 through DS-07 are accepted;
+- IGC-006 owns later test evidence and IGC-D016 owns the release-time
+  legal/privacy/App Store review gates; and
 - no native comparison, monthly UI, export, sync, account, payment, premium, analytics,
   remote content, backend, or iOS implementation entered scope.
 

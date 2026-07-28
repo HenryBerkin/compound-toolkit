@@ -51,6 +51,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted the IGC-008 early App Store/privacy planning baseline under IGC-D016,
   retaining provisional binary-dependent declarations, owner inputs, legal review
   flags, and current-rule recheck gates.
+- Accepted the corrected IGC-005 native design system and DS-01 through DS-07 under
+  IGC-D017, including raw target status, schema-valid scenario naming, and safe
+  preset-mismatch handling.
 
 ### Not changed
 

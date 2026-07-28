@@ -22,7 +22,7 @@
 - Accepted the cross-platform behavioural QA inventory and release-gate model.
 - Accepted the early App Store/privacy risk baseline and phase-gated evidence
   checklist without claiming submission readiness.
-- Produce and accept the lightweight native design system.
+- Accepted the lightweight native design and interaction system.
 
 ## Phase 3 — Native build
 

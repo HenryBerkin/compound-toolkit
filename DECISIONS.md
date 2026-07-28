@@ -230,11 +230,11 @@
   accepted or passing behavior.
 - Alternatives: separate untraced platform checklists; fixture-only parity; treating
   PWA behavior as the complete native oracle.
-- Consequences: IGC-005 design assertions, once accepted, and the IGC-008 privacy/App
-  Store requirements accepted in IGC-D016 must later be traced into the marked QA
-  areas. Browser-support policy and known Web-defect prioritisation remain separate
-  Product Manager decisions; this inventory does not claim that future native or
-  release tests have executed.
+- Consequences: the IGC-005 design assertions accepted in IGC-D017 are traced into the
+  marked native QA suites; IGC-008 privacy/App Store requirements accepted in IGC-D016
+  receive their detailed trace during release-test implementation. Browser-support
+  policy and known Web-defect prioritisation remain separate Product Manager decisions;
+  this inventory does not claim that future native or release tests have executed.
 
 ## IGC-D016 — Adopt the early privacy and App Store release-risk baseline
 
@@ -259,3 +259,32 @@
   Product Manager/owner approval and legal review where documented. No App Store
   submission, record creation, native implementation, or compliance certification is
   authorised by this decision.
+
+## IGC-D017 — Adopt the native design and interaction system
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: IGC-005 translated the accepted native scope and architecture into an
+  implementation-ready screen hierarchy, form behaviour, result presentation,
+  scenario lifecycle, semantic visual foundation, accessibility intent, adaptive
+  layout, and state matrix.
+- Decision: adopt `docs/DESIGN_SYSTEM.md` for native iOS 1.0 and accept DS-01 through
+  DS-07: one optional non-blocking coach card; an explicit validated **View
+  projection** action; **Projection** as the result title; load into Calculator and
+  save loaded scenarios only as new records; updated-first deterministic scenario
+  sorting; System appearance by default with Light/Dark overrides; and a two-series
+  after-fee chart for future pounds and today’s money. Target state follows the
+  unrounded raw gap with truthful sub-penny copy. Completed scenario names must pass
+  the portable schema, and an otherwise-valid preset mismatch loads as Custom without
+  mutating the saved record or entering recovery.
+- Rationale: provides a calm, native, accessible projection workflow without copying
+  the PWA layout or inventing comparison, export, sync, premium, or network states.
+- Alternatives: blocking onboarding; live/debounced routed results; a Results title;
+  overwrite-on-load; manual ordering; app-specific appearance default; a dense
+  four-series chart.
+- Consequences: IGC-007 must implement the accepted compact hierarchy and state
+  semantics from the start, while IGC-006 evidence remains planned until implementation
+  exists. Final legal/privacy/support copy and URLs, measured custom colours, optional
+  chart exploration, and release screenshots remain gated by IGC-D016 and later QA.
+  This decision does not create an Xcode project or authorise native implementation
+  before the owner-controlled bundle identifier and Apple Developer Team are confirmed.

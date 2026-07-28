@@ -98,7 +98,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-005 — Define native design system
 
 - Owner: Designer
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004
@@ -106,11 +106,15 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Objective: translate useful IGC identity and workflows into native iOS patterns.
 - Acceptance criteria: implementation-ready hierarchy, components, Dynamic Type,
   VoiceOver, contrast, dark mode, and touch guidance.
-- Verification: `docs/DESIGN_SYSTEM.md` covers the required hierarchy, screens,
-  controls, results, scenarios, components, foundations, accessibility, adaptive
-  layouts, state matrix, content guardrails, and implementation/QA handoff. Required
-  sections, repository scope, Markdown links, Apple citations, and whitespace were
-  checked; documentation-only diff checks pass. Product Manager review remains.
+- Verification: Product Manager/Technical Lead review accepted the corrected design
+  system and DS-01 through DS-07 under IGC-D017. Specialist range
+  `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a..3f176284a0badeb342bf48bfa737a0c6fd52543b`
+  passes `git diff --check`; only permitted documentation/handoff files changed and no
+  native implementation or asset catalogue was added.
+- Unresolved questions: final legal/privacy/support copy and URLs; measured accent and
+  chart colours; optional chart scrubbing/Years rotor; regular-width annual-table
+  enhancement; and unsaved draft restoration after termination. None changes the
+  accepted compact vertical-slice behaviour.
 - Branch/worktree: `codex/igc-005-native-design-system` in an isolated worktree from
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 - Standalone prompt: `prompts/IGC-005-NATIVE-DESIGN-SYSTEM.md`.
@@ -131,9 +135,8 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   IGC-D015. Specialist range
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a..7e4f462ef6ec78fa22dea81dbda772e9032af2f9`
   passes `git diff --check`; protected contracts, PWA, and native paths are unchanged.
-- Unresolved questions: incorporate IGC-005 assertions after design acceptance and
-  trace accepted IGC-008 assertions during release-test implementation; approve a
-  browser-support policy and prioritise known Web defects separately.
+- Unresolved questions: implement and evidence the accepted IGC-005/IGC-008 traces;
+  approve a browser-support policy and prioritise known Web defects separately.
 - Branch/worktree: `codex/igc-006-behavioural-qa-inventory` in an isolated worktree from
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 - Standalone prompt: `prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md`.

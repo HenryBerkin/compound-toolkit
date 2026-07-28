@@ -73,7 +73,11 @@ Apple accepts 1–10 JPEG/JPG/PNG screenshots per required device size without a
 
 **Release-time plan:** capture only completed iOS 1.0 states on a current supported 6.9-inch iPhone and 13-inch iPad simulator/device: calculator assumptions; projected result with limitation context; annual detail/text alternative; saved scenarios and delete/reset location; and education/assumptions. Add an optional preview only if it represents the finished app. Verify large text/legibility and do not crop in a way that hides warnings.
 
-**Design dependencies:** IGC-005 must supply native hierarchy and visual rules; IGC-006 must supply reproducible accessibility/device evidence. Do not show comparison, monthly native detail, CSV/export, premium, account, sync, portfolio connection, live prices, payment, or fabricated feature states.
+**Design dependencies:** IGC-005 is accepted under IGC-D017 and supplies the intended
+native hierarchy and visual rules; IGC-006 supplies the reproducible
+accessibility/device evidence once implementation exists. Do not show comparison,
+monthly native detail, CSV/export, premium, account, sync, portfolio connection, live
+prices, payment, or fabricated feature states.
 
 ## Monetisation boundary
 

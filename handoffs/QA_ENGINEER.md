@@ -26,7 +26,9 @@ export, while monthly engine parity remains required. Do not silently turn curre
 quirks into requirements; distinguish approved behaviour, observed behaviour,
 platform-specific behaviour, and defects.
 
-IGC-005 should add only accepted design assertions to the marked Design-pending cases.
+IGC-005 is accepted under IGC-D017. `docs/QA_PLAN.md` now traces its hierarchy,
+interaction, result, scenario, accessibility, and adaptive-layout assertions; execution
+evidence remains planned.
 IGC-008 is accepted under IGC-D016. Trace `docs/APP_STORE_SUBMISSION.md`,
 `docs/PRIVACY.md`, and `docs/RELEASE_CHECKLIST.md` into the marked privacy and release
 areas when tests are implemented; the corresponding gates remain open until actual

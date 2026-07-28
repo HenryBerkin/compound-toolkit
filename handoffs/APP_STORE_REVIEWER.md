@@ -19,3 +19,8 @@ PWA disclaimer as sufficient App Store or financial-content review. Premium
 implementation is deferred; if it is later proposed, recheck StoreKit, multiplatform
 services, external purchase communication, subscriptions, privacy, and account
 requirements against then-current official guidance.
+
+IGC-005 is accepted under IGC-D017. Use `docs/DESIGN_SYSTEM.md` as the intended native
+hierarchy when reviewing disclaimer placement, privacy/support destinations,
+accessibility claims, and truthful screenshot states; final copy and release evidence
+remain subject to IGC-D016.

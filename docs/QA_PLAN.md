@@ -53,9 +53,8 @@ level, but its primary owner and observable pass condition are recorded once.
 
 ## 2. Requirements traceability and gates
 
-The matrix is the minimum release trace. “Design pending” identifies an assertion that
-must be refined after the accepted IGC-005 deliverable is available; it does not invent
-that deliverable.
+The matrix is the minimum release trace. IGC-005 is accepted under IGC-D017; its rows
+identify planned evidence and do not claim that an unbuilt interface passes.
 
 | Authority / requirement | Suites | Gate / evidence |
 | --- | --- | --- |
@@ -63,6 +62,7 @@ that deliverable.
 | Bounds and exact canonical error fields | `SH-VAL-001–024`, client parser cases | calculation-core parity; vertical slice |
 | Custom baseline and curated presets | `SH-PRE-001–008`, `IOS-PRE-001–008`, `WEB-PRE-001–008` | vertical slice / Web regression |
 | Optional today-value target | `SH-TGT-001–006`, `IOS-RES-004`, `WEB-RES-004` | vertical slice |
+| Native design and interaction system (IGC-D017) | `IOS-NAV-001–006`, `IOS-UI-001–006`, `IOS-RES-001–005`, `IOS-STORE-001–018`, `IOS-A11Y-001–016` | vertical slice / scenario lifecycle / accessibility readiness |
 | Monthly calculation; iOS annual-only / Web monthly+CSV | `SH-CAL-015`, `IOS-RES-005`, `WEB-BRK-001–008` | core parity; platform capability gate |
 | Web comparison; iOS comparison deferred to 1.1 | `WEB-CMP-001–008`, `IOS-DEF-001` | Web regression / iOS scope gate |
 | Scenario V1 meaning and platform persistence | `SH-SCN-001–012`, `IOS-STORE-001–018`, `WEB-STORE-001–012` | scenario lifecycle |
@@ -71,14 +71,14 @@ that deliverable.
 | Delete/reset, storage/backup wording and privacy boundary | `IOS-STORE-014–018`, `WEB-STORE-010–012`, `REL-PRIV-001–006` | scenario/release gate |
 | Deferred premium boundary, no locked state | `IOS-DEF-002–004`, `REL-SCOPE-001–004` | architecture/vertical-slice/release gate |
 
-After IGC-005 is accepted, add a trace row for its approved component hierarchy, copy,
-chart representation, contrast tokens, and interaction specifications. Map its stable
-acceptance criteria to `IOS-A11Y`, `IOS-UI`, and visual-review cases; do not promote
-unauthorised mock-up details into shared requirements. After IGC-008 is accepted,
-replace privacy/App Store recommendations with current source-backed release assertions
-and update `REL-PRIV` ownership. IGC-008 is now accepted under IGC-D016; perform that
-trace update when release tests are implemented, while retaining every binary-dependent
-item as planned rather than passed evidence.
+IGC-D017 fixes the approved component hierarchy, explicit View projection flow,
+Projection title, load/Save-as-new semantics, deterministic scenario sorting, System
+appearance default, two-series chart, raw target status, schema-valid scenario names,
+and safe preset-mismatch presentation. Map these to the listed native suites and visual
+review without promoting optional deferred details into requirements. IGC-008 is
+accepted under IGC-D016; perform its detailed release trace when release tests are
+implemented, retaining every binary-dependent item as planned rather than passed
+evidence.
 
 ## 3. Shared fixture parity
 
@@ -234,13 +234,13 @@ Severity is impact: **S0** data loss, wrong financial result, privacy/security e
 
 Each report contains test ID, build/commit, client/device/browser/locale, inputs/storage fixture, exact steps, expected/actual raw and displayed values, suitable logs/screenshot/video, reproducibility, severity/priority, owner, and redaction of planning data. Assign Shared for specification/assets, iOS for Swift/native lifecycle, Web for browser/PWA, and cross-link related reports without duplicate ownership.
 
-Fixture/specification changes require an accepted Shared decision, compatibility/version assessment, schema/spec/fixture update, both clients' consumers and regressions, and a changelog record. Never “fix” by regenerating expectations. Known issues retain owner, impact, workaround/exception, and gate status. Failures block the affected client; a Shared parity/spec issue blocks both release claims. IGC-005 findings enter `IOS-UI`/`IOS-A11Y` only after acceptance; IGC-008 updates `REL-PRIV` similarly.
+Fixture/specification changes require an accepted Shared decision, compatibility/version assessment, schema/spec/fixture update, both clients' consumers and regressions, and a changelog record. Never “fix” by regenerating expectations. Known issues retain owner, impact, workaround/exception, and gate status. Failures block the affected client; a Shared parity/spec issue blocks both release claims. IGC-005 is accepted under IGC-D017 and enters `IOS-NAV`, `IOS-UI`, `IOS-RES`, `IOS-STORE`, and `IOS-A11Y`; IGC-008 updates `REL-PRIV` during release-test implementation.
 
 ## 14. Entry, exit, and release gates
 
 | Gate | Objective exit evidence | Current state |
 | --- | --- | --- |
-| Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Architecture and QA inventory accepted; design review pending. |
+| Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Architecture, design, and QA inventory accepted; bundle/team owner inputs pending. |
 | Calculation-core parity | Both V1 consumers, every fixture/schema/checkpoint/validation and invariants pass; raw tolerance evidence. | TypeScript evidence exists; Swift unimplemented. |
 | Vertical slice | Native validated draft → raw result → annual accessible alternative; local-free/offline and fixture gate. | Planned. |
 | Scenario lifecycle | V1 CRUD, atomic/recovery/failure/reset/relaunch evidence and truthful backup wording. | Planned. |
@@ -258,6 +258,6 @@ native implementation or native tests and does not rerun/certify historical PWA 
 All `IOS-*` execution and future manual/device/App Store evidence remains planned.
 
 Product Manager/Technical Lead review accepted this inventory and traceability under
-IGC-D015. Known Web defects still require separate prioritisation, accepted IGC-005
-assertions must be incorporated later, and IGC-008 remains the authority for current
-privacy/submission evidence.
+IGC-D015. IGC-D017 design assertions are now incorporated as planned native evidence;
+IGC-008 remains the authority for current privacy/submission evidence. Known Web
+defects still require separate prioritisation.

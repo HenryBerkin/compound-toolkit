@@ -1,101 +1,49 @@
-# Compound Toolkit (PWA)
+# IGC — Investment Growth Calculator
 
-A progressive web app (PWA) for modelling compound growth scenarios with configurable contribution schedules and compounding frequencies.
+IGC is being rebuilt as a native SwiftUI application for eventual Apple App Store
+release. The verified React PWA remains in this repository as the functional and
+behavioural reference; the native implementation has not started.
 
-Built with Vite, React, and TypeScript.
+## Repository map
 
----
+- `igc-pwa/` — preserved PWA source, tests, assets, and historical PWA docs
+- `igc-ios/` — reserved for the approved native project when implementation begins
+- `docs/` — current product, audit, architecture, design, QA, privacy, and release docs
+  as those workstreams become active
+- `handoffs/` — concise role-to-role project context
+- `PROJECT_STATUS.md` — current phase, evidence, and gates
+- `TASKS.md` — task ownership, dependencies, acceptance criteria, and status
+- `DECISIONS.md` — accepted and proposed material decisions
+- `ROADMAP.md` — phase-level delivery sequence
 
-## 🚀 Features
+Do not create `igc-ios/` merely as an empty directory. IGC-004 defines the architecture
+before an Xcode project is introduced.
 
-- Compound growth projections
-- Configurable:
-  - Initial principal
-  - Recurring contributions
-  - Contribution frequency
-  - Compounding frequency
-  - Duration
-  - Contribution timing (start vs end of period)
-- Yearly breakdown table
-- Interactive growth chart
-- Scenario save/load (browser local storage)
-- Offline-capable PWA
-- Dark mode support
+## PWA reference setup
 
----
-
-## 🧱 Tech Stack
-
-- Vite
-- React
-- TypeScript
-- PWA (service worker + manifest)
-
----
-
-## 📦 Getting Started
-
-Install dependencies:
-
+```sh
+cd igc-pwa
 npm install
-
-Run development server:
-
-npm run dev
-
----
-
-## 🏗 Build
-
-Create production build:
-
+npm run lint
+npm test
 npm run build
+npm run dev
+```
 
-Preview production build locally:
+The verified public baseline is commit
+`428fb46432fedab770ae90934b537587a32d70f6`, preserved by annotated tag
+`recovered-pwa-baseline-2026-07-28`.
 
-npm run preview
+## Current product direction
 
----
+- Native SwiftUI rather than a web-view wrapper
+- Local-first calculations and scenario storage
+- Deliberately limited version 1.0
+- Correctness, clarity, privacy, accessibility, and maintainability before expansion
 
-## 📂 Project Structure
+Read `AGENTS.md` and the current task/specification files before substantive work.
 
-compound-toolkit/
-├── src/
-│   ├── components/    # UI components
-│   ├── hooks/         # Custom React hooks
-│   ├── lib/           # Pure calculation logic + utilities
-│   └── main.tsx
-├── public/            # PWA assets (manifest, icons)
-├── docs/              # Roadmap + planning notes
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+## Licence
 
----
-
-## 🧠 Engineering Principles
-
-- Calculation logic in `src/lib/` must remain UI-independent.
-- All projection math should be covered by unit tests.
-- Internal calculations use full precision.
-- Rounding occurs only at presentation/display level.
-- Generated folders (`node_modules/`, `dist/`, `*.tsbuildinfo`) are ignored via `.gitignore`.
-
----
-
-## 🛣 Roadmap
-
-- [ ] Expand calculation engine test coverage
-- [ ] Add inflation-adjusted projections
-- [ ] Add annual fee drag modelling
-- [ ] Add goal-based contribution mode
-- [ ] Add multi-scenario comparison mode
-- [ ] Add export (CSV / summary image)
-
----
-
-## ⚠️ Disclaimer
-
-This tool provides projections based on user inputs and mathematical compounding formulas. It does not account for market volatility, taxes, or real-world investment risk unless explicitly configured.
-
-For educational and planning purposes only.
+The existing MIT licence remains at the repository root. No licensing terms were
+changed during recovery or reorganisation.

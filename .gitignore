@@ -3,6 +3,7 @@ node_modules/
 
 # production builds
 dist/
+.vite/
 
 # local env files
 .env

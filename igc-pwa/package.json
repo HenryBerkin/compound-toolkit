@@ -9,8 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "tsc --noEmit",
-    "icons": "node scripts/generate-icons.mjs",
-    "postinstall": "node scripts/generate-icons.mjs"
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

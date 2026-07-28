@@ -13,6 +13,40 @@ this reporting-only handoff update is
 (`feat(ios): build native calculator vertical slice`). Nothing was pushed, merged,
 archived, or uploaded.
 
+Product Manager review returned **Changes requested**. All seven scoped findings were
+corrected in
+`76b1e39db01830642b4de7481ea7efc85ae568f1`
+(`fix(ios): address IGC-007 review findings`), and the task is returned to **Ready for
+review**:
+
+- Currency input now applies a strict en-GB grammar before locale-aware Decimal
+  conversion. It accepts ungrouped digits, correctly grouped commas or UK grouping
+  spaces, one decimal point, and an optional leading pasted `£`. It rejects malformed
+  grouping, signs, exponents, non-finite names/overflow, non-ASCII digits, mixed
+  grouping, typed percent signs, and embedded/repeated currency characters without
+  stripping or coercion.
+- Preset reconciliation parses only APR, inflation, annual fee, and compounding.
+  Invalid or edited principal, contribution, contribution frequency, duration, timing,
+  or target no longer clears a deliberately selected matching preset.
+- Next validates the current field before advancing; Done validates before keyboard
+  dismissal; focus loss validates; and correction of a focused invalid field clears
+  the resolved error without a success announcement. View projection still performs
+  whole-form validation.
+- Whole-form submission expands a collapsed target disclosure before scrolling to and
+  focusing an invalid target.
+- Remove target now presents a destructive confirmation alert. Cancel retains the
+  draft; confirmation clears and collapses it. Its VoiceOver hint includes the current
+  target value.
+- Contribution timing uses the segmented picker only when its labels fit at standard
+  Dynamic Type. `ViewThatFits` falls back to an accessible menu at narrow widths, and
+  accessibility Dynamic Type selects the menu directly.
+- The chart symbol scale explicitly maps after-fee points to circles and real-value
+  points to diamonds, matching the visible and spoken descriptions.
+
+The correction remained within Calculator/Projection and test scope. Persistence,
+comparison, export, networking, premium, StoreKit, App Store, and all other deferred
+work remain unchanged.
+
 ### Delivered scope
 
 - `igc-ios/InvestmentGrowthCalculator.xcodeproj` contains shared application,
@@ -92,22 +126,30 @@ xcodebuild -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
   CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=YES ARCHS=arm64 build
 ```
 
-The final combined test run passed **19/19**, with zero failures, skips, or expected
-failures: 14 unit/fixture tests and 5 UI tests on iPhone 17 / iOS 26.2. Canonical
-result bundle: `/private/tmp/igc-007-final-tests.xcresult`.
+The corrected final combined test run passed **27/27**, with zero failures, skips, or
+expected failures: 18 unit/fixture tests and 9 UI tests on iPhone 17 / iOS 26.2.
+Canonical result bundle: `/private/tmp/igc-007-review-final.xcresult`.
 
 ```sh
 xcodebuild -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
   -scheme InvestmentGrowthCalculator -configuration Debug \
   -destination \
   'platform=iOS Simulator,id=B8C76566-0A54-4ECF-BC13-A9CAEBF4307B' \
-  -derivedDataPath /private/tmp/igc-007-derived \
-  -resultBundlePath /private/tmp/igc-007-final-tests.xcresult \
+  -derivedDataPath /private/tmp/igc-007-review-derived \
+  -resultBundlePath /private/tmp/igc-007-review-final.xcresult \
   CODE_SIGNING_ALLOWED=NO test
 ```
 
-`xcrun xcresulttool get test-results summary` confirms `totalTestCount: 19`,
-`passedTests: 19`, `failedTests: 0`, and `skippedTests: 0`.
+`xcrun xcresulttool get test-results summary` confirms `totalTestCount: 27`,
+`passedTests: 27`, `failedTests: 0`, and `skippedTests: 0`.
+
+New focused evidence consists of 4 parser/preset unit tests and 4 UI tests covering
+validation lifecycle, collapsed-target expansion/focus, removal confirmation/Cancel,
+and the accessibility-size timing menu. The first focused UI attempt passed 2/4 and
+failed 2/4: one test reused an obscured stale field snapshot, while
+`confirmationDialog` did not expose Cancel consistently. The confirmation was changed
+to an alert, interactions were made unobscured, and the focused rerun passed 2/2 before
+the complete 27/27 run.
 
 Release simulator build passed store-bundle validation:
 
@@ -115,7 +157,7 @@ Release simulator build passed store-bundle validation:
 xcodebuild -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
   -scheme InvestmentGrowthCalculator -configuration Release \
   -destination 'generic/platform=iOS Simulator' \
-  -derivedDataPath /private/tmp/igc-007-release-derived \
+  -derivedDataPath /private/tmp/igc-007-review-release-derived \
   CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=YES ARCHS=arm64 build
 ```
 

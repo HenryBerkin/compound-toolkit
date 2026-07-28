@@ -175,8 +175,12 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Verification:
   - Xcode 26.2 (17C52), Swift 6.2.3, and the iOS 26.2 SDK built the iOS 17 project
     in Debug and Release simulator configurations.
-  - The canonical iPhone 17 result bundle passed 19/19 tests: 14 unit/fixture tests
-    and 5 UI tests. The fixture suite consumed the root calculation fixture and both
+  - After Product Manager corrections, the canonical iPhone 17 result bundle passed
+    27/27 tests: 18 unit/fixture tests and 9 UI tests. Focused regressions cover strict
+    en-GB input parsing, preset reconciliation with invalid unrelated drafts, the
+    Next/Done/focus-loss/correction lifecycle, collapsed invalid target focus, confirmed
+    target removal, and adaptive contribution-timing presentation. The fixture suite
+    consumed the root calculation fixture and both
     root schemas directly and covered all 7 calculation cases, 8 monthly checkpoints,
     8 annual checkpoints, and 19 validation expectations.
   - Calculator-to-Projection and annual-detail smoke flows passed on iPhone 16e,
@@ -193,8 +197,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   are owner-confirmed. Do not use a Personal Team, placeholder, different Team ID, or
   different signing identity.
 - Branch/worktree: `codex/igc-007-native-vertical-slice` in an isolated worktree from
-  exact base `dc521186d9d0f30add2f45c06cb02d6d98d35195`; implementation commit
-  `ab45c935853fc4edab0fce2d25291d74255b49d1`.
+  exact base `dc521186d9d0f30add2f45c06cb02d6d98d35195`; initial implementation commit
+  `ab45c935853fc4edab0fce2d25291d74255b49d1` and Product Manager correction commit
+  `76b1e39db01830642b4de7481ea7efc85ae568f1`.
 - Standalone prompt: `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`.
 
 ## IGC-008 — Early privacy and App Store risk review

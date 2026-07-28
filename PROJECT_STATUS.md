@@ -6,8 +6,8 @@ Owner: Product Manager and Technical Lead
 ## Current state
 
 - Phase: Native product contract, architecture, design system, QA inventory, and early
-  release-risk planning accepted; owner-controlled project identifiers and the native
-  implementation brief are next.
+  release-risk planning accepted; bundle identifier confirmed; native implementation
+  brief preparation and Apple Developer Team activation are next.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -19,6 +19,9 @@ Owner: Product Manager and Technical Lead
 - Public product/App Store name: **Investment Growth Calculator**.
 - Shorthand/icon identity: **IGC**; long-form marketing:
   **IGC — Investment Growth Calculator**.
+- Native application bundle identifier: `uk.co.mochadesigns.igc` (IGC-D018).
+- Apple Developer Team Name and Team ID: pending programme activation; no placeholder
+  or Personal Team is authorised.
 - Historical repository/package names still include `compound-toolkit` and
   `compound-growth-toolkit`.
 
@@ -71,15 +74,18 @@ results and annual detail, accessibility intent, adaptive behaviour, and semanti
 visual foundations without adding native implementation.
 
 Native implementation remains not started. IGC-004, IGC-005, IGC-006, and IGC-008
-definition inputs are accepted, but do not create an Xcode project or begin IGC-007
-until the Product Owner confirms the bundle identifier and Apple Developer Team and a
-standalone implementation brief is accepted.
+definition inputs are accepted. The Product Owner confirmed the application bundle
+identifier `uk.co.mochadesigns.igc` in IGC-D018. Do not create an Xcode project,
+dispatch, or begin IGC-007 until Apple activates the programme, the Product Owner
+provides the resulting Team Name and Team ID, and the standalone implementation brief
+is explicitly unblocked.
 
 IGC-006 is Done and its behavioural inventory is accepted in IGC-D015. The specialist
 head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
-IGC-007 remains Proposed and must not begin.
+IGC-007 is Blocked and must not begin. Its implementation contract is defined; the
+remaining pre-dispatch owner gate is the activated Team Name and Team ID.
 
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.

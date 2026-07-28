@@ -54,6 +54,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted the corrected IGC-005 native design system and DS-01 through DS-07 under
   IGC-D017, including raw target status, schema-valid scenario naming, and safe
   preset-mismatch handling.
+- Fixed the native application bundle identifier as `uk.co.mochadesigns.igc` under
+  IGC-D018 while retaining Apple Developer Team Name and Team ID as a blocking owner
+  input until programme activation completes.
 
 ### Not changed
 

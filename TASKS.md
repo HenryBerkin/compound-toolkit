@@ -144,13 +144,43 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-007 — Implement native vertical slice
 
 - Owner: iOS Engineer
-- Status: Proposed
+- Status: Blocked
 - Priority: P1
 - Platform: iOS
-- Dependencies: IGC-003, IGC-004, relevant portions of IGC-005 and IGC-006
-- Affected: `igc-ios/`
-- Objective: native input-to-result flow with tested calculation parity.
-- Acceptance criteria and verification: to be defined after architecture acceptance.
+- Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-008
+- Affected: `igc-ios/`, `handoffs/IOS_ENGINEER.md`
+- Objective: create the native project foundation, port the pure shared calculation
+  contract, and deliver an accessible Calculator-to-Projection vertical slice with
+  tested fixture parity.
+- Acceptance criteria:
+  - SwiftUI application, unit-test, and UI-test targets use iOS 17, support iPhone and
+    iPad, and identify the application as `uk.co.mochadesigns.igc`.
+  - The project follows IGC-D014: one application module, first-party frameworks only,
+    pure binary64 core, direct root-fixture test consumption, and a local-free feature
+    availability seam.
+  - The Swift engine covers canonical types, presets, validation, monthly/annual
+    calculation rows, target analysis, and every version-1 calculation and validation
+    fixture without copying or regenerating expected values.
+  - The visible slice follows IGC-D017: explicit Custom baseline, validated **View
+    projection** action, **Projection** results hierarchy, accessible two-series chart
+    with text/annual alternatives, truthful target status, Dynamic Type, VoiceOver,
+    dark mode, and adaptive iPad behaviour.
+  - Scenario persistence/CRUD, comparison, monthly native detail, CSV export, sync,
+    accounts, payments, premium, analytics, networking, remote configuration, backend,
+    and App Store record/submission work remain out of scope.
+  - Build, unit, fixture, UI smoke, simulator, accessibility, and offline evidence is
+    reported as executed, failed, skipped, or untested; no unexecuted plan is called
+    passing.
+- Verification: exact commands and destinations are specified in the standalone brief;
+  implementation has not started.
+- Blocker: Product Owner must provide the activated Apple Developer Team Name and
+  Apple-assigned Team ID. Do not use a Personal Team, placeholder, or inferred signing
+  identity and do not create the Xcode project before the brief is explicitly
+  unblocked.
+- Branch/worktree when unblocked: `codex/igc-007-native-vertical-slice` in an isolated
+  worktree from the exact base named in the standalone prompt.
+- Standalone prompt: `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md` (prepared separately;
+  do not dispatch while blocked).
 
 ## IGC-008 — Early privacy and App Store risk review
 
@@ -169,8 +199,8 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a..1bc787858ae991a706d009214b14bc3867f36baf`
   passes `git diff --check`; current Apple primary sources were independently
   rechecked 2026-07-28.
-- Unresolved questions: owner-controlled Team, bundle identifier, SKU, publisher,
-  URLs, category, territories and trader status; legal review of final positioning;
+- Unresolved questions: owner-controlled Team Name and Team ID, SKU, publisher, URLs,
+  category, territories and trader status; legal review of final positioning;
   binary-dependent privacy, manifest, export, accessibility, metadata and submission
   evidence.
 - Branch/worktree: `codex/igc-008-app-store-privacy-review` in an isolated worktree from

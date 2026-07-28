@@ -288,3 +288,27 @@
   chart exploration, and release screenshots remain gated by IGC-D016 and later QA.
   This decision does not create an Xcode project or authorise native implementation
   before the owner-controlled bundle identifier and Apple Developer Team are confirmed.
+
+## IGC-D018 — Fix the native application bundle identifier
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: project creation requires an owner-controlled reverse-DNS identifier and
+  Apple Developer Team. The Product Owner has completed Apple Developer Program
+  enrolment, but activation and the resulting Team Name and Team ID are still pending.
+- Decision: use `uk.co.mochadesigns.igc` as the native application bundle identifier.
+  Record the Apple Developer Team Name and Apple-assigned 10-character Team ID only
+  after programme activation; do not substitute a Personal Team, placeholder, or
+  inferred value.
+- Rationale: the identifier is owner-provided, matches the intended Mocha Designs
+  namespace, and is costly to change after distribution. Keeping the signing identity
+  as an explicit unresolved input prevents the project from being created under the
+  wrong team.
+- Alternatives: retain an invented placeholder; use the historical
+  `compound-toolkit` identity; or create the project under a Personal Team and migrate
+  it later.
+- Consequences: IGC-007 may be fully briefed against the fixed bundle identifier but
+  remains blocked from dispatch and Xcode-project creation until the Product Owner
+  provides both the activated Team Name and Team ID. Test target identifiers may be
+  derived under the same namespace during implementation. The App Store SKU remains a
+  later gate before App Store Connect record creation.

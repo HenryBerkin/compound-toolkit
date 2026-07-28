@@ -11,7 +11,7 @@ Classifications: **Confirmed current requirement**, **App-specific fact**, **Pro
 
 | Gate / owner | Item | Classification | Evidence / status |
 | --- | --- | --- | --- |
-| Before Xcode project — Product Owner | Confirm Apple Developer Team/account ownership, reverse-DNS bundle identifier, provider/legal entity and signing responsibility. | **Open owner input** | Written owner decision; no invented identifiers. **Open**. |
+| Before Xcode project — Product Owner | Confirm Apple Developer Team/account ownership, reverse-DNS bundle identifier, provider/legal entity and signing responsibility. | **Partly confirmed / open owner input** | IGC-D018 confirms `uk.co.mochadesigns.igc`; programme activation, Team Name, Team ID, provider/legal entity, and signing responsibility remain open. No Personal Team or invented identifiers. **Blocked pending activation**. |
 | Before Xcode project — Product Owner / PM | Decide App Store SKU convention (do not create record yet), category options, copyright owner/year, territories, support and privacy-policy owner/URLs. | **Open owner input** | Decision log/approved URLs. **Open**. |
 | Before Xcode project — PM / Legal | Approve positioning and disclaimer strategy; assess UK/territory financial-promotion, advice, terminology/preset and trader-status risks. | **Legal/regulatory review recommended** | Counsel/owner disposition; approved copy boundaries. **Open**. |
 | Before Xcode project — iOS Engineer | Recheck current Apple upload SDK requirement; plan iOS 17 deployment target separately; identify iPhone-primary/adaptive iPad device support. | **Release-time verification** | Dated Apple link and project-settings review. **Open**. |
@@ -50,7 +50,8 @@ Apple currently requires a public privacy-policy URL for iOS, accurate metadata,
 
 ### Owner inputs
 
-- Apple Developer Team, bundle identifier and signing ownership.
+- Apple Developer Team Name and Team ID, provider/legal entity, and signing ownership.
+  Bundle identifier `uk.co.mochadesigns.igc` is confirmed in IGC-D018.
 - App Store SKU, provider/legal entity, copyright, category, territories and EU trader status if relevant.
 - Support, privacy-policy and optional marketing URLs plus support contact.
 - Final age-rating questionnaire responses and release mode.
@@ -76,7 +77,7 @@ Before project creation, TestFlight, and final submission recheck Apple’s App 
 
 | Risk / decision | Owner / timing | Impact | Mitigation and evidence needed |
 | --- | --- | --- | --- |
-| Bundle ID / Team / signing owner unresolved | Product Owner; before Xcode project | Cannot create correct project/archive; identifier changes are costly | Written Team/namespace/bundle decision; project and signed archive match. |
+| Team / signing owner unresolved; bundle ID confirmed | Product Owner; before Xcode project | Cannot create the correctly owned project/archive until programme activation completes | IGC-D018 records `uk.co.mochadesigns.igc`; written Team Name, Team ID, and signing-owner decision must follow, then project and signed archive must match. |
 | SKU / provider / copyright unresolved | Product Owner; before App Store Connect record | Immutable SKU/publisher metadata could be wrong | Approved record inputs before creation. |
 | Privacy/support URLs absent | Product Owner/PM; before TestFlight/release | Required metadata blocked; no reliable user contact | Public reachable pages, correct entity/contact, policy/UI/App Privacy consistency. |
 | Finance category/positioning and financial-promotion/advice boundary | PM/Legal; before public copy or territory choice | App Review ambiguity; legal/regulatory exposure | Legal review, final claims/preset/“APR” review; reviewer note; no advice/guarantee/regulated-service implication. |

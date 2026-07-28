@@ -46,6 +46,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted the IGC-006 behavioural QA inventory under IGC-D015, including direct
   cross-client fixture parity, intentional platform-difference testing, evidence
   classification, accessibility/persistence coverage, and staged release gates.
+- Accepted the IGC-008 early App Store/privacy planning baseline under IGC-D016,
+  retaining provisional binary-dependent declarations, owner inputs, legal review
+  flags, and current-rule recheck gates.
 
 ### Not changed
 

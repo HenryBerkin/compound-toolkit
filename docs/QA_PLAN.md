@@ -76,7 +76,9 @@ chart representation, contrast tokens, and interaction specifications. Map its s
 acceptance criteria to `IOS-A11Y`, `IOS-UI`, and visual-review cases; do not promote
 unauthorised mock-up details into shared requirements. After IGC-008 is accepted,
 replace privacy/App Store recommendations with current source-backed release assertions
-and update `REL-PRIV` ownership.
+and update `REL-PRIV` ownership. IGC-008 is now accepted under IGC-D016; perform that
+trace update when release tests are implemented, while retaining every binary-dependent
+item as planned rather than passed evidence.
 
 ## 3. Shared fixture parity
 

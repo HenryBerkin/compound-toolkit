@@ -1,6 +1,7 @@
 # IGC iOS release checklist and risk register
 
-Status: Planning checklist — every checkbox remains open until recorded evidence exists
+Status: Accepted planning checklist under IGC-D016 — every checkbox remains open until
+recorded evidence exists
 Task: IGC-008 (iOS / Shared)
 Checked: 2026-07-28
 

@@ -1,6 +1,7 @@
 # IGC privacy review and release evidence
 
-Status: Early design review — no native binary has been inspected
+Status: Accepted planning baseline under IGC-D016 — no native binary has been
+inspected
 Task: IGC-008 (iOS / Shared)
 Checked: 2026-07-28
 

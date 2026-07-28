@@ -1,6 +1,7 @@
 # IGC App Store submission review
 
-Status: Early risk review — not a submission readiness certification
+Status: Accepted planning baseline under IGC-D016 — not a submission readiness
+certification
 Task: IGC-008 (iOS / Shared)
 Checked: 2026-07-28
 Scope: Native iOS 1.0 only; no App Store Connect record, native binary, or store action exists.

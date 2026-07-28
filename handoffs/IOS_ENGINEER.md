@@ -43,4 +43,9 @@ unchanged. No native build was run because native project creation is out of sco
 
 Before future implementation work, read the accepted behavioural inventory in
 `docs/QA_PLAN.md` and preserve its direct-fixture gate and planned-versus-executed
-evidence rules.
+evidence rules. IGC-008 is also accepted under IGC-D016: read
+`docs/APP_STORE_SUBMISSION.md`, `docs/PRIVACY.md`, and
+`docs/RELEASE_CHECKLIST.md` before project creation. Preserve the first-party-only,
+local-only, no-unapproved-capabilities boundary and treat privacy manifest, export,
+network, storage-protection, and archive assertions as evidence to establish from the
+actual implementation rather than assumed compliance.

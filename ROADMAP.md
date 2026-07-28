@@ -20,6 +20,8 @@
 - Approved the SwiftUI architecture, Codable persistence, fixture gate, dependency
   policy, and local-free availability boundary.
 - Accepted the cross-platform behavioural QA inventory and release-gate model.
+- Accepted the early App Store/privacy risk baseline and phase-gated evidence
+  checklist without claiming submission readiness.
 - Produce and accept the lightweight native design system.
 
 ## Phase 3 — Native build
@@ -33,7 +35,8 @@
 ## Phase 4 — iOS release readiness
 
 - Complete regression and accessibility testing.
-- Confirm privacy declarations and current App Store requirements.
+- Recheck and complete privacy declarations and current App Store requirements against
+  the release archive.
 - Prepare metadata, support information, screenshots, release notes, and submission
   checks.
 

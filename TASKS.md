@@ -127,8 +127,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   IGC-D015. Specialist range
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a..7e4f462ef6ec78fa22dea81dbda772e9032af2f9`
   passes `git diff --check`; protected contracts, PWA, and native paths are unchanged.
-- Unresolved questions: incorporate accepted IGC-005 and IGC-008 assertions later;
-  approve a browser-support policy and prioritise known Web defects separately.
+- Unresolved questions: incorporate IGC-005 assertions after design acceptance and
+  trace accepted IGC-008 assertions during release-test implementation; approve a
+  browser-support policy and prioritise known Web defects separately.
 - Branch/worktree: `codex/igc-006-behavioural-qa-inventory` in an isolated worktree from
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 - Standalone prompt: `prompts/IGC-006-BEHAVIOURAL-QA-INVENTORY.md`.
@@ -147,7 +148,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-008 — Early privacy and App Store risk review
 
 - Owner: App Store Reviewer
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-004
@@ -156,9 +157,15 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Objective: identify current policy, privacy, metadata, support, and screenshot needs.
 - Acceptance criteria: confirmed requirements separated from recommendations and open
   questions, with official Apple sources where requirements are time-sensitive.
-- Verification: three documentation deliverables completed; current Apple primary
-  sources checked 2026-07-28; citations, classifications, data handling, owner inputs,
-  blockers, and release gates cross-checked. Product Manager review remains required.
+- Verification: Product Manager/Technical Lead review accepted the planning baseline
+  under IGC-D016. Specialist range
+  `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a..1bc787858ae991a706d009214b14bc3867f36baf`
+  passes `git diff --check`; current Apple primary sources were independently
+  rechecked 2026-07-28.
+- Unresolved questions: owner-controlled Team, bundle identifier, SKU, publisher,
+  URLs, category, territories and trader status; legal review of final positioning;
+  binary-dependent privacy, manifest, export, accessibility, metadata and submission
+  evidence.
 - Branch/worktree: `codex/igc-008-app-store-privacy-review` in an isolated worktree from
   `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`.
 - Standalone prompt: `prompts/IGC-008-EARLY-PRIVACY-APP-STORE-REVIEW.md`.

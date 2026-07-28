@@ -230,7 +230,32 @@
   accepted or passing behavior.
 - Alternatives: separate untraced platform checklists; fixture-only parity; treating
   PWA behavior as the complete native oracle.
-- Consequences: accepted IGC-005 design assertions and IGC-008 privacy/App Store
-  requirements must later be traced into the marked QA areas. Browser-support policy
-  and known Web-defect prioritisation remain separate Product Manager decisions; this
-  inventory does not claim that future native or release tests have executed.
+- Consequences: IGC-005 design assertions, once accepted, and the IGC-008 privacy/App
+  Store requirements accepted in IGC-D016 must later be traced into the marked QA
+  areas. Browser-support policy and known Web-defect prioritisation remain separate
+  Product Manager decisions; this inventory does not claim that future native or
+  release tests have executed.
+
+## IGC-D016 — Adopt the early privacy and App Store release-risk baseline
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: IGC-008 reviewed the accepted local-first iOS 1.0 architecture against
+  current Apple submission, privacy, metadata, TestFlight, screenshot, and release
+  requirements before native implementation exists.
+- Decision: adopt `docs/APP_STORE_SUBMISSION.md`, `docs/PRIVACY.md`, and
+  `docs/RELEASE_CHECKLIST.md` as the planning and release-evidence baseline. Treat “no
+  developer data collection” as provisional until the release binary, dependencies,
+  manifests, logs, support path, and network behaviour verify the local-only design.
+  Keep owner-controlled identifiers, URLs, publisher/category/territory choices, and
+  final legal positioning unresolved until their documented gates.
+- Rationale: establishes accurate early constraints without claiming compliance for an
+  unbuilt app or inventing owner/legal decisions.
+- Alternatives: defer all review until a release candidate; treat local-only intent as
+  sufficient evidence; create App Store records or declarations before owner inputs.
+- Consequences: every volatile Apple rule is rechecked before TestFlight and
+  submission; the actual archive controls privacy-manifest, export-compliance, and App
+  Privacy answers. Final financial-content claims and territory choices require
+  Product Manager/owner approval and legal review where documented. No App Store
+  submission, record creation, native implementation, or compliance certification is
+  authorised by this decision.

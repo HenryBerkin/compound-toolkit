@@ -27,5 +27,7 @@ quirks into requirements; distinguish approved behaviour, observed behaviour,
 platform-specific behaviour, and defects.
 
 IGC-005 should add only accepted design assertions to the marked Design-pending cases.
-IGC-008 should supply the current privacy/App Store evidence before the corresponding
-release gate can pass.
+IGC-008 is accepted under IGC-D016. Trace `docs/APP_STORE_SUBMISSION.md`,
+`docs/PRIVACY.md`, and `docs/RELEASE_CHECKLIST.md` into the marked privacy and release
+areas when tests are implemented; the corresponding gates remain open until actual
+binary and operational evidence exists.

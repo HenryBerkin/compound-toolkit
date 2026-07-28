@@ -5,8 +5,8 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Native product contract, architecture, and QA inventory accepted; design and
-  early release-risk definition next.
+- Phase: Native product contract, architecture, QA inventory, and early release-risk
+  planning accepted; native design next.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -54,10 +54,13 @@ IGC-004 is Done and its architecture is accepted in IGC-D014. The corrected spec
 head is `1940e3f95427f5fc0b3ca2dab07801e887650821`; the proposal was integrated into
 `project/ios-migration-audit` by merge commit `856f156`.
 
-IGC-008 is Ready for review. Its documentation-only early App Store/privacy review
-records current Apple submission gates, local-only provisional App Privacy answers,
-owner inputs, financial-content/legal review flags, and phase-gated release evidence.
-It makes no submission or native-compliance claim.
+IGC-008 is Done and its early App Store/privacy planning baseline is accepted in
+IGC-D016. The specialist head
+`1bc787858ae991a706d009214b14bc3867f36baf` is integrated into
+`project/ios-migration-audit` by merge commit `7dc3e08`. The review records current
+Apple submission gates, provisional local-only App Privacy answers, owner inputs,
+financial-content/legal review flags, and phase-gated release evidence; it makes no
+submission or native-compliance claim.
 
 Native implementation remains not started. Do not create an Xcode project or begin
 IGC-007 until the relevant IGC-005 design inputs are accepted and the Product Owner
@@ -67,9 +70,9 @@ IGC-006 is Done and its behavioural inventory is accepted in IGC-D015. The speci
 head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
-IGC-005 and IGC-008 remain Ready from
-`c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a` in their named isolated worktrees. Their
-standalone prompts are in `prompts/`. IGC-007 remains Proposed and must not begin.
+IGC-005 remains Ready from `c2995d9b5638c1ab7a64992e6ec3c1104aae3d2a`
+in its named isolated worktree. Its standalone prompt is in `prompts/`. IGC-007 remains
+Proposed and must not begin.
 
 The revised standalone prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.

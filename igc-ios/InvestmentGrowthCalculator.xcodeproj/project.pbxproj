@@ -10,6 +10,7 @@
 		AA0000010000000000000001 /* calculation-v1.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000020000000000000001 /* calculation-v1.json */; };
 		AA0000010000000000000002 /* calculation-fixture-v1.schema.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000020000000000000002 /* calculation-fixture-v1.schema.json */; };
 		AA0000010000000000000003 /* scenario-v1.schema.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000020000000000000003 /* scenario-v1.schema.json */; };
+		AA0000010000000000000004 /* scenario-v1.example.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000020000000000000004 /* scenario-v1.example.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		AA0000020000000000000001 /* calculation-v1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = calculation-v1.json; path = ../shared/fixtures/calculation-v1.json; sourceTree = SOURCE_ROOT; };
 		AA0000020000000000000002 /* calculation-fixture-v1.schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = calculation-fixture-v1.schema.json; path = ../shared/schemas/calculation-fixture-v1.schema.json; sourceTree = SOURCE_ROOT; };
 		AA0000020000000000000003 /* scenario-v1.schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = scenario-v1.schema.json; path = ../shared/schemas/scenario-v1.schema.json; sourceTree = SOURCE_ROOT; };
+		AA0000020000000000000004 /* scenario-v1.example.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = scenario-v1.example.json; path = ../shared/examples/scenario-v1.example.json; sourceTree = SOURCE_ROOT; };
 		AA0000040000000000000001 /* InvestmentGrowthCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestmentGrowthCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000040000000000000002 /* InvestmentGrowthCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InvestmentGrowthCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000040000000000000003 /* InvestmentGrowthCalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InvestmentGrowthCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +100,7 @@
 				AA0000020000000000000001 /* calculation-v1.json */,
 				AA0000020000000000000002 /* calculation-fixture-v1.schema.json */,
 				AA0000020000000000000003 /* scenario-v1.schema.json */,
+				AA0000020000000000000004 /* scenario-v1.example.json */,
 			);
 			name = "Shared contract resources";
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				AA0000010000000000000001 /* calculation-v1.json in Resources */,
 				AA0000010000000000000002 /* calculation-fixture-v1.schema.json in Resources */,
 				AA0000010000000000000003 /* scenario-v1.schema.json in Resources */,
+				AA0000010000000000000004 /* scenario-v1.example.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

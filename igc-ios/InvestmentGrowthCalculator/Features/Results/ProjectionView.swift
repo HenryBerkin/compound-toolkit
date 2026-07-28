@@ -3,11 +3,14 @@ import SwiftUI
 
 struct ProjectionView: View {
     let snapshot: ProjectionSnapshot
+    @ObservedObject var scenarioLibrary: ScenarioLibraryModel
     let showAnnualDetail: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showAfterFees = true
     @State private var showTodayMoney = true
+    @State private var showsSaveSheet = false
+    @State private var savedStatus: String?
 
     private var chartPoints: [ProjectionChartPoint] {
         ProjectionPresenter.chartPoints(input: snapshot.input, result: snapshot.result)
@@ -25,6 +28,11 @@ struct ProjectionView: View {
                 Text("Illustrative projection based on constant rates and contributions.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+
+                if let savedStatus {
+                    ScenarioStatusBanner(kind: .success, message: savedStatus)
+                        .accessibilityIdentifier("projection.savedStatus")
+                }
 
                 kpi
                 todayMoneyContext
@@ -48,6 +56,42 @@ struct ProjectionView: View {
         }
         .navigationTitle("Projection")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(saveActionLabel) {
+                    showsSaveSheet = true
+                }
+                .accessibilityIdentifier("projection.save")
+            }
+        }
+        .sheet(isPresented: $showsSaveSheet) {
+            ScenarioNameEntryView(
+                title: "Save scenario",
+                initialName: suggestedName,
+                actionLabel: "Save",
+                accessibilityPrefix: "projection.saveSheet",
+                submit: { name in
+                    try await scenarioLibrary.createNew(
+                        from: snapshot,
+                        proposedName: name
+                    )
+                },
+                onSuccess: { name in
+                    savedStatus = "Saved “\(name)”"
+                }
+            )
+        }
+    }
+
+    private var saveActionLabel: String {
+        snapshot.sourceScenarioID == nil ? "Save" : "Save as new"
+    }
+
+    private var suggestedName: String {
+        if snapshot.input.months == 0 {
+            return "\(snapshot.input.years)-year projection"
+        }
+        return "\(snapshot.input.totalMonths)-month projection"
     }
 
     private var kpi: some View {

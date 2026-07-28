@@ -10,7 +10,7 @@ enum CalculatorField: String, CaseIterable, Hashable {
     case months
     case target
 }
-struct CalculatorDraft: Equatable {
+struct CalculatorDraft: Equatable, Sendable {
     var principal = "10000"
     var contribution = "250"
     var contributionFrequency: ContributionFrequency = .monthly
@@ -27,13 +27,39 @@ struct CalculatorDraft: Equatable {
 
     static let customBaseline = CalculatorDraft()
 
+    init() {}
+
+    init(scenario: ScenarioV1) {
+        principal = Self.inputText(scenario.inputs.principal)
+        contribution = Self.inputText(scenario.inputs.contribution)
+        contributionFrequency = scenario.inputs.contributionFrequency
+        apr = Self.inputText(scenario.inputs.apr * 100)
+        inflation = Self.inputText(scenario.inputs.inflationRate * 100)
+        fee = Self.inputText(scenario.inputs.annualFeeRate * 100)
+        compoundFrequency = scenario.inputs.compoundFrequency
+        years = String(scenario.inputs.years)
+        months = String(scenario.inputs.months)
+        timing = scenario.inputs.timing
+        if let targetToday = scenario.targetToday {
+            target = Self.inputText(targetToday)
+            targetIsExpanded = true
+        } else {
+            target = ""
+            targetIsExpanded = false
+        }
+        presetID = PresetCatalog.truthfulSelection(
+            persisted: scenario.presetID,
+            candidate: scenario.inputs.candidate
+        )
+    }
+
     mutating func selectPreset(_ id: PresetID?) {
         presetID = id
         guard let id else { return }
         let preset = PresetCatalog.preset(id)
-        apr = inputText(preset.apr * 100)
-        inflation = inputText(preset.inflationRate * 100)
-        fee = inputText(preset.annualFeeRate * 100)
+        apr = Self.inputText(preset.apr * 100)
+        inflation = Self.inputText(preset.inflationRate * 100)
+        fee = Self.inputText(preset.annualFeeRate * 100)
         compoundFrequency = preset.compoundFrequency
     }
 
@@ -217,11 +243,20 @@ struct CalculatorDraft: Equatable {
         return value
     }
 
-    private func inputText(_ value: Double) -> String {
-        var text = String(format: "%.4f", locale: Locale(identifier: "en_US_POSIX"), value)
-        while text.last == "0" { text.removeLast() }
-        if text.last == "." { text.removeLast() }
-        return text
+    private static func inputText(_ value: Double) -> String {
+        String(
+            format: "%.15g",
+            locale: Locale(identifier: "en_US_POSIX"),
+            value
+        )
+    }
+
+    func hasSameCanonicalDraftFields(as other: CalculatorDraft) -> Bool {
+        var lhs = self
+        var rhs = other
+        lhs.targetIsExpanded = false
+        rhs.targetIsExpanded = false
+        return lhs == rhs
     }
 }
 

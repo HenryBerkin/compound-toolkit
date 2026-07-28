@@ -2,6 +2,8 @@ import XCTest
 
 @MainActor
 final class InvestmentGrowthCalculatorUITests: XCTestCase {
+    private let scenarioStoreIdentifier = UUID().uuidString
+
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
@@ -22,11 +24,14 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         scrollToElement(app.textFields["calculator.years"], in: app)
         XCTAssertEqual(app.textFields["calculator.years"].value as? String, "15")
 
-        for tab in ["Calculator", "Saved", "Education", "Settings"] {
-            XCTAssertTrue(app.tabBars.buttons[tab].exists, "Missing stable \(tab) tab")
+        for tabName in ["Calculator", "Saved", "Education", "Settings"] {
+            XCTAssertTrue(
+                tab(named: tabName, in: app).exists,
+                "Missing stable \(tabName) tab"
+            )
         }
 
-        app.tabBars.buttons["Saved"].tap()
+        tab(named: "Saved", in: app).tap()
         XCTAssertTrue(app.staticTexts["No saved scenarios"].waitForExistence(timeout: 2))
         XCTAssertFalse(app.buttons["Save"].exists)
         XCTAssertFalse(app.buttons["Compare"].exists)
@@ -45,7 +50,8 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
         XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.descendants(matching: .any)["projection.finalBalance"].exists)
-        XCTAssertFalse(app.buttons["Save"].exists)
+        XCTAssertTrue(app.buttons["projection.save"].exists)
+        XCTAssertEqual(app.buttons["projection.save"].label, "Save")
         XCTAssertFalse(app.staticTexts["Monthly detail"].exists)
         XCTAssertFalse(app.buttons["Export"].exists)
         XCTAssertFalse(app.buttons["Compare"].exists)
@@ -173,9 +179,9 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         scrollToElement(targetStatus, in: app)
         XCTAssertTrue(targetStatus.label.localizedCaseInsensitiveContains("below the target"))
 
-        app.tabBars.buttons["Education"].tap()
+        tab(named: "Education", in: app).tap()
         XCTAssertTrue(app.navigationBars["Education"].waitForExistence(timeout: 2))
-        app.tabBars.buttons["Calculator"].tap()
+        tab(named: "Calculator", in: app).tap()
         XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 2))
     }
 
@@ -198,15 +204,199 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
         XCUIDevice.shared.orientation = .landscapeLeft
         XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 4))
-        XCTAssertTrue(app.tabBars.buttons["Calculator"].exists)
-        XCTAssertTrue(app.tabBars.buttons["Settings"].exists)
+        XCTAssertTrue(tab(named: "Calculator", in: app).exists)
+        XCTAssertTrue(tab(named: "Settings", in: app).exists)
+    }
+
+    func testSavePopulatesSavedRootAndPersistsAcrossRelaunch() {
+        let app = launch()
+        saveCurrentProjection(as: "Lifecycle baseline", in: app)
+
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.descendants(matching: .any)["saved.populated"].waitForExistence(timeout: 4))
+        XCTAssertEqual(app.staticTexts["saved.count"].label, "1 saved scenario")
+        XCTAssertTrue(scenarioRow(named: "Lifecycle baseline", in: app).exists)
+
+        app.terminate()
+        app.launch()
+        tab(named: "Saved", in: app).tap()
+
+        XCTAssertTrue(app.staticTexts["saved.count"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["saved.count"].label, "1 saved scenario")
+        XCTAssertTrue(scenarioRow(named: "Lifecycle baseline", in: app).exists)
+    }
+
+    func testLoadIntoCalculatorThenSaveAsNewCreatesAnotherRecord() {
+        let app = launch()
+        saveCurrentProjection(as: "Loaded plan", in: app)
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.staticTexts["saved.count"].waitForExistence(timeout: 4))
+
+        scenarioRow(named: "Loaded plan", in: app).tap()
+        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 4))
+        let loadedStatus = app.descendants(matching: .any)["calculator.loadedStatus"]
+        XCTAssertTrue(loadedStatus.waitForExistence(timeout: 3))
+        XCTAssertTrue(loadedStatus.label.contains("Loaded “Loaded plan”"))
+
+        openProjection(in: app)
+        XCTAssertEqual(app.buttons["projection.save"].label, "Save as new")
+        saveVisibleProjection(as: "Loaded plan review", in: app)
+
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.staticTexts["saved.count"].waitForExistence(timeout: 4))
+        XCTAssertEqual(app.staticTexts["saved.count"].label, "2 saved scenarios")
+        XCTAssertTrue(scenarioRow(named: "Loaded plan", in: app).exists)
+        XCTAssertTrue(scenarioRow(named: "Loaded plan review", in: app).exists)
+    }
+
+    func testRenameAndDuplicateScenario() {
+        let app = launch()
+        saveCurrentProjection(as: "Lifecycle plan", in: app)
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.staticTexts["saved.count"].waitForExistence(timeout: 4))
+
+        scenarioMenu(named: "Lifecycle plan", in: app).tap()
+        app.buttons["Rename"].tap()
+        let renameField = app.textFields["saved.rename.name"]
+        XCTAssertTrue(renameField.waitForExistence(timeout: 3))
+        XCTAssertEqual(renameField.value as? String, "Lifecycle plan")
+        replaceText(in: renameField, with: "Lifecycle renamed")
+        app.buttons["saved.rename.confirm"].tap()
+        let renameStatus = app.descendants(matching: .any)["saved.status.success"]
+        XCTAssertTrue(renameStatus.waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts["Renamed to “Lifecycle renamed”"].exists)
+
+        scenarioMenu(named: "Lifecycle renamed", in: app).tap()
+        app.buttons["Duplicate"].tap()
+        XCTAssertTrue(waitForLabel("2 saved scenarios", element: app.staticTexts["saved.count"]))
+        XCTAssertTrue(scenarioRow(named: "Lifecycle renamed", in: app).exists)
+        XCTAssertTrue(scenarioRow(named: "Lifecycle renamed copy", in: app).exists)
+    }
+
+    func testDeleteRequiresConfirmationSupportsCancelThenDeletesOne() {
+        let app = launch()
+        saveCurrentProjection(as: "Delete candidate", in: app)
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.staticTexts["saved.count"].waitForExistence(timeout: 4))
+
+        scenarioMenu(named: "Delete candidate", in: app).tap()
+        app.buttons["Delete"].tap()
+        XCTAssertTrue(app.alerts["Delete “Delete candidate”?"].waitForExistence(timeout: 3))
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(scenarioRow(named: "Delete candidate", in: app).exists)
+        XCTAssertEqual(app.staticTexts["saved.count"].label, "1 saved scenario")
+
+        scenarioMenu(named: "Delete candidate", in: app).tap()
+        app.buttons["Delete"].tap()
+        app.buttons["saved.confirmDelete"].firstMatch.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["saved.empty"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts["No saved scenarios"].exists)
+    }
+
+    func testUnavailableStorageRecoveryStateIsAccessibleAtLargeDynamicType() {
+        let app = launch(arguments: ["-uiUnavailableStore", "-uiAccessibilityText"])
+        tab(named: "Saved", in: app).tap()
+
+        let recovery = app.descendants(matching: .any)["saved.recovery.unavailable"]
+        XCTAssertTrue(recovery.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Saved scenarios are temporarily unavailable"].exists)
+        XCTAssertTrue(app.buttons["Try again"].exists)
+        XCTAssertTrue(app.buttons["Continue with calculator"].exists)
+        XCTAssertFalse(app.staticTexts["No saved scenarios"].exists)
+    }
+
+    func testCorruptAndUnsupportedRecoveryStatesRemainDistinctAndNonDestructiveFirst() {
+        let corruptApp = launch(arguments: ["-uiCorruptStore"])
+        tab(named: "Saved", in: corruptApp).tap()
+        XCTAssertTrue(
+            corruptApp.descendants(matching: .any)["saved.recovery.corrupt"]
+                .waitForExistence(timeout: 5)
+        )
+        XCTAssertTrue(corruptApp.staticTexts["Saved scenarios need recovery"].exists)
+        XCTAssertTrue(corruptApp.buttons["Try again"].exists)
+        XCTAssertTrue(corruptApp.buttons["Continue without saved scenarios"].exists)
+        XCTAssertTrue(corruptApp.buttons["Start with an empty saved list"].exists)
+        XCTAssertFalse(corruptApp.staticTexts["No saved scenarios"].exists)
+
+        corruptApp.terminate()
+        let unsupportedApp = launch(arguments: ["-uiUnsupportedStore"])
+        tab(named: "Saved", in: unsupportedApp).tap()
+        XCTAssertTrue(
+            unsupportedApp.descendants(matching: .any)["saved.recovery.unsupported"]
+                .waitForExistence(timeout: 5)
+        )
+        XCTAssertTrue(unsupportedApp.staticTexts["Saved scenarios use a newer format"].exists)
+        XCTAssertTrue(unsupportedApp.buttons["Keep data and continue"].exists)
+        XCTAssertTrue(unsupportedApp.buttons["Delete saved scenarios"].exists)
+        XCTAssertFalse(unsupportedApp.staticTexts["No saved scenarios"].exists)
     }
 
     private func launch(arguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-uiTesting"] + arguments
+        app.launchArguments = [
+            "-uiTesting",
+            "-uiScenarioStore",
+            scenarioStoreIdentifier,
+        ] + arguments
         app.launch()
         return app
+    }
+
+    private func tab(named name: String, in app: XCUIApplication) -> XCUIElement {
+        let compactTab = app.tabBars.buttons[name].firstMatch
+        return compactTab.exists ? compactTab : app.buttons[name].firstMatch
+    }
+
+    private func saveCurrentProjection(as name: String, in app: XCUIApplication) {
+        openProjection(in: app)
+        saveVisibleProjection(as: name, in: app)
+    }
+
+    private func openProjection(in app: XCUIApplication) {
+        let projectionButton = app.buttons["calculator.viewProjection"]
+        scrollToElement(projectionButton, in: app)
+        projectionButton.tap()
+        XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 5))
+    }
+
+    private func saveVisibleProjection(as name: String, in app: XCUIApplication) {
+        let saveButton = app.buttons["projection.save"]
+        XCTAssertTrue(saveButton.waitForExistence(timeout: 3))
+        saveButton.tap()
+
+        let nameField = app.textFields["projection.saveSheet.name"]
+        XCTAssertTrue(nameField.waitForExistence(timeout: 3))
+        replaceText(in: nameField, with: name)
+        app.buttons["projection.saveSheet.confirm"].tap()
+        let status = app.descendants(matching: .any)["projection.savedStatus"]
+        XCTAssertTrue(status.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Saved “\(name)”"].exists)
+    }
+
+    private func scenarioRow(named name: String, in app: XCUIApplication) -> XCUIElement {
+        app.buttons.matching(
+            NSPredicate(
+                format: "identifier BEGINSWITH %@ AND label CONTAINS %@",
+                "saved.row.",
+                name
+            )
+        ).firstMatch
+    }
+
+    private func scenarioMenu(named name: String, in app: XCUIApplication) -> XCUIElement {
+        app.buttons.matching(
+            NSPredicate(
+                format: "identifier BEGINSWITH %@ AND label == %@",
+                "saved.menu.",
+                "Actions for \(name)"
+            )
+        ).firstMatch
+    }
+
+    private func waitForLabel(_ label: String, element: XCUIElement) -> Bool {
+        let predicate = NSPredicate(format: "label == %@", label)
+        let expectation = expectation(for: predicate, evaluatedWith: element)
+        return XCTWaiter.wait(for: [expectation], timeout: 4) == .completed
     }
 
     private func replaceText(in field: XCUIElement, with replacement: String) {

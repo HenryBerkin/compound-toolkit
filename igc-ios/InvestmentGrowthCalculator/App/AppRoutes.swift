@@ -7,6 +7,14 @@ enum AppTab: Hashable {
     case settings
 }
 
+struct LoadedScenarioContext: Equatable, Sendable {
+    let id: String
+    let name: String
+    let input: CalculationInput
+    let targetToday: Double?
+    let draftAtLoad: CalculatorDraft
+}
+
 enum CalculatorRoute: Hashable {
     case projection(ProjectionSnapshot)
     case annualDetail(ProjectionSnapshot)

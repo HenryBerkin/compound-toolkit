@@ -9,8 +9,13 @@ struct RootTabView: View {
     @State private var educationPath: [EducationRoute] = []
     @State private var settingsPath: [SettingsRoute] = []
     @State private var draft: CalculatorDraft
+    @State private var loadedScenario: LoadedScenarioContext?
+    @StateObject private var scenarioLibrary: ScenarioLibraryModel
 
-    init(featureAvailability: any FeatureAvailability) {
+    init(
+        featureAvailability: any FeatureAvailability,
+        scenarioStore: any ScenarioStore
+    ) {
         self.featureAvailability = featureAvailability
         var initialDraft = CalculatorDraft.customBaseline
         let arguments = ProcessInfo.processInfo.arguments
@@ -27,18 +32,27 @@ struct RootTabView: View {
             initialDraft.target = "1£2"
         }
         _draft = State(initialValue: initialDraft)
+        _scenarioLibrary = StateObject(
+            wrappedValue: ScenarioLibraryModel(store: scenarioStore)
+        )
     }
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationStack(path: $calculatorPath) {
-                CalculatorView(draft: $draft) { newSnapshot in
+                CalculatorView(
+                    draft: $draft,
+                    loadedScenario: loadedScenario
+                ) { newSnapshot in
                     calculatorPath = [.projection(newSnapshot)]
                 }
                 .navigationDestination(for: CalculatorRoute.self) { route in
                     switch route {
                     case let .projection(snapshot):
-                        ProjectionView(snapshot: snapshot) {
+                        ProjectionView(
+                            snapshot: snapshot,
+                            scenarioLibrary: scenarioLibrary
+                        ) {
                             calculatorPath.append(.annualDetail(snapshot))
                         }
                     case let .annualDetail(snapshot):
@@ -53,7 +67,10 @@ struct RootTabView: View {
             .accessibilityIdentifier("tab.calculator")
 
             NavigationStack(path: $savedPath) {
-                SavedScenariosView {
+                SavedScenariosView(
+                    scenarioLibrary: scenarioLibrary,
+                    loadScenario: loadScenario
+                ) {
                     savedPath.removeAll()
                     calculatorPath.removeAll()
                     selectedTab = .calculator
@@ -84,5 +101,29 @@ struct RootTabView: View {
             .accessibilityIdentifier("tab.settings")
         }
         .tint(.indigo)
+        .task {
+            if scenarioLibrary.snapshot == nil {
+                await scenarioLibrary.refresh()
+            }
+        }
+    }
+
+    @MainActor
+    private func loadScenario(id: String) async throws {
+        let scenario = try await scenarioLibrary.scenario(id: id)
+        try ScenarioValidator.validate(scenario)
+        let loadedDraft = CalculatorDraft(scenario: scenario)
+
+        draft = loadedDraft
+        loadedScenario = LoadedScenarioContext(
+            id: scenario.id,
+            name: scenario.name,
+            input: scenario.inputs,
+            targetToday: scenario.targetToday,
+            draftAtLoad: loadedDraft
+        )
+        savedPath.removeAll()
+        calculatorPath.removeAll()
+        selectedTab = .calculator
     }
 }

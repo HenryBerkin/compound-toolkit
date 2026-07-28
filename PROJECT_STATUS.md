@@ -54,6 +54,12 @@ IGC-004 is Done and its architecture is accepted in IGC-D014. The corrected spec
 head is `1940e3f95427f5fc0b3ca2dab07801e887650821`; the proposal was integrated into
 `project/ios-migration-audit` by merge commit `856f156`.
 
+IGC-005 is Ready for review. Its documentation-only native design system defines the
+four-tab hierarchy, Calculator-to-Projection interaction, results and annual-detail
+presentation, local scenario CRUD/recovery, semantic foundations, accessibility and
+adaptive behaviour, and the dependencies requiring Product Manager, QA, and App Store
+review. No native implementation is part of IGC-005.
+
 Native implementation remains not started. Do not create an Xcode project or begin
 IGC-007 until the relevant IGC-005 design and IGC-006 QA inputs are accepted and the
 Product Owner confirms the bundle identifier and Apple Developer Team.

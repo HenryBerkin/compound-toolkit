@@ -15,6 +15,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted version 1 shared calculation specification, portable scenario schema, JSON
   Schemas, representative calculation/validation fixtures, and direct TypeScript
   fixture-consumer tests.
+- Proposed the documentation-only native iOS architecture: a SwiftUI feature structure,
+  pure fixture-backed calculation engine, Codable local scenario store, local-free
+  feature-availability boundary, and staged accessibility, test, and delivery plan.
 
 ### Changed
 

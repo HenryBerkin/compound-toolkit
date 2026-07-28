@@ -136,7 +136,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-008 — Early privacy and App Store risk review
 
 - Owner: App Store Reviewer
-- Status: Proposed
+- Status: Ready for review
 - Priority: P1
 - Platform: iOS / Shared
 - Dependencies: IGC-003, IGC-004
@@ -145,7 +145,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Objective: identify current policy, privacy, metadata, support, and screenshot needs.
 - Acceptance criteria: confirmed requirements separated from recommendations and open
   questions, with official Apple sources where requirements are time-sensitive.
-- Verification: Product Manager review.
+- Verification: three documentation deliverables completed; current Apple primary
+  sources checked 2026-07-28; citations, classifications, data handling, owner inputs,
+  blockers, and release gates cross-checked. Product Manager review remains required.
 
 ## IGC-009 — Define shared calculation contract and fixture plan
 

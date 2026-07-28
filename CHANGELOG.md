@@ -20,6 +20,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Proposed the documentation-only native iOS architecture: a SwiftUI feature structure,
   pure fixture-backed calculation engine, Codable local scenario store, local-free
   feature-availability boundary, and staged accessibility, test, and delivery plan.
+- Added IGC-008’s documentation-only App Store, privacy, and phase-gated release-risk
+  review with current Apple-source checks and no native or App Store action.
 
 ### Changed
 

@@ -1,9 +1,8 @@
 # Product Manager handoff
 
 Current phase: native product contract, architecture, design system, QA inventory, and
-early release-risk planning accepted; bundle identifier and blocked native
-implementation brief prepared; exact Apple Developer Team Name is the remaining
-pre-dispatch input.
+early release-risk planning accepted; bundle identifier and Apple Developer Team
+confirmed; IGC-007 is Ready for specialist dispatch.
 Branch: `project/ios-migration-audit`.
 Baseline: `recovered-pwa-baseline-2026-07-28`.
 
@@ -19,12 +18,12 @@ calculation fixtures and scenario schema version 1.
 IGC-004 is accepted in IGC-D014, IGC-006 in IGC-D015, IGC-008 in IGC-D016, and the
 corrected IGC-005 native design system in IGC-D017. Privacy answers remain provisional
 until binary evidence. IGC-D018 fixes the native application bundle identifier as
-`uk.co.mochadesigns.igc`. Do not begin IGC-007 or create an Xcode project until the
-owner provides the exact Team Name and the standalone implementation brief is
-explicitly unblocked. Team ID `2FKVFS8X67` is owner-confirmed.
+`uk.co.mochadesigns.igc` and records Apple Developer Team Name `Henry Berkin` and Team
+ID `2FKVFS8X67`. The owner-controlled project signing gate is complete. Native work
+must still begin only in the specialist worktree from the exact issued base.
 
 The prepared brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation
 on `0b71bc3fdf7260a48c1751da21c45d78283d3da9`. It deliberately contains a blocking
-Team Name marker and is not ready to paste. Team ID `2FKVFS8X67` is confirmed. When
-the owner provides the exact Team Name, record it, update the prompt with the new exact
-base, change IGC-007 from Blocked to Ready, and explicitly issue the revised copy.
+Team Name marker and is superseded by the now-confirmed Team Name `Henry Berkin`.
+Commit the complete signing identity, then replace that marker and preparation base
+and explicitly issue the final standalone copy.

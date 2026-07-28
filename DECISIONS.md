@@ -312,6 +312,7 @@
   provides both the activated Team Name and Team ID. Test target identifiers may be
   derived under the same namespace during implementation. The App Store SKU remains a
   later gate before App Store Connect record creation.
-- Owner update, 2026-07-28: Apple Developer Team ID `2FKVFS8X67` is confirmed.
-  The exact Team Name remains pending and is the final signing-identity input required
-  before the implementation brief may be unblocked.
+- Owner update, 2026-07-28: Apple Developer Team Name `Henry Berkin` and Team ID
+  `2FKVFS8X67` are confirmed. The owner-controlled project signing identity is
+  complete, so the Product Manager may issue IGC-007 from an exact base containing
+  this update.

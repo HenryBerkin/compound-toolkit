@@ -31,7 +31,7 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   accessible results and annual-detail presentation, and local scenario recovery flows.
 - Added the blocked standalone IGC-007 implementation brief for the project foundation,
   pure fixture-backed Swift core, and accessible Calculator-to-Projection vertical
-  slice; dispatch remains gated on the exact Apple Team Name.
+  slice, later cleared for dispatch when the complete Apple Team identity was supplied.
 
 ### Changed
 
@@ -60,7 +60,7 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Fixed the native application bundle identifier as `uk.co.mochadesigns.igc` under
   IGC-D018 while keeping the owner-controlled signing identity as a pre-dispatch gate.
 - Recorded owner-confirmed Apple Developer Team ID `2FKVFS8X67`; the exact Team Name
-  remains the final pre-dispatch signing-identity input for IGC-007.
+  `Henry Berkin` completes the pre-dispatch signing identity for IGC-007.
 
 ### Not changed
 

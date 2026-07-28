@@ -6,8 +6,8 @@ Owner: Product Manager and Technical Lead
 ## Current state
 
 - Phase: Native product contract, architecture, design system, QA inventory, and early
-  release-risk planning accepted; bundle identifier and blocked native implementation
-  brief prepared; exact Apple Developer Team Name is the remaining pre-dispatch input.
+  release-risk planning accepted; bundle identifier and Apple Developer Team confirmed;
+  IGC-007 is Ready for specialist dispatch.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -21,8 +21,7 @@ Owner: Product Manager and Technical Lead
   **IGC — Investment Growth Calculator**.
 - Native application bundle identifier: `uk.co.mochadesigns.igc` (IGC-D018).
 - Apple Developer Team ID: `2FKVFS8X67` (owner-confirmed).
-- Apple Developer Team Name: pending owner confirmation; no inferred name, placeholder,
-  or Personal Team is authorised.
+- Apple Developer Team Name: `Henry Berkin` (owner-confirmed).
 - Historical repository/package names still include `compound-toolkit` and
   `compound-growth-toolkit`.
 
@@ -76,20 +75,19 @@ visual foundations without adding native implementation.
 
 Native implementation remains not started. IGC-004, IGC-005, IGC-006, and IGC-008
 definition inputs are accepted. The Product Owner confirmed the application bundle
-identifier `uk.co.mochadesigns.igc` in IGC-D018. Do not create an Xcode project,
-dispatch, or begin IGC-007 until the Product Owner provides the exact Team Name and the
-standalone implementation brief is explicitly unblocked. Team ID `2FKVFS8X67` is
-confirmed.
+identifier `uk.co.mochadesigns.igc`, Apple Developer Team Name `Henry Berkin`, and Team
+ID `2FKVFS8X67` in IGC-D018. The signing-identity gate is complete. Native work may
+begin only in the required specialist worktree after the final standalone prompt is
+issued; no native work has begun on the integration branch.
 
 IGC-006 is Done and its behavioural inventory is accepted in IGC-D015. The specialist
 head `7e4f462ef6ec78fa22dea81dbda772e9032af2f9` is integrated into
 `project/ios-migration-audit` by merge commit `c895476`.
 
-IGC-007 is Blocked and must not begin. Its implementation contract is defined; the
-prepared standalone brief is `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`. The remaining
-pre-dispatch owner gate is the exact Team Name; Team ID `2FKVFS8X67` is recorded. After
-the Team Name is recorded, the Product Manager must revise the prompt with a new exact
-base and explicitly unblock it before a worktree or Xcode project is created.
+IGC-007 is Ready. Its implementation contract is defined in
+`prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`. The Product Manager must issue the final
+standalone copy with an exact base containing the complete signing identity before the
+specialist creates the required worktree or Xcode project.
 
 The accepted architecture prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
 accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.

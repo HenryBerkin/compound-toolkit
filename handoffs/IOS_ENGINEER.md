@@ -31,10 +31,10 @@ the engine and parity tests.
 Product Manager accepted the persistence choice, single-module and first-party
 dependency policy, direct shared-resource parity gate, and local-free availability
 seam. IGC-D018 fixes the native application bundle identifier as
-`uk.co.mochadesigns.igc`. Product Owner confirmation of the exact Team Name remains
-the gate before project creation. Team ID `2FKVFS8X67` is owner-confirmed; do not use a
-different Team ID, a Personal Team, or placeholder. App Store SKU waits until the App
-Store Connect record; App Groups and iCloud remain absent from 1.0.
+`uk.co.mochadesigns.igc` and records Apple Developer Team Name `Henry Berkin` and Team
+ID `2FKVFS8X67`. Do not use a different Team ID, Team Name, Personal Team, or
+placeholder. App Store SKU waits until the App Store Connect record; App Groups and
+iCloud remain absent from 1.0.
 
 Verification completed: required project/specification/fixture/PWA evidence read;
 official Apple primary sources checked for current upload SDK, data, testing, and
@@ -55,12 +55,12 @@ local-only, no-unapproved-capabilities boundary and treat privacy manifest, expo
 network, storage-protection, and archive assertions as evidence to establish from the
 actual implementation rather than assumed compliance.
 
-IGC-007 is Blocked. Do not create the project until the Product Owner provides the
-exact Team Name and the standalone IGC-007 brief is explicitly unblocked. The
-confirmed Team ID is `2FKVFS8X67`.
+IGC-007 is Ready for dispatch after the Product Manager issues the final standalone
+copy from an exact base containing the complete signing identity. Do not create the
+project on the integration branch.
 
 The prepared implementation contract is
 `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation on
 `0b71bc3fdf7260a48c1751da21c45d78283d3da9`. It is intentionally non-dispatchable:
-the Product Manager must insert the exact Team Name and a new exact base before
+the Product Manager must insert Team Name `Henry Berkin` and a new exact base before
 issuing it. Team ID `2FKVFS8X67` is confirmed.

@@ -11,7 +11,7 @@ Classifications: **Confirmed current requirement**, **App-specific fact**, **Pro
 
 | Gate / owner | Item | Classification | Evidence / status |
 | --- | --- | --- | --- |
-| Before Xcode project — Product Owner | Confirm Apple Developer Team/account ownership, reverse-DNS bundle identifier, provider/legal entity and signing responsibility. | **Partly confirmed / open owner input** | IGC-D018 confirms `uk.co.mochadesigns.igc` and Team ID `2FKVFS8X67`; exact Team Name, provider/legal entity, and signing responsibility remain open. No Personal Team or invented name. **Blocked pending Team Name**. |
+| Before Xcode project — Product Owner | Confirm Apple Developer Team/account ownership and reverse-DNS bundle identifier; retain provider/legal entity and final signing responsibility for the release record. | **Project identity confirmed / open release input** | IGC-D018 confirms `uk.co.mochadesigns.igc`, Team Name `Henry Berkin`, and Team ID `2FKVFS8X67`. The native project identity gate is complete. Provider/legal entity and final signing responsibility remain open for release operations; no different team is authorised. |
 | Before Xcode project — Product Owner / PM | Decide App Store SKU convention (do not create record yet), category options, copyright owner/year, territories, support and privacy-policy owner/URLs. | **Open owner input** | Decision log/approved URLs. **Open**. |
 | Before Xcode project — PM / Legal | Approve positioning and disclaimer strategy; assess UK/territory financial-promotion, advice, terminology/preset and trader-status risks. | **Legal/regulatory review recommended** | Counsel/owner disposition; approved copy boundaries. **Open**. |
 | Before Xcode project — iOS Engineer | Recheck current Apple upload SDK requirement; plan iOS 17 deployment target separately; identify iPhone-primary/adaptive iPad device support. | **Release-time verification** | Dated Apple link and project-settings review. **Open**. |
@@ -50,9 +50,9 @@ Apple currently requires a public privacy-policy URL for iOS, accurate metadata,
 
 ### Owner inputs
 
-- Apple Developer Team Name, provider/legal entity, and signing ownership. Bundle
-  identifier `uk.co.mochadesigns.igc` and Team ID `2FKVFS8X67` are confirmed in
-  IGC-D018.
+- Provider/legal entity and final signing ownership. Bundle identifier
+  `uk.co.mochadesigns.igc`, Team Name `Henry Berkin`, and Team ID `2FKVFS8X67` are
+  confirmed in IGC-D018.
 - App Store SKU, provider/legal entity, copyright, category, territories and EU trader status if relevant.
 - Support, privacy-policy and optional marketing URLs plus support contact.
 - Final age-rating questionnaire responses and release mode.
@@ -78,7 +78,7 @@ Before project creation, TestFlight, and final submission recheck Apple’s App 
 
 | Risk / decision | Owner / timing | Impact | Mitigation and evidence needed |
 | --- | --- | --- | --- |
-| Team Name / signing owner unresolved; bundle ID and Team ID confirmed | Product Owner; before Xcode project | Cannot create the correctly owned project/archive until the team identity is complete | IGC-D018 records `uk.co.mochadesigns.igc` and `2FKVFS8X67`; written Team Name and signing-owner decision must follow, then project and signed archive must match. |
+| Provider/legal entity and final signing owner unresolved; project identity confirmed | Product Owner; before App Store record/release | Project work can begin, but distribution ownership/metadata could be wrong if guessed | IGC-D018 records `uk.co.mochadesigns.igc`, `Henry Berkin`, and `2FKVFS8X67`; approve provider/legal entity and release signing responsibility before record/archive distribution. |
 | SKU / provider / copyright unresolved | Product Owner; before App Store Connect record | Immutable SKU/publisher metadata could be wrong | Approved record inputs before creation. |
 | Privacy/support URLs absent | Product Owner/PM; before TestFlight/release | Required metadata blocked; no reliable user contact | Public reachable pages, correct entity/contact, policy/UI/App Privacy consistency. |
 | Finance category/positioning and financial-promotion/advice boundary | PM/Legal; before public copy or territory choice | App Review ambiguity; legal/regulatory exposure | Legal review, final claims/preset/“APR” review; reviewer note; no advice/guarantee/regulated-service implication. |

@@ -3,18 +3,19 @@
 Status: **Prepared, blocked — do not dispatch or begin implementation**
 
 This brief records the intended IGC-007 implementation contract. It is not executable
-authorisation while the Apple Developer Programme activation is pending. Before this
-prompt is pasted into a specialist task, the Product Manager must:
+authorisation while the exact Apple Developer Team Name is pending. Team ID
+`2FKVFS8X67` is owner-confirmed. Before this prompt is pasted into a specialist task,
+the Product Manager must:
 
-1. record the owner-provided Apple Developer Team Name and Apple-assigned Team ID in
-   `DECISIONS.md`, `PROJECT_STATUS.md`, and the relevant handoffs;
-2. replace both blocking markers below with those exact values;
+1. record the owner-provided Apple Developer Team Name in `DECISIONS.md`,
+   `PROJECT_STATUS.md`, and the relevant handoffs;
+2. replace the remaining Team Name marker below with that exact value;
 3. replace the preparation base with the new exact commit containing that decision;
 4. change the task status from Blocked to Ready and explicitly issue the revised
    prompt.
 
-Do not create an Xcode project, use a Personal Team, infer a Team ID, or begin native
-implementation from this prepared copy.
+Do not create an Xcode project, use a Personal Team, infer a Team Name, substitute a
+different Team ID, or begin native implementation from this prepared copy.
 
 ## Dispatch metadata
 
@@ -23,14 +24,15 @@ implementation from this prepared copy.
 - Recommended reasoning effort: `xhigh`
 - Repository: `HenryBerkin/compound-toolkit`
 - Preparation base commit:
-  `ef7e3914362df0bfb571fb0180c7216fbbe1cdaa`
-- Exact implementation base commit: **BLOCKED — PM MUST INSERT AFTER TEAM DECISION**
+  `0b71bc3fdf7260a48c1751da21c45d78283d3da9`
+- Exact implementation base commit:
+  **BLOCKED — PM MUST INSERT AFTER TEAM NAME DECISION**
 - Worktree: required after the dispatch gate is cleared
 - Worktree path: `/private/tmp/igc-007-native-vertical-slice`
 - Branch: `codex/igc-007-native-vertical-slice`
 - Application bundle identifier: `uk.co.mochadesigns.igc`
-- Apple Developer Team Name: **BLOCKED — PENDING PROGRAMME ACTIVATION**
-- Apple Developer Team ID: **BLOCKED — PENDING PROGRAMME ACTIVATION**
+- Apple Developer Team Name: **BLOCKED — PENDING OWNER CONFIRMATION**
+- Apple Developer Team ID: `2FKVFS8X67`
 
 When this brief is reissued, create the isolated worktree and named branch from the
 exact implementation base. Do not work on or merge into
@@ -93,8 +95,8 @@ SDK, and macOS versions actually used; do not silently weaken either requirement
 - Shorthand and icon identity: `IGC`.
 - Optional long-form marketing name: `IGC — Investment Growth Calculator`.
 - Application bundle identifier: `uk.co.mochadesigns.igc`.
-- The application target must use the exact Team ID supplied in the reissued brief.
-  Do not use a Personal Team, placeholder, wildcard App ID, or a different namespace.
+- The application target must use Team ID `2FKVFS8X67`. Do not use a Personal Team,
+  placeholder, wildcard App ID, different Team ID, or different namespace.
 - Native 1.0 uses UK English and GBP only. Scenario-compatible data identifies GBP
   explicitly even though additional currencies are not exposed.
 - Minimum deployment target: iOS 17.
@@ -148,7 +150,7 @@ Create one conventional Xcode project with:
 - display name `Investment Growth Calculator`;
 - application bundle identifier `uk.co.mochadesigns.igc`;
 - conventional test bundle identifiers derived under the same namespace;
-- the exact Apple Developer Team ID from the reissued brief;
+- Apple Developer Team ID `2FKVFS8X67`;
 - automatic signing for the application target, without portal or App Store actions;
 - marketing version `1.0` and development build number `1`;
 - iOS 17 as the deployment target;

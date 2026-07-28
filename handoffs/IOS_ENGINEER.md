@@ -61,6 +61,6 @@ confirmed Team ID is `2FKVFS8X67`.
 
 The prepared implementation contract is
 `prompts/IGC-007-NATIVE-VERTICAL-SLICE.md`, based for preparation on
-`ef7e3914362df0bfb571fb0180c7216fbbe1cdaa`. It is intentionally non-dispatchable:
+`0b71bc3fdf7260a48c1751da21c45d78283d3da9`. It is intentionally non-dispatchable:
 the Product Manager must insert the exact Team Name and a new exact base before
 issuing it. Team ID `2FKVFS8X67` is confirmed.

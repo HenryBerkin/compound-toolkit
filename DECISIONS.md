@@ -316,3 +316,58 @@
   `2FKVFS8X67` are confirmed. The owner-controlled project signing identity is
   complete, so the Product Manager may issue IGC-007 from an exact base containing
   this update.
+
+## IGC-D019 — Accept the IGC-007 physical-device gate with a supported-debugger limitation
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: the owner used Xcode 26.2 to development-sign and install the integrated
+  IGC-007 build on an iPhone running iOS 27.0. Xcode-attached launch produced debugger
+  and logging failures, while direct launch from the installed Home Screen icon
+  succeeded and every requested manual smoke item passed. Apple’s current Xcode
+  compatibility table lists Xcode 26.2 device support through iOS 26.2 and Xcode 27
+  device support for iOS 27.
+- Decision: pass the IGC-007 physical-device gate for signing, installation, direct
+  launch, and manual app behaviour. Classify debugger-attached execution as skipped
+  because the Xcode 26.2/iOS 27 pairing is outside Apple’s documented device-support
+  range, not as an established IGC defect. Do not introduce `IDEPreferLogStreaming`,
+  signing, capability, entitlement, or other project workarounds without separate
+  evidence.
+- Future-debugging rule: use a maintained Xcode version whose documented device-support
+  range includes the target OS—currently Xcode 27 for iOS 27 on a compatible Mac—or
+  use a physical device supported by the maintained project toolchain. Do not install
+  or switch toolchains merely to close this completed gate.
+- Additional observation: returning to Calculator after another tab preserves the
+  Calculator stack and scroll position. This is accepted behaviour under the separate
+  tab-root design, not shared cross-tab scroll state or a defect.
+- Evidence: unchanged bundle/team identity; successful development signing and install;
+  direct Home Screen launch; complete requested physical smoke pass; expected
+  non-persistent relaunch; Apple compatibility table rechecked 2026-07-28 at
+  `https://developer.apple.com/xcode/system-requirements`.
+- Consequences: IGC-012 may proceed from a new exact Product Manager base. A future
+  release candidate still requires debugger/device evidence on a supported pairing,
+  broader release QA, and archive/privacy/submission gates.
+
+## IGC-D020 — Authorise native scenario lifecycle as the next engineering milestone
+
+- Date: 2026-07-28
+- Status: Accepted
+- Context: IGC-007 is accepted, integrated, and has passed its physical-device gate.
+  The next dependency in IGC-D014’s delivery order is native scenario lifecycle; the
+  current Saved tab remains an intentional placeholder and the app does not yet retain
+  user scenarios.
+- Decision: make IGC-012 **Ready** for an iOS Engineer to implement the exact V1
+  actor-backed Codable Application Support store and save/load/rename/duplicate/delete/
+  recovery lifecycle defined in `TASKS.md`. Use the deterministic editable suggestion
+  `<N>-year projection` for whole-year durations and `<N>-month projection` otherwise.
+- Sequencing: store-level deliberate recovery/reset support belongs in IGC-012. The
+  Settings-wide **Delete all app data** flow remains in the later secondary-content
+  milestone so it can reset scenarios, appearance, onboarding, calculator, and
+  navigation together rather than pretending that not-yet-implemented stores exist.
+- Alternatives: implement all secondary content and preferences in the persistence
+  task; omit recovery until later; begin TestFlight work from the non-persistent
+  vertical slice.
+- Consequences: IGC-012 must not add comparison, export, networking, accounts, premium,
+  App Store operations, or change shared calculation/schema meaning. It uses an
+  isolated worktree and stops at Ready for review. The earlier prompt based on
+  `212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn and must not be dispatched.

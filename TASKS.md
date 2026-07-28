@@ -289,3 +289,60 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Verification: formal accepted decision and separately scoped implementation tasks.
 - Unresolved questions: premium feature set, pricing, one-time purchase versus
   subscription, web commercial model, and account strategy.
+
+## IGC-012 — Implement native scenario lifecycle and persistence
+
+- Owner: iOS Engineer
+- Status: Ready
+- Priority: P1
+- Platform: iOS
+- Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-007, IGC-008, IGC-009;
+  physical-device gate accepted in IGC-D019
+- Affected: `igc-ios/`, `docs/PRIVACY.md`, `handoffs/IOS_ENGINEER.md`, task/status
+  records
+- Objective: add the accepted native V1 scenario model and actor-backed Codable
+  Application Support store, then deliver save, load, rename, duplicate, delete,
+  relaunch persistence, and truthful storage-recovery behaviour without changing the
+  accepted calculation contract.
+- Acceptance criteria:
+  - Native records map exactly to `shared/schemas/scenario-v1.schema.json`, including
+    V1, opaque UUID identity, explicit GBP, canonical inputs, truthful `presetId`,
+    optional target, and UTC timestamps.
+  - A narrow `ScenarioStore` protocol and actor-backed Codable implementation serialise
+    reads/mutations in private Application Support, use temporary-write/atomic
+    replacement, retain the last readable document, apply appropriate data protection,
+    and distinguish empty, unavailable/protected, corrupt, and unsupported states.
+  - Projection supports **Save** and loaded scenarios support **Save as new**; neither
+    overwrites. Saved supports deterministic updated/created/id ordering, load, rename,
+    duplicate, and confirmed delete with accurate success/failure feedback.
+  - Loading validates before changing Calculator, never changes timestamps, and treats
+    an otherwise-valid preset mismatch as Custom without mutating the record.
+  - Corrupt/unsupported source is preserved under the accepted recovery policy; no
+    error presents false success, false empty state, partial decode, or partial load.
+  - Store/unit/integration/UI coverage implements the applicable `IOS-STORE-001–016`
+    inventory, relaunch persistence, failure injection, accessibility, offline
+    behaviour, and unchanged 27/27 calculation-fixture parity.
+  - Actual API/dependency/privacy-manifest impact is inventoried and documented; the
+    implementation remains first-party, local-only, and free.
+- PM-approved save-name suggestion: use `<N>-year projection` for an exact whole-year
+  duration and `<N>-month projection` otherwise; it remains editable and schema
+  validated.
+- Explicit exclusions: Settings-wide **Delete all app data**, appearance/onboarding
+  persistence, complete secondary content, native comparison, monthly UI, CSV/import/
+  export/share, PWA migration, multi-currency, accounts, sync, networking, analytics,
+  premium, StoreKit, TestFlight, App Store records, upload, and submission.
+- Verification: full Swift unit/UI suite, direct root-fixture gate, Debug and Release
+  simulator builds, clean-install/relaunch/offline/recovery evidence, privacy and
+  dependency inventory, `git diff --check`, and honest failed/skipped reporting.
+- Required completion handoff: update `handoffs/IOS_ENGINEER.md` with exact base,
+  branch/head commits, store/envelope/mapping and recovery behaviour, files changed,
+  every check and environment, privacy/dependency findings, skips/limitations, review
+  instructions, rollback guidance, and clean-worktree confirmation; stop at
+  **Ready for review** without push or merge.
+- Specialist: iOS Engineer using `gpt-5.6-sol` at `xhigh` reasoning.
+- Branch/worktree: `codex/igc-012-native-scenario-lifecycle` in required isolated
+  worktree `/private/tmp/igc-012-native-scenario-lifecycle`.
+- Dispatch control: the earlier prompt based on
+  `212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn. The Product Manager’s
+  reissued standalone prompt supplies the exact accepted management-update base; if
+  the integration head differs, stop for reissue rather than rebasing or guessing.

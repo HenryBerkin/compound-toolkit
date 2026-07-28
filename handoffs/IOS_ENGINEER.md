@@ -4,6 +4,24 @@
 
 Status: **Done — accepted and integrated**.
 
+### Post-integration Product Manager gate
+
+IGC-D019 records the later owner-run physical-device validation of the unchanged
+integrated build. Xcode 26.2 successfully development-signed and installed it on an
+iOS 27.0 iPhone; direct Home Screen launch and every requested manual smoke item
+passed. Debugger-attached execution is explicitly skipped because Apple documents
+Xcode 26.2 device support only through iOS 26.2. This is not an established IGC defect,
+and no logging, signing, capability, or entitlement workaround is authorised. Future
+attached debugging uses Xcode 27 on a compatible Mac for iOS 27, or a device within the
+maintained Xcode toolchain’s device-support range. The original specialist “physical
+device skipped” statement below remains accurate for the specialist execution phase
+but is superseded for the Product Manager gate by IGC-D019.
+
+IGC-D020 makes IGC-012 native scenario lifecycle **Ready** as the next iOS Engineer
+task. Use only the reissued Product Manager prompt and its exact management-update
+base; the earlier chat prompt based on
+`212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn.
+
 The native vertical slice is implemented on
 `codex/igc-007-native-vertical-slice` in
 `/private/tmp/igc-007-native-vertical-slice`, created from exact base

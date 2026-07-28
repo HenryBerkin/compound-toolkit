@@ -5,16 +5,16 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: Native product contract, architecture, design system, QA inventory, and early
-  release-risk planning accepted; bundle identifier and Apple Developer Team confirmed;
-  the IGC-007 native vertical slice is accepted and integrated.
+- Phase: IGC-007 is accepted, integrated, signed, installed, and manually validated on
+  a physical iPhone; IGC-012 native scenario lifecycle is approved and Ready.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
 - Verified structural migration commit: `78f2415`.
 - Native implementation: IGC-007 Calculator-to-Projection vertical slice integrated
-  into `project/ios-migration-audit`.
+  into `project/ios-migration-audit` and passed its physical-device gate under
+  IGC-D019.
 - PWA status: supported IGC web edition and behavioural reference; maintenance may
   continue alongside the native client.
 - Public product/App Store name: **Investment Growth Calculator**.
@@ -97,8 +97,22 @@ retaining GBP. Release inspection found no third-party SDK, network, persistence
 analytics, entitlement, collected-data, tracking, or required-reason API surface, so
 no privacy manifest is required for this slice.
 
-The accepted architecture prompt is `prompts/IGC-004-IOS-ARCHITECTURE.md`. Its exact
-accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
+The owner then used Xcode 26.2 to sign and install the unchanged integrated application
+on an iPhone running iOS 27.0. Direct launch from the installed Home Screen icon and
+every requested manual smoke item passed, including calculations, validation, chart,
+navigation, accessibility, offline operation, and expected non-persistent relaunch.
+Calculator scroll position remained local to its tab as specified. Debugger-attached
+launch was skipped because Apple documents Xcode 26.2 device support only through iOS
+26.2; the initial debugger failures are not an established IGC defect. IGC-D019 records
+the accepted gate and future compatible-toolchain/device rule.
+
+IGC-012 is Ready under IGC-D020 as the next engineering milestone. It adds the accepted
+native V1 scenario model, actor-backed Codable Application Support store, save/load/
+rename/duplicate/delete lifecycle, recovery states, and persistence tests. It does not
+add global settings reset, appearance/onboarding persistence, comparison, export,
+networking, premium, TestFlight, or App Store work. The earlier chat prompt based on
+`212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn; only the reissued prompt
+using the exact management-update base may be dispatched.
 
 ## Known issues and deferred work
 
@@ -110,5 +124,9 @@ accepted base is `3bf1e517636d543e368b610b8a006cafd271e836`.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.
 - Current PWA saved records predate explicit `schemaVersion`, `currency`, and
   `presetId`; a Web migration must be scoped and tested before changing localStorage.
+- Debugger-attached physical execution on the owner’s iOS 27.0 device is unavailable
+  with Xcode 26.2. Use Xcode 27 on a compatible Mac or a device within the maintained
+  Xcode toolchain’s documented device-support range when attached debugging is needed;
+  no project workaround is authorised without separate evidence.
 - Premium features, pricing, purchase type, entitlement sharing, and account strategy
   remain deliberately deferred and excluded from implementation.

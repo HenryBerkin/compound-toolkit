@@ -36,6 +36,10 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   `dc521186d9d0f30add2f45c06cb02d6d98d35195`.
 - Implemented IGC-007’s first-party SwiftUI Calculator-to-Projection vertical slice,
   pure fixture-parity core, annual detail, accessibility alternatives, and native tests.
+- Recorded the successful IGC-007 physical-device signing, installation, direct-launch,
+  and manual smoke gate, with debugger-attached execution explicitly skipped for the
+  unsupported Xcode 26.2/iOS 27 pairing.
+- Added and approved IGC-012 for native V1 scenario lifecycle and persistence.
 
 ### Changed
 
@@ -67,7 +71,13 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   IGC-D018 while keeping the owner-controlled signing identity as a pre-dispatch gate.
 - Recorded owner-confirmed Apple Developer Team ID `2FKVFS8X67`; the exact Team Name
   `Henry Berkin` completes the pre-dispatch signing identity for IGC-007.
+- Accepted the physical-device gate under IGC-D019 and fixed the future attached-debug
+  boundary to a documented compatible Xcode/device pairing without project workarounds.
+- Authorised IGC-012 under IGC-D020 and withdrew the earlier prompt based on
+  `212cf6056bd37ca22d5aff9db542f9aab4acdd19`.
 
 ### Not changed
 
 - PWA calculation logic, workflows, styling, storage keys, dependencies, and licence.
+- Native IGC-007 source, signing settings, capabilities, entitlements, and shared Xcode
+  scheme formatting; Xcode’s incidental scheme-only reformat was discarded.

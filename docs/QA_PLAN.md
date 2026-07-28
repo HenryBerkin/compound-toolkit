@@ -1,8 +1,9 @@
 # IGC behavioural QA inventory
 
-Status: Accepted under IGC-D015
+Status: Accepted under IGC-D015; implementation evidence updated through IGC-D019
 Task: IGC-006 — Shared / iOS / Web
-Scope: quality planning only; this file does not claim execution of future native tests.
+Scope: behavioural inventory plus explicitly recorded implementation evidence; planned
+rows remain planned unless a dated task/gate says otherwise.
 
 ## 1. Strategy, language, and evidence
 
@@ -177,9 +178,11 @@ All scenario tests assert schema V1 meaning: opaque stable ID (new native UUID),
 
 `IOS-DEF-001–004` and `REL-SCOPE-001–004` verify absence/non-promotion of native comparison, monthly UI/CSV, accounts/sync/network/analytics/StoreKit/remote flags, and locked states. These are scope tests, not parity failures. Web service-worker lifecycle, install/update, and responsive navigation are platform behaviours, not native requirements.
 
-## 8. Native feature and navigation inventory (planned, unexecuted)
+## 8. Native feature and navigation inventory
 
-No iOS source/project/test exists at this plan's evidence date. Later implementation maps the following to Swift Testing, XCTest/XCUI, simulator, and device evidence:
+IGC-007 now implements the Calculator-to-Projection, annual-detail, tab-navigation,
+fixture, and local-free portions below. IGC-012 owns the still-planned scenario/store
+portions; later milestones own secondary content and release evidence:
 
 - `IOS-NAV-001–006`: Calculator, Saved scenarios, Education, Settings/About tabs; typed routes; Calculator → Results → Annual detail; saved-scenario load; tab switching retains feature-local draft state without stale result leakage.
 - `IOS-UI-001–006`: draft text separate from canonical values; invalid errors/focus/recovery; validated results snapshot; annual-only detail; save/rename/delete confirmation/recovery; no local-free feature locked.
@@ -211,7 +214,22 @@ Known findings remain visible risk records: disabled pinch zoom (`WEB-A11Y-011`)
 
 ## 11. Environment and compatibility recommendations
 
-Recheck current Xcode/SDK/App Store upload requirements immediately before native implementation/release; accepted runtime minimum remains iOS 17. Use representative small/standard/large iPhone simulator classes and iPad compact/regular width, not a frozen marketing-device list, plus at least one physical-device smoke category. Exercise en-GB/GBP and a non-UK system locale without changing the GBP contract, multiple time zones for UTC timestamp handling, light/dark, clean install, upgrade/migration, relaunch, offline, unavailable storage, and protected-storage conditions.
+Recheck current Xcode/SDK/App Store upload requirements immediately before native
+implementation/release; accepted runtime minimum remains iOS 17. Apple’s compatibility
+table separates deployment target from physical device support. The IGC-007 physical
+gate signed and installed with Xcode 26.2 on iOS 27.0, but attached debugging was
+skipped because Xcode 26.2 documents device support only through iOS 26.2. Future
+attached physical debugging requires a maintained Xcode whose range contains the
+device OS—currently Xcode 27 for iOS 27 on a compatible Mac—or a device within the
+maintained Xcode toolchain’s range. Do not treat an unsupported debugger pairing as an
+app failure or add project workarounds without separate evidence.
+
+Use representative small/standard/large iPhone simulator classes and iPad compact/
+regular width, not a frozen marketing-device list, plus at least one physical-device
+smoke category. Exercise en-GB/GBP and a non-UK system locale without changing the GBP
+contract, multiple time zones for UTC timestamp handling, light/dark, clean install,
+upgrade/migration, relaunch, offline, unavailable storage, and protected-storage
+conditions.
 
 For Web, recommended categories are current stable Safari (including iOS), Chromium (Chrome/Edge), and Firefox at desktop/mobile responsive widths, with clean profile, existing storage, private/restricted storage where feasible, offline/update and browser zoom/keyboard checks. Product Manager must approve the actual browser support policy before it becomes a release rule.
 
@@ -240,24 +258,30 @@ Fixture/specification changes require an accepted Shared decision, compatibility
 
 | Gate | Objective exit evidence | Current state |
 | --- | --- | --- |
-| Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Architecture, design, and QA inventory accepted; bundle/team owner inputs pending. |
-| Calculation-core parity | Both V1 consumers, every fixture/schema/checkpoint/validation and invariants pass; raw tolerance evidence. | TypeScript evidence exists; Swift unimplemented. |
-| Vertical slice | Native validated draft → raw result → annual accessible alternative; local-free/offline and fixture gate. | Planned. |
+| Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Passed: architecture/design/QA accepted; bundle, Team Name, and Team ID implemented and development-signed. |
+| Calculation-core parity | Both V1 consumers, every fixture/schema/checkpoint/validation and invariants pass; raw tolerance evidence. | Passed for V1: Web 85-test evidence and native 27/27 accepted fixture/unit/UI evidence. |
+| Vertical slice | Native validated draft → raw result → annual accessible alternative; local-free/offline and fixture gate. | Passed under IGC-007/IGC-D019: simulator matrix plus signed physical install/direct launch/manual smoke. Debugger-attached execution skipped on unsupported Xcode 26.2/iOS 27 pairing. |
 | Scenario lifecycle | V1 CRUD, atomic/recovery/failure/reset/relaunch evidence and truthful backup wording. | Planned. |
-| Accessibility readiness | Automated/simulator/device/VoiceOver/manual evidence; Dynamic Type/adaptive/contrast/motion/keyboard findings resolved or accepted. | Planned. |
+| Accessibility readiness | Automated/simulator/device/VoiceOver/manual evidence; Dynamic Type/adaptive/contrast/motion/keyboard findings resolved or accepted. | Partial: IGC-007 simulator/accessibility suite and requested physical smoke passed; feature-complete and release-candidate evidence remains open. |
 | Web regression | Supported PWA passes; known defects/vulnerabilities/deployment risk triaged with owner/exception. | Historical audit/85-test evidence; rerun for change/release. |
 | TestFlight/release candidate | iOS parity/regression/device/offline/recovery/privacy evidence, no unresolved release blockers, approved known-issue list. | Planned. |
 | App Store/privacy readiness | IGC-008 current official review, approved disclosures/URLs/metadata, current SDK/upload/signing evidence. | Planned; not a compliance claim. |
 
 ### Current evidence versus planned evidence
 
-Current evidence is documentary/PWA-only: accepted V1 specs/schemas/fixtures, direct
-TypeScript fixture consumer reported as 27 tests alongside 58 existing tests (85),
-historical lint/build/browser audit, and documented PWA risks. This task executes no
-native implementation or native tests and does not rerun/certify historical PWA checks.
-All `IOS-*` execution and future manual/device/App Store evidence remains planned.
+Current evidence includes accepted V1 specs/schemas/fixtures; direct TypeScript fixture
+consumer reported as 27 tests alongside 58 existing tests (85); historical PWA
+lint/build/browser evidence; and accepted IGC-007 native evidence. Native evidence is
+27/27 fixture/unit/UI tests, Debug/Release simulator builds, representative iPhone/iPad
+and accessibility/locale runs, plus successful development signing, physical
+installation, direct launch, and requested manual smoke on iOS 27.0. The attached
+debugger attempt is explicitly skipped under IGC-D019 because Xcode 26.2 supports
+devices only through iOS 26.2. Scenario lifecycle, feature-complete accessibility,
+privacy/archive, TestFlight, and App Store evidence remain planned.
 
 Product Manager/Technical Lead review accepted this inventory and traceability under
-IGC-D015. IGC-D017 design assertions are now incorporated as planned native evidence;
-IGC-008 remains the authority for current privacy/submission evidence. Known Web
-defects still require separate prioritisation.
+IGC-D015. IGC-D017 assertions are partly evidenced by IGC-007 and remain requirements
+for future feature/release gates. Calculator scroll retention after switching tabs is
+expected feature-local state under the accepted design, not a defect. IGC-008 remains
+the authority for privacy/submission evidence. Known Web defects still require separate
+prioritisation.

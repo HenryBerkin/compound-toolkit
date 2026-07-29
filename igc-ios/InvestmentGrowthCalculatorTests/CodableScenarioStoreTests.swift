@@ -156,6 +156,93 @@ final class CodableScenarioStoreTests: XCTestCase {
         await assertAvailable(store, expectedIDs: [])
     }
 
+    func testChangedCorruptSourceGetsDistinctEvidenceBeforeReset() async throws {
+        let corruptSourceA = Data("{\"source\":\"A\"".utf8)
+        let corruptSourceB = Data("{\"source\":\"B\"".utf8)
+        try writeRaw(corruptSourceA)
+        let store = makeStore()
+
+        guard case let .corrupt(firstEvidence) = await store.snapshot() else {
+            return XCTFail("Expected first corrupt state")
+        }
+        XCTAssertTrue(firstEvidence.sourcePreserved)
+        XCTAssertEqual(try recoveryFileContents(), Set([corruptSourceA]))
+
+        try writeRaw(corruptSourceB)
+        let reset = try await store.resetAfterRecovery()
+
+        XCTAssertTrue(reset.isEmpty)
+        XCTAssertEqual(
+            try recoveryFileContents(),
+            Set([corruptSourceA, corruptSourceB])
+        )
+        await assertAvailable(store, expectedIDs: [])
+    }
+
+    func testSecondCorruptionAfterResetAndValidStoreGetsNewEvidence() async throws {
+        let corruptSourceA = Data("{\"episode\":1".utf8)
+        let corruptSourceB = Data("{\"episode\":2".utf8)
+        try writeRaw(corruptSourceA)
+        let store = makeStore()
+
+        guard case let .corrupt(firstEvidence) = await store.snapshot() else {
+            return XCTFail("Expected first corrupt state")
+        }
+        XCTAssertTrue(firstEvidence.sourcePreserved)
+        _ = try await store.resetAfterRecovery()
+        _ = try await store.create(
+            scenario(id: "valid", name: "Valid between episodes", seconds: 10)
+        )
+
+        try writeRaw(corruptSourceB)
+        guard case let .corrupt(secondEvidence) = await store.snapshot() else {
+            return XCTFail("Expected second corrupt state")
+        }
+        XCTAssertTrue(secondEvidence.sourcePreserved)
+        XCTAssertEqual(
+            try recoveryFileContents(),
+            Set([corruptSourceA, corruptSourceB])
+        )
+
+        let secondReset = try await store.resetAfterRecovery()
+        XCTAssertTrue(secondReset.isEmpty)
+        await assertAvailable(store, expectedIDs: [])
+    }
+
+    func testLaterSourcePreservationFailurePreventsResetAndLeavesSourceUnchanged() async throws {
+        let corruptSourceA = Data("{\"preserved\":\"A\"".utf8)
+        let corruptSourceB = Data("{\"unpreserved\":\"B\"".utf8)
+        try writeRaw(corruptSourceA)
+
+        var failures = ScenarioStoreFailureInjection.none
+        failures.recoveryCopyFailureAfterSuccessfulCopies = 1
+        let store = makeStore(failures: failures)
+
+        guard case let .corrupt(firstEvidence) = await store.snapshot() else {
+            return XCTFail("Expected first corrupt state")
+        }
+        XCTAssertTrue(firstEvidence.sourcePreserved)
+
+        try writeRaw(corruptSourceB)
+        guard case let .corrupt(secondEvidence) = await store.snapshot() else {
+            return XCTFail("Expected second corrupt state")
+        }
+        XCTAssertFalse(secondEvidence.sourcePreserved)
+
+        do {
+            _ = try await store.resetAfterRecovery()
+            XCTFail("Expected later-source preservation failure")
+        } catch {
+            XCTAssertEqual(
+                error as? ScenarioStoreError,
+                .recoveryPreservationFailed
+            )
+        }
+
+        XCTAssertEqual(try Data(contentsOf: documentURL), corruptSourceB)
+        XCTAssertEqual(try recoveryFileContents(), Set([corruptSourceA]))
+    }
+
     func testUnavailableOrProtectedStorageIsDistinctFromEmpty() async {
         var failures = ScenarioStoreFailureInjection.none
         failures.unavailableOnRead = true
@@ -317,11 +404,15 @@ final class CodableScenarioStoreTests: XCTestCase {
     }
 
     private func writeRaw(_ string: String) throws {
+        try writeRaw(Data(string.utf8))
+    }
+
+    private func writeRaw(_ data: Data) throws {
         try FileManager.default.createDirectory(
             at: directoryURL,
             withIntermediateDirectories: true
         )
-        try Data(string.utf8).write(to: documentURL)
+        try data.write(to: documentURL)
     }
 
     private func recoveryFiles() throws -> [URL] {
@@ -333,6 +424,10 @@ final class CodableScenarioStoreTests: XCTestCase {
             at: recoveryURL,
             includingPropertiesForKeys: nil
         )
+    }
+
+    private func recoveryFileContents() throws -> Set<Data> {
+        try Set(recoveryFiles().map { try Data(contentsOf: $0) })
     }
 
     private func assertAvailable(

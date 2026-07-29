@@ -129,6 +129,7 @@ struct ScenarioStoreFailureInjection: Sendable {
     var replacementFailure = false
     var reloadAfterMutationFailure = false
     var recoveryCopyFailure = false
+    var recoveryCopyFailureAfterSuccessfulCopies: Int?
 
     static let none = ScenarioStoreFailureInjection()
 }

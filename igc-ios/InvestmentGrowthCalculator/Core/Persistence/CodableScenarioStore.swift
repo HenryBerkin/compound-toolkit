@@ -4,7 +4,7 @@ actor CodableScenarioStore: ScenarioStore {
     private let configuration: ScenarioStoreConfiguration
     private let failures: ScenarioStoreFailureInjection
     private let fileManager: FileManager
-    private var recoveryCopyURL: URL?
+    private var successfulRecoveryCopyCount = 0
 
     init(
         configuration: ScenarioStoreConfiguration = .applicationSupport,
@@ -114,21 +114,27 @@ actor CodableScenarioStore: ScenarioStore {
     }
 
     func resetAfterRecovery() async throws -> ReadableScenarioSnapshot {
+        let preservedSource: Data
         do {
             _ = try readSnapshot()
             throw ScenarioStoreError.recoveryResetNotRequired
         } catch let failure as DocumentReadFailure {
             switch failure {
             case .corrupt, .unsupported:
-                guard preserveRecoveryEvidence().sourcePreserved else {
+                guard let source = preserveCurrentRecoverySource(),
+                      currentDocumentMatches(source) else {
                     throw ScenarioStoreError.recoveryPreservationFailed
                 }
+                preservedSource = source
             case .unavailable:
                 throw ScenarioStoreError.unavailable
             }
         }
 
-        try write(scenarios: [])
+        try write(
+            scenarios: [],
+            replacingRecoverySource: preservedSource
+        )
         return try verifiedReload()
     }
 
@@ -256,7 +262,10 @@ actor CodableScenarioStore: ScenarioStore {
         return ReadableScenarioSnapshot(scenarios: envelope.scenarios)
     }
 
-    private func write(scenarios: [ScenarioV1]) throws {
+    private func write(
+        scenarios: [ScenarioV1],
+        replacingRecoverySource expectedRecoverySource: Data? = nil
+    ) throws {
         let envelope = ScenarioStoreEnvelope(
             storeVersion: ScenarioStoreConfiguration.envelopeVersion,
             scenarios: ScenarioOrdering.sorted(scenarios)
@@ -313,6 +322,10 @@ actor CodableScenarioStore: ScenarioStore {
         }
 
         do {
+            if let expectedRecoverySource,
+               !currentDocumentMatches(expectedRecoverySource) {
+                throw ScenarioStoreError.recoveryPreservationFailed
+            }
             if fileManager.fileExists(atPath: documentURL.path) {
                 guard !failures.replacementFailure else {
                     throw ScenarioStoreError.replacementFailed
@@ -361,13 +374,12 @@ actor CodableScenarioStore: ScenarioStore {
     }
 
     private func preserveRecoveryEvidence() -> ScenarioRecoveryEvidence {
-        if recoveryCopyURL != nil {
-            return ScenarioRecoveryEvidence(sourcePreserved: true)
-        }
-        guard !failures.recoveryCopyFailure else {
-            return ScenarioRecoveryEvidence(sourcePreserved: false)
-        }
+        ScenarioRecoveryEvidence(
+            sourcePreserved: preserveCurrentRecoverySource() != nil
+        )
+    }
 
+    private func preserveCurrentRecoverySource() -> Data? {
         do {
             let directory = try preparedDirectory()
             let documentURL = directory.appendingPathComponent(
@@ -375,12 +387,29 @@ actor CodableScenarioStore: ScenarioStore {
                 isDirectory: false
             )
             guard fileManager.fileExists(atPath: documentURL.path) else {
-                return ScenarioRecoveryEvidence(sourcePreserved: false)
+                return nil
             }
+            let sourceData = try Data(contentsOf: documentURL)
             let recoveryDirectory = directory.appendingPathComponent(
                 "Recovery",
                 isDirectory: true
             )
+
+            if recoveryCopyExists(
+                matching: sourceData,
+                in: recoveryDirectory
+            ) {
+                return currentDocumentMatches(sourceData) ? sourceData : nil
+            }
+
+            guard !failures.recoveryCopyFailure else {
+                return nil
+            }
+            if let copyLimit = failures.recoveryCopyFailureAfterSuccessfulCopies,
+               successfulRecoveryCopyCount >= copyLimit {
+                return nil
+            }
+
             try fileManager.createDirectory(
                 at: recoveryDirectory,
                 withIntermediateDirectories: true,
@@ -390,15 +419,70 @@ actor CodableScenarioStore: ScenarioStore {
                 "scenarios-recovery-\(UUID().uuidString).json",
                 isDirectory: false
             )
-            try fileManager.copyItem(at: documentURL, to: destination)
-            try fileManager.setAttributes(
-                [.protectionKey: ScenarioStoreConfiguration.dataProtectionClass],
-                ofItemAtPath: destination.path
-            )
-            recoveryCopyURL = destination
-            return ScenarioRecoveryEvidence(sourcePreserved: true)
+            try writeRecoveryCopy(sourceData, to: destination)
+            guard try Data(contentsOf: destination) == sourceData else {
+                return nil
+            }
+            successfulRecoveryCopyCount += 1
+            return currentDocumentMatches(sourceData) ? sourceData : nil
         } catch {
-            return ScenarioRecoveryEvidence(sourcePreserved: false)
+            return nil
+        }
+    }
+
+    private func recoveryCopyExists(
+        matching sourceData: Data,
+        in recoveryDirectory: URL
+    ) -> Bool {
+        guard let recoveryURLs = try? fileManager.contentsOfDirectory(
+            at: recoveryDirectory,
+            includingPropertiesForKeys: nil
+        ) else {
+            return false
+        }
+        return recoveryURLs.contains { recoveryURL in
+            guard let recoveryData = try? Data(contentsOf: recoveryURL) else {
+                return false
+            }
+            return recoveryData == sourceData
+        }
+    }
+
+    private func currentDocumentMatches(_ sourceData: Data) -> Bool {
+        do {
+            let directory = try preparedDirectory()
+            let documentURL = directory.appendingPathComponent(
+                ScenarioStoreConfiguration.documentFilename,
+                isDirectory: false
+            )
+            return try Data(contentsOf: documentURL) == sourceData
+        } catch {
+            return false
+        }
+    }
+
+    private func writeRecoveryCopy(_ data: Data, to destination: URL) throws {
+        guard fileManager.createFile(
+            atPath: destination.path,
+            contents: nil,
+            attributes: [.protectionKey: ScenarioStoreConfiguration.dataProtectionClass]
+        ) else {
+            throw ScenarioStoreError.recoveryPreservationFailed
+        }
+
+        do {
+            let handle = try FileHandle(forWritingTo: destination)
+            do {
+                try handle.write(contentsOf: data)
+                try handle.synchronize()
+                try handle.close()
+            } catch {
+                try? handle.close()
+                throw error
+            }
+        } catch {
+            try? fileManager.removeItem(at: destination)
+            throw error
         }
     }
 }

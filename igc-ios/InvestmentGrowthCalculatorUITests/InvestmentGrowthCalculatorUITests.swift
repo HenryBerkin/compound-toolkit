@@ -52,6 +52,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["projection.finalBalance"].exists)
         XCTAssertTrue(app.buttons["projection.save"].exists)
         XCTAssertEqual(app.buttons["projection.save"].label, "Save")
+        XCTAssertTrue(waitForEnabled(app.buttons["projection.save"]))
         XCTAssertFalse(app.staticTexts["Monthly detail"].exists)
         XCTAssertFalse(app.buttons["Export"].exists)
         XCTAssertFalse(app.buttons["Compare"].exists)
@@ -305,6 +306,46 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertFalse(app.staticTexts["No saved scenarios"].exists)
     }
 
+    func testProjectionBlocksSaveWithAccessibleReasonForUnusableStores() {
+        let states = [
+            (
+                argument: "-uiUnavailableStore",
+                identifier: "projection.saveState.unavailable",
+                title: "Can’t save while storage is unavailable"
+            ),
+            (
+                argument: "-uiCorruptStore",
+                identifier: "projection.saveState.corrupt",
+                title: "Resolve saved-scenario recovery before saving"
+            ),
+            (
+                argument: "-uiUnsupportedStore",
+                identifier: "projection.saveState.unsupported",
+                title: "Can’t save to the newer saved format"
+            ),
+        ]
+
+        for state in states {
+            let app = launch(arguments: [state.argument])
+            openProjection(in: app)
+
+            let reason = app.descendants(matching: .any)[state.identifier]
+            XCTAssertTrue(
+                reason.waitForExistence(timeout: 5),
+                "Missing Projection reason for \(state.argument)"
+            )
+            XCTAssertTrue(reason.label.contains(state.title))
+            XCTAssertTrue(app.descendants(matching: .any)["projection.finalBalance"].exists)
+            XCTAssertTrue(app.buttons["projection.viewAnnualDetail"].exists)
+
+            let saveButton = app.buttons["projection.save"]
+            XCTAssertTrue(saveButton.exists)
+            XCTAssertFalse(saveButton.isEnabled)
+            XCTAssertFalse(app.textFields["projection.saveSheet.name"].exists)
+            app.terminate()
+        }
+    }
+
     func testCorruptAndUnsupportedRecoveryStatesRemainDistinctAndNonDestructiveFirst() {
         let corruptApp = launch(arguments: ["-uiCorruptStore"])
         tab(named: "Saved", in: corruptApp).tap()
@@ -362,6 +403,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
     private func saveVisibleProjection(as name: String, in app: XCUIApplication) {
         let saveButton = app.buttons["projection.save"]
         XCTAssertTrue(saveButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(waitForEnabled(saveButton))
         saveButton.tap()
 
         let nameField = app.textFields["projection.saveSheet.name"]
@@ -395,6 +437,12 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
     private func waitForLabel(_ label: String, element: XCUIElement) -> Bool {
         let predicate = NSPredicate(format: "label == %@", label)
+        let expectation = expectation(for: predicate, evaluatedWith: element)
+        return XCTWaiter.wait(for: [expectation], timeout: 4) == .completed
+    }
+
+    private func waitForEnabled(_ element: XCUIElement) -> Bool {
+        let predicate = NSPredicate(format: "enabled == true")
         let expectation = expectation(for: predicate, evaluatedWith: element)
         return XCTWaiter.wait(for: [expectation], timeout: 4) == .completed
     }

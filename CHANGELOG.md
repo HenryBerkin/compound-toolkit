@@ -50,6 +50,14 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   content, contextual education, first-launch and appearance preferences, Settings/
   About/Privacy, coordinated local-data reset, accessibility/adaptive coverage, and
   the exact UserDefaults required-reason privacy-manifest boundary.
+- Implemented IGC-013’s bundled offline Education hierarchy, feature-local contextual
+  education, first-launch coach, persisted System/Light/Dark appearance, Settings/
+  About/Privacy, verified Delete all app data coordination, app-only UserDefaults
+  boundary, and exact `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1` app-target
+  privacy manifest. Final evidence is 56/56 unit and 23/23 UI tests plus passing
+  focused iPad, compact accessibility-size Dark Mode, unreachable-proxy offline,
+  Debug, Release, manifest, and static privacy/dependency checks. The task stops at
+  Ready for review; final legal/public Support/Privacy/release work remains open.
 
 ### Changed
 

@@ -386,7 +386,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-013 — Complete native secondary content and preferences
 
 - Owner: iOS Engineer
-- Status: Ready
+- Status: Ready for review
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-007, IGC-008, IGC-009,

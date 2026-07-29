@@ -293,7 +293,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-012 — Implement native scenario lifecycle and persistence
 
 - Owner: iOS Engineer
-- Status: Ready
+- Status: Ready for review
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-007, IGC-008, IGC-009;
@@ -331,9 +331,23 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   persistence, complete secondary content, native comparison, monthly UI, CSV/import/
   export/share, PWA migration, multi-currency, accounts, sync, networking, analytics,
   premium, StoreKit, TestFlight, App Store records, upload, and submission.
-- Verification: full Swift unit/UI suite, direct root-fixture gate, Debug and Release
-  simulator builds, clean-install/relaunch/offline/recovery evidence, privacy and
-  dependency inventory, `git diff --check`, and honest failed/skipped reporting.
+- Verification result (specialist, 2026-07-28/29):
+  - implementation commit
+    `802ff473b9b6a091103591eefd87b79745116f4f` was created from exact accepted base
+    `9b5f17b41d768bf72af12c215b096d2e101962e0`;
+  - 37/37 Swift unit/fixture/store tests and 15/15 UI tests passed on iPhone 17 /
+    iOS 26.2, retaining all 27 accepted IGC-007 tests;
+  - focused iPad Pro 13-inch (M5) adaptive navigation/Saved-root UI smoke passed;
+  - Debug and Release simulator builds, clean-install launch, relaunch persistence,
+    unavailable/corrupt/unsupported/failure-injection coverage, and unreachable-proxy
+    offline-dependency smoke passed;
+  - source/project inventory found no network, analytics, logging, StoreKit, CloudKit,
+    App Group, third-party dependency, collected-data, tracking, or used
+    required-reason API surface, so no privacy manifest was added;
+  - shared contracts/fixtures, PWA, signing, capabilities, and entitlements remain
+    unchanged. Physical-device execution and release archive/privacy-report inspection
+    were skipped as out of specialist scope or unavailable under the accepted
+    Xcode 26.2 / iOS 27 pairing.
 - Required completion handoff: update `handoffs/IOS_ENGINEER.md` with exact base,
   branch/head commits, store/envelope/mapping and recovery behaviour, files changed,
   every check and environment, privacy/dependency findings, skips/limitations, review

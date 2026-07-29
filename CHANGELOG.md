@@ -40,6 +40,12 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   and manual smoke gate, with debugger-attached execution explicitly skipped for the
   unsupported Xcode 26.2/iOS 27 pairing.
 - Added and approved IGC-012 for native V1 scenario lifecycle and persistence.
+- Implemented IGC-012’s exact native V1 scenario mapping, protected actor-backed
+  Codable Application Support store, durable save/Save-as-new, deterministic Saved
+  root, load, rename, duplicate, confirmed delete, non-destructive recovery states,
+  relaunch persistence, accessibility behaviour, and focused store/UI tests without
+  changing shared contracts or adding a dependency, network, sync, analytics, premium,
+  or App Store path.
 
 ### Changed
 

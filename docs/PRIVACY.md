@@ -1,13 +1,18 @@
 # IGC privacy review and release evidence
 
-Status: Accepted planning baseline under IGC-D016 — no native binary has been
-inspected
-Task: IGC-008 (iOS / Shared)
+Status: Accepted planning baseline under IGC-D016 with IGC-012 source and simulator
+build evidence — no signed release archive has been inspected
+Task: IGC-008 (iOS / Shared), implementation evidence from IGC-012
 Checked: 2026-07-28
 
 ## Scope and rule of interpretation
 
-The accepted iOS 1.0 design is local calculation plus actor-backed Codable scenario storage in Application Support. It has no account, backend, sync, CloudKit, App Group, analytics, advertising, tracking, contacts, financial-account connection, sensitive permission, payment, StoreKit, remote configuration, export, or sharing. This is an **app-specific fact**, not yet archive evidence.
+The implemented iOS slice is local calculation plus actor-backed Codable scenario
+storage in private Application Support. Source, project, simulator-build and dependency
+inventory for IGC-012 found no account, backend, sync, CloudKit, App Group, analytics,
+advertising, tracking, contacts, financial-account connection, sensitive permission,
+payment, StoreKit, remote configuration, export, sharing, or network transport. This
+is implementation evidence, not signed-release-archive evidence.
 
 For App Privacy, Apple defines “collect” as transmitting data off device so the developer or third party can access it beyond the time needed to service a real-time request. Data processed only on-device and never sent off-device is not collected for those questionnaire answers. Apple still requires developers to keep answers accurate as practices change. [App Privacy details](https://developer.apple.com/app-store/app-privacy-details/) (confirmed current requirement, checked 2026-07-28).
 
@@ -17,13 +22,13 @@ That definition does not mean local financial-planning information is risk-free 
 
 | Data | Source / purpose | Expected storage / transmission | Retention and deletion | App Privacy position |
 | --- | --- | --- | --- | --- |
-| Starting balance, regular contribution, contribution frequency, APR/growth assumption, inflation, fee, compounding, duration, timing | User input; calculate a hypothetical projection | In-memory calculation; saved only when included in a scenario, in sandboxed Application Support | Draft data until changed/closed; saved data remains until individual deletion/reset all/app uninstall; device backup has its own lifecycle | **App-specific fact:** financial-planning values remain on device; provisionally not “collected.” |
+| Starting balance, regular contribution, contribution frequency, APR/growth assumption, inflation, fee, compounding, duration, timing | User input; calculate a hypothetical projection | In-memory calculation; saved only when included in a scenario, in sandboxed Application Support | Draft data until changed/closed; saved data remains until individual deletion or app uninstall; the Settings-wide reset remains deferred, and device backup has its own lifecycle | **Implementation evidence:** financial-planning values remain on device; provisionally not “collected.” |
 | Optional today-value target | User input; compare result against user goal | Same as calculation/scenario data | Same as above | **App-specific fact:** no transmission planned. |
 | Scenario name | User-created label; scenario management | Codable scenario document; max 120 characters under schema | Individual delete or reset all; recovery copy may remain after corruption until user resolves it | **App-specific fact:** user content remains on device; do not put it in logs/screenshots/support tickets by default. |
 | Preset ID and applied rates | Product selection / reproduce scenario | Codable scenario document; `presetId` can be `null` for Custom | With scenario; removed with it | **App-specific fact:** no transmission planned. |
 | Stable scenario ID and created/updated timestamps | Local identity, ordering, CRUD/recovery | Codable scenario document | With scenario; fresh values on duplicate | **App-specific fact:** identifier is not an account/device ID; no transmission planned. |
 | Appearance, onboarding, app-local selection preferences | User/device choice; present UI | Local app preferences/Application Support or UserDefaults, implementation to decide | Reset scope must be stated; app uninstall removes sandbox data subject to OS backup lifecycle | **App-specific fact:** no transmission planned. |
-| Atomic-write/recovery metadata and unreadable document copy | Prevent data loss and enable user-directed recovery | App sandbox only; exact file naming/access protection not built | Retain only until recovery/reset choice; never silently overwrite sole readable/unreadable evidence | **Release-time verification:** not diagnostics to developer. |
+| Atomic-write/recovery metadata and unreadable document copy | Prevent data loss and enable user-directed recovery | App sandbox only; private `scenarios-v1.store.json` document plus recovery copies under the app’s Application Support area, protected with `FileProtectionType.complete` | Recovery evidence is retained when practical before a deliberate store reset; the unreadable source is not silently treated as empty or overwritten as sole evidence | **IGC-012 implementation evidence:** local recovery material is not diagnostics to the developer. |
 | Crash logs, telemetry, performance data, support diagnostics | Excluded from 1.0 | Must not be added or transmitted | N/A | **App-specific fact:** excluded. Adding any service changes App Privacy answers and requires review. |
 
 **Backup caveat — Product Manager recommendation:** say “saved scenarios are stored on this device” only with a qualification that normal system backups may have a separate Apple/device lifecycle. Do not claim end-to-end encryption, no backup, iCloud sync, or irreversible erasure unless archive/device testing and final policy substantiate it.
@@ -65,6 +70,18 @@ Before the store record is created, the owner must provide a public, owner-contr
 
 ## Data protection and lifecycle QA evidence
 
+IGC-012 implements a private
+`Application Support/InvestmentGrowthCalculator/SavedScenarios` directory and
+`scenarios-v1.store.json` envelope version 1. The actor serialises reads and mutations,
+writes and synchronises a protected temporary document, atomically replaces the
+previous document, and re-reads before reporting success. Deterministic tests prove
+that injected temporary-write and replacement failures preserve the previous readable
+document; corrupt/unsupported input is all-or-recovery and copied before a deliberate
+store reset where practical. Simulator filesystems do not always report an effective
+protection attribute, so release/device validation of effective lock-state behaviour
+remains required even though the implementation requests
+`FileProtectionType.complete`.
+
 | Concern | Classification | Required evidence before release |
 | --- | --- | --- |
 | Application Support and sandbox | **Release-time verification** | Inspect actual storage location and exclude unintended shared containers. Ensure no scenario value is written to UserDefaults, cache, console, analytics, or document-export path contrary to scope. |
@@ -81,13 +98,21 @@ Apple’s current framework requires privacy manifests to report data collection
 
 What can be decided now:
 
-- **App-specific fact:** native 1.0 intends first-party frameworks only, no third-party SDKs, tracking, analytics, ad network or cloud service.
+- **IGC-012 implementation evidence:** the Xcode project has no Swift package product,
+  XCFramework, CocoaPods or other third-party dependency. The implemented persistence
+  uses Foundation `FileManager`, `FileHandle`, `Data`, `JSONEncoder`/`JSONDecoder`,
+  `ISO8601DateFormatter`, `UUID`, `Date`, and `FileProtectionType.complete`.
+- **IGC-012 implementation evidence:** source inventory found no used API in Apple’s
+  required-reason categories and no collection, tracking, analytics, ad network,
+  cloud service, or tracking domain to declare. No `PrivacyInfo.xcprivacy` was added;
+  adding an empty or invented manifest/reason code would not be evidence-based.
 - **Product Manager recommendation:** retain the first-party-only policy unless a later approved exception includes a privacy/supply-chain review.
 
-What cannot be decided now:
+What remains release-time work:
 
-- No `PrivacyInfo.xcprivacy` should be authored from assumptions before a project, source/API calls, and dependencies exist.
-- Required-reason API categories/reason codes, collected-data entries, tracking domains, SDK signatures/manifests, and archive placement must be discovered from the actual release source/archive.
+- Recheck required-reason categories, collected-data entries, tracking domains,
+  dependencies, embedded manifests and archive placement against the eventual signed
+  Release archive. Generate Xcode’s privacy report before upload.
 
 Release procedure: inventory project targets, Swift packages/XCFrameworks and APIs; generate Xcode’s privacy report; validate each manifest and required reason; inspect the archived `.app` contents; compare answers with App Privacy questionnaire/network evidence; document every exception. A new dependency, diagnostics provider, network call, app group, CloudKit, support form, web view, export/share flow, account, or payment feature is a privacy-review trigger.
 

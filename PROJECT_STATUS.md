@@ -106,13 +106,19 @@ launch was skipped because Apple documents Xcode 26.2 device support only throug
 26.2; the initial debugger failures are not an established IGC defect. IGC-D019 records
 the accepted gate and future compatible-toolchain/device rule.
 
-IGC-012 is Ready under IGC-D020 as the next engineering milestone. It adds the accepted
-native V1 scenario model, actor-backed Codable Application Support store, save/load/
-rename/duplicate/delete lifecycle, recovery states, and persistence tests. It does not
-add global settings reset, appearance/onboarding persistence, comparison, export,
-networking, premium, TestFlight, or App Store work. The earlier chat prompt based on
-`212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn; only the reissued prompt
-using the exact management-update base may be dispatched.
+IGC-012 is **Ready for review** under IGC-D020. The specialist implementation is on
+`codex/igc-012-native-scenario-lifecycle` from exact base
+`9b5f17b41d768bf72af12c215b096d2e101962e0`; implementation commit
+`802ff473b9b6a091103591eefd87b79745116f4f` adds the exact native V1 mapping,
+actor-backed Codable Application Support store, save/Save-as-new, deterministic Saved
+root, load, rename, duplicate, confirmed delete, recovery states, and persistence
+coverage. Final evidence is 37/37 unit/fixture/store tests, 15/15 iPhone UI tests, a
+passing focused iPad UI smoke, passing Debug and Release simulator builds, clean
+install/relaunch/offline-dependency checks, and a first-party privacy/dependency/API
+inventory. All 27 accepted IGC-007 tests remain passing. Physical-device execution was
+skipped under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global Settings
+reset, appearance/onboarding persistence, comparison, export, networking, premium,
+TestFlight, archive/upload, and App Store work remain excluded.
 
 ## Known issues and deferred work
 

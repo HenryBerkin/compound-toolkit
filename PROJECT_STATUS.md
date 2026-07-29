@@ -1,6 +1,6 @@
 # IGC project status
 
-Updated: 2026-07-28
+Updated: 2026-07-29
 Owner: Product Manager and Technical Lead
 
 ## Current state
@@ -112,13 +112,20 @@ IGC-012 is **Ready for review** under IGC-D020. The specialist implementation is
 `802ff473b9b6a091103591eefd87b79745116f4f` adds the exact native V1 mapping,
 actor-backed Codable Application Support store, save/Save-as-new, deterministic Saved
 root, load, rename, duplicate, confirmed delete, recovery states, and persistence
-coverage. Final evidence is 37/37 unit/fixture/store tests, 15/15 iPhone UI tests, a
-passing focused iPad UI smoke, passing Debug and Release simulator builds, clean
-install/relaunch/offline-dependency checks, and a first-party privacy/dependency/API
-inventory. All 27 accepted IGC-007 tests remain passing. Physical-device execution was
-skipped under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global Settings
-reset, appearance/onboarding persistence, comparison, export, networking, premium,
-TestFlight, archive/upload, and App Store work remain excluded.
+coverage. Product Manager review requested corrections at
+`be572a2825c4988b67049f21bdf8ea56c151c5c6`; correction commit
+`5d6c757871d82709fab27b20f41c6b50f001c360` now requires exact current-source
+recovery evidence before reset and disables Projection Save with an accessible,
+state-specific reason while storage is loading, unavailable, corrupt, or unsupported.
+Final correction evidence is 40/40 unit/fixture/store tests and 16/16 iPhone UI tests,
+plus passing Debug and Release simulator builds. The normal Save/relaunch/load/Save
+as new/rename/duplicate/delete paths, all 27 accepted IGC-007 tests, and focused
+recovery/Projection regressions pass. The prior focused iPad, clean-install, relaunch,
+and offline-dependency evidence remains recorded in the specialist handoff. The
+first-party privacy/dependency/API inventory is unchanged. Physical-device execution
+was skipped under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global
+Settings reset, appearance/onboarding persistence, comparison, export, networking,
+premium, TestFlight, archive/upload, and App Store work remain excluded.
 
 ## Known issues and deferred work
 

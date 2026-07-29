@@ -334,9 +334,20 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Verification result (specialist, 2026-07-28/29):
   - implementation commit
     `802ff473b9b6a091103591eefd87b79745116f4f` was created from exact accepted base
-    `9b5f17b41d768bf72af12c215b096d2e101962e0`;
-  - 37/37 Swift unit/fixture/store tests and 15/15 UI tests passed on iPhone 17 /
-    iOS 26.2, retaining all 27 accepted IGC-007 tests;
+    `9b5f17b41d768bf72af12c215b096d2e101962e0`; after Product Manager review of
+    `be572a2825c4988b67049f21bdf8ea56c151c5c6`, focused correction commit
+    `5d6c757871d82709fab27b20f41c6b50f001c360` made recovery evidence correspond
+    byte-for-byte to the current source and gated Projection Save from the live store
+    state;
+  - 40/40 Swift unit/fixture/store tests and 16/16 UI tests passed on iPhone 17 /
+    iOS 26.2, retaining all 27 accepted IGC-007 tests and all normal IGC-012 lifecycle
+    paths;
+  - deterministic correction coverage proves changed corrupt sources and a second
+    corruption episode receive distinct evidence, while later-source preservation
+    failure blocks reset and leaves that source unchanged;
+  - unavailable, corrupt, and unsupported Projection states expose accessible reasons,
+    keep review/annual detail usable, and cannot enter the Save flow; normal Save and
+    Save as new remain enabled and passing for an available store;
   - focused iPad Pro 13-inch (M5) adaptive navigation/Saved-root UI smoke passed;
   - Debug and Release simulator builds, clean-install launch, relaunch persistence,
     unavailable/corrupt/unsupported/failure-injection coverage, and unreachable-proxy

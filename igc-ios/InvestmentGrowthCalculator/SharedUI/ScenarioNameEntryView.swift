@@ -143,7 +143,8 @@ struct ScenarioNameEntryView: View {
         case .notFound:
             return "The saved scenario no longer exists."
         case .invalidScenario, .duplicateID,
-             .recoveryPreservationFailed, .recoveryResetNotRequired:
+             .recoveryPreservationFailed, .recoveryResetNotRequired,
+             .eraseAllDataFailed, .eraseAllDataIncomplete:
             return "The change couldn’t be saved. No success was reported."
         }
     }

@@ -67,6 +67,12 @@ struct ProjectionView: View {
                 Text("This projection is based on your assumptions. It is not financial advice or a forecast.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
+                NavigationLink(
+                    "Projection disclaimer",
+                    value: CalculatorRoute.education(.disclaimer)
+                )
+                .frame(minHeight: 44)
+                .accessibilityIdentifier("projection.projectionDisclaimer")
             }
             .padding()
             .frame(maxWidth: 840, alignment: .leading)
@@ -315,6 +321,12 @@ struct ProjectionView: View {
             LabeledContent("Annual fee", value: IGCFormatters.percent(snapshot.input.annualFeeRate))
             LabeledContent("Compounding", value: snapshot.input.compoundFrequency.title)
             LabeledContent("Contribution timing", value: snapshot.input.timing.title)
+            NavigationLink(
+                "How calculations work",
+                value: CalculatorRoute.education(.calculations)
+            )
+            .frame(minHeight: 44)
+            .accessibilityIdentifier("projection.howCalculationsWork")
         }
     }
 

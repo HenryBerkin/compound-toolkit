@@ -18,12 +18,15 @@ struct LoadedScenarioContext: Equatable, Sendable {
 enum CalculatorRoute: Hashable {
     case projection(ProjectionSnapshot)
     case annualDetail(ProjectionSnapshot)
+    case education(EducationArticle)
 
     static func == (lhs: CalculatorRoute, rhs: CalculatorRoute) -> Bool {
         switch (lhs, rhs) {
         case let (.projection(lhsSnapshot), .projection(rhsSnapshot)),
              let (.annualDetail(lhsSnapshot), .annualDetail(rhsSnapshot)):
             lhsSnapshot.id == rhsSnapshot.id
+        case let (.education(lhsArticle), .education(rhsArticle)):
+            lhsArticle == rhsArticle
         default:
             false
         }
@@ -37,6 +40,9 @@ enum CalculatorRoute: Hashable {
         case let .annualDetail(snapshot):
             hasher.combine(1)
             hasher.combine(snapshot.id)
+        case let .education(article):
+            hasher.combine(2)
+            hasher.combine(article)
         }
     }
 }
@@ -46,9 +52,13 @@ enum SavedRoute: Hashable {
 }
 
 enum EducationRoute: Hashable {
-    case projectionContext
+    case article(EducationArticle)
+    case glossary
+    case glossaryTerm(GlossaryTerm)
 }
 
 enum SettingsRoute: Hashable {
     case about
+    case privacy
+    case disclaimer
 }

@@ -2,7 +2,7 @@ import Foundation
 
 actor CodableScenarioStore: ScenarioStore {
     private let configuration: ScenarioStoreConfiguration
-    private let failures: ScenarioStoreFailureInjection
+    private var failures: ScenarioStoreFailureInjection
     private let fileManager: FileManager
     private var successfulRecoveryCopyCount = 0
 
@@ -136,6 +136,76 @@ actor CodableScenarioStore: ScenarioStore {
             replacingRecoverySource: preservedSource
         )
         return try verifiedReload()
+    }
+
+    func eraseAllData() async throws -> ReadableScenarioSnapshot {
+        guard !failures.unavailableOnRead else {
+            throw ScenarioStoreError.unavailable
+        }
+        guard !failures.eraseAllDataFailureBeforeMutation else {
+            throw ScenarioStoreError.eraseAllDataFailed
+        }
+
+        let directory: URL
+        do {
+            directory = try resolvedDirectory(create: false)
+        } catch {
+            throw ScenarioStoreError.unavailable
+        }
+
+        if fileManager.fileExists(atPath: directory.path),
+           failures.eraseAllDataFailureAfterDocumentRemovalCount > 0 {
+            failures.eraseAllDataFailureAfterDocumentRemovalCount -= 1
+            let documentURL = directory.appendingPathComponent(
+                ScenarioStoreConfiguration.documentFilename,
+                isDirectory: false
+            )
+            if fileManager.fileExists(atPath: documentURL.path) {
+                do {
+                    try fileManager.removeItem(at: documentURL)
+                } catch {
+                    throw ScenarioStoreError.eraseAllDataFailed
+                }
+            }
+            throw ScenarioStoreError.eraseAllDataIncomplete
+        }
+
+        if fileManager.fileExists(atPath: directory.path) {
+            do {
+                try fileManager.removeItem(at: directory)
+            } catch {
+                throw ScenarioStoreError.eraseAllDataFailed
+            }
+        }
+        guard !fileManager.fileExists(atPath: directory.path) else {
+            throw ScenarioStoreError.eraseAllDataIncomplete
+        }
+
+        let reread: ReadableScenarioSnapshot
+        do {
+            reread = try readSnapshot(ignoreInjectedReadFailure: true)
+        } catch {
+            throw ScenarioStoreError.eraseAllDataIncomplete
+        }
+        guard reread.isEmpty else {
+            throw ScenarioStoreError.eraseAllDataIncomplete
+        }
+
+        do {
+            let verifiedDirectory = try resolvedDirectory(create: false)
+            let remaining = try fileManager.contentsOfDirectory(
+                at: verifiedDirectory,
+                includingPropertiesForKeys: nil
+            )
+            guard remaining.isEmpty else {
+                throw ScenarioStoreError.eraseAllDataIncomplete
+            }
+        } catch let error as ScenarioStoreError {
+            throw error
+        } catch {
+            throw ScenarioStoreError.eraseAllDataIncomplete
+        }
+        return reread
     }
 
     private func readableSnapshotForMutation() throws -> ReadableScenarioSnapshot {
@@ -349,6 +419,10 @@ actor CodableScenarioStore: ScenarioStore {
     }
 
     private func preparedDirectory() throws -> URL {
+        try resolvedDirectory(create: true)
+    }
+
+    private func resolvedDirectory(create: Bool) throws -> URL {
         let directory: URL
         if let configuredURL = configuration.directoryURL {
             directory = configuredURL
@@ -357,7 +431,7 @@ actor CodableScenarioStore: ScenarioStore {
                 for: .applicationSupportDirectory,
                 in: .userDomainMask,
                 appropriateFor: nil,
-                create: true
+                create: create
             )
             for component in configuration.applicationSupportDirectoryComponents {
                 resolved.appendPathComponent(component, isDirectory: true)
@@ -365,11 +439,13 @@ actor CodableScenarioStore: ScenarioStore {
             directory = resolved
         }
 
-        try fileManager.createDirectory(
-            at: directory,
-            withIntermediateDirectories: true,
-            attributes: [.protectionKey: ScenarioStoreConfiguration.dataProtectionClass]
-        )
+        if create {
+            try fileManager.createDirectory(
+                at: directory,
+                withIntermediateDirectories: true,
+                attributes: [.protectionKey: ScenarioStoreConfiguration.dataProtectionClass]
+            )
+        }
         return directory
     }
 

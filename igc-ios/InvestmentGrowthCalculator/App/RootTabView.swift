@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootTabView: View {
     let featureAvailability: any FeatureAvailability
+    @ObservedObject var preferences: AppPreferencesModel
 
     @State private var selectedTab: AppTab = .calculator
     @State private var calculatorPath: [CalculatorRoute] = []
@@ -10,13 +11,16 @@ struct RootTabView: View {
     @State private var settingsPath: [SettingsRoute] = []
     @State private var draft: CalculatorDraft
     @State private var loadedScenario: LoadedScenarioContext?
+    @State private var appResetStatus: String?
     @StateObject private var scenarioLibrary: ScenarioLibraryModel
 
     init(
         featureAvailability: any FeatureAvailability,
-        scenarioStore: any ScenarioStore
+        scenarioStore: any ScenarioStore,
+        preferences: AppPreferencesModel
     ) {
         self.featureAvailability = featureAvailability
+        self.preferences = preferences
         var initialDraft = CalculatorDraft.customBaseline
         let arguments = ProcessInfo.processInfo.arguments
         if arguments.contains("-uiInvalidBaseline") {
@@ -42,8 +46,11 @@ struct RootTabView: View {
             NavigationStack(path: $calculatorPath) {
                 CalculatorView(
                     draft: $draft,
-                    loadedScenario: loadedScenario
+                    loadedScenario: loadedScenario,
+                    preferences: preferences,
+                    appStatus: appResetStatus
                 ) { newSnapshot in
+                    appResetStatus = nil
                     calculatorPath = [.projection(newSnapshot)]
                 }
                 .navigationDestination(for: CalculatorRoute.self) { route in
@@ -57,6 +64,8 @@ struct RootTabView: View {
                         }
                     case let .annualDetail(snapshot):
                         AnnualDetailView(snapshot: snapshot)
+                    case let .education(article):
+                        EducationArticleView(article: article)
                     }
                 }
             }
@@ -84,6 +93,16 @@ struct RootTabView: View {
 
             NavigationStack(path: $educationPath) {
                 EducationView()
+                    .navigationDestination(for: EducationRoute.self) { route in
+                        switch route {
+                        case let .article(article):
+                            EducationArticleView(article: article)
+                        case .glossary:
+                            GlossaryView()
+                        case let .glossaryTerm(term):
+                            GlossaryTermView(term: term)
+                        }
+                    }
             }
             .tabItem {
                 Label("Education", systemImage: "book.closed")
@@ -92,7 +111,20 @@ struct RootTabView: View {
             .accessibilityIdentifier("tab.education")
 
             NavigationStack(path: $settingsPath) {
-                SettingsView()
+                SettingsView(
+                    preferences: preferences,
+                    deleteAllData: deleteAllData
+                )
+                .navigationDestination(for: SettingsRoute.self) { route in
+                    switch route {
+                    case .about:
+                        AboutIGCView(bundle: .main)
+                    case .privacy:
+                        PrivacyInformationView()
+                    case .disclaimer:
+                        EducationArticleView(article: .disclaimer)
+                    }
+                }
             }
             .tabItem {
                 Label("Settings", systemImage: "gearshape")
@@ -124,6 +156,28 @@ struct RootTabView: View {
         )
         savedPath.removeAll()
         calculatorPath.removeAll()
+        appResetStatus = nil
         selectedTab = .calculator
+    }
+
+    @MainActor
+    private func deleteAllData() async -> AppDataResetResult {
+        let result = await AppDataResetCoordinator.execute(
+            scenarioLibrary: scenarioLibrary,
+            preferences: preferences
+        )
+        guard result.completed else {
+            return result
+        }
+
+        draft = .customBaseline
+        loadedScenario = nil
+        calculatorPath.removeAll()
+        savedPath.removeAll()
+        educationPath.removeAll()
+        settingsPath.removeAll()
+        appResetStatus = result.message
+        selectedTab = .calculator
+        return result
     }
 }

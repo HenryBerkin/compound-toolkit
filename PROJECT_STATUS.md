@@ -5,17 +5,20 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: IGC-007 and IGC-012 are accepted and integrated. IGC-013 is authorised and
-  Ready as the next native engineering milestone. The IGC-007 foundation was
-  development-signed, installed, and manually validated on a physical iPhone; the
-  integrated native app also includes the accepted local scenario lifecycle.
+- Phase: IGC-007 and IGC-012 are accepted and integrated. IGC-013 is implemented on
+  its isolated task branch and **Ready for review**, not integrated. The IGC-007
+  foundation was development-signed, installed, and manually validated on a physical
+  iPhone; the integrated base also includes the accepted local scenario lifecycle.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
 - Verified structural migration commit: `78f2415`.
 - Native implementation: IGC-007 Calculator-to-Projection vertical slice and IGC-012
-  scenario lifecycle are integrated into `project/ios-migration-audit`. IGC-007 passed
+  scenario lifecycle are integrated into `project/ios-migration-audit`. IGC-013
+  implementation commit `7803db18471a06b61973e9d848f922a2d8d3cf81`
+  completes secondary content/preferences on
+  `codex/igc-013-native-secondary-content` for Product Manager review. IGC-007 passed
   its physical-device gate under IGC-D019.
 - PWA status: supported IGC web edition and behavioural reference; maintenance may
   continue alongside the native client.
@@ -134,17 +137,27 @@ simulator build before accepting exact specialist head
 appearance/onboarding persistence, comparison, export, networking, premium,
 TestFlight, archive/upload, and App Store work were excluded from IGC-012.
 
-IGC-013 is **Ready — authorised under IGC-D022**. It is the architecture’s native
-secondary-content milestone: bundled Education/methodology/glossary/exclusions/
-disclaimer routes; contextual help; the non-blocking first-launch coach; persisted
-System/Light/Dark appearance; Settings/About/Privacy information; and the coordinated
-Settings-wide Delete all app data flow. It must retain shared calculation/scenario
-meaning and the accepted scenario-recovery behaviour, use only app-only UserDefaults
-for appearance/coach preferences behind an injectable boundary, add the corresponding
-`CA92.1` required-reason privacy manifest entry, and prove honest partial-failure
-handling. Final legal copy, public Privacy/Support destinations, TestFlight, archive/
-upload, App Store records and external services remain excluded and blocked on later
-release gates.
+IGC-013 is **Ready for review — implemented under IGC-D022, not accepted or
+integrated**. Exact-base implementation commit
+`7803db18471a06b61973e9d848f922a2d8d3cf81` adds bundled
+Education/methodology/glossary/exclusions/disclaimer content; feature-local Calculator
+and Projection education routes; the non-blocking first-launch coach; injectable
+app-only System/Light/Dark and coach preferences; Settings/About/Privacy; deliberate
+scenario/recovery-material erasure; verified cross-store Delete all app data
+coordination; and an app-target UserDefaults `CA92.1` privacy manifest. Shared
+calculation, validation, schema, fixtures, scenario semantics, and ordinary
+corrupt/unsupported recovery remain unchanged.
+
+Implementation evidence is 56/56 complete unit/fixture/store/content/preference/reset/
+privacy tests and 23/23 complete iPhone UI tests, with zero failures or skips in the
+final runs. Focused iPad routes, compact-iPhone accessibility-size Dark Mode content,
+and unreachable-proxy offline routes each pass 1/1. Debug and Release simulator builds
+pass with zero build warnings/errors; both app bundles contain a valid manifest and
+the optimized Release bundle contains no embedded framework, endpoint, capability or
+entitlement addition. Physical execution remains skipped under IGC-D019. Final legal
+copy, public Privacy/Support destinations, supported-device/manual accessibility
+sign-off, TestFlight, signed archive/privacy report, upload, App Store records and
+external services remain later release gates.
 
 ## Known issues and deferred work
 

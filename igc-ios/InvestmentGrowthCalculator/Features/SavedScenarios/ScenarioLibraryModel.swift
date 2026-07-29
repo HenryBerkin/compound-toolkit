@@ -122,6 +122,17 @@ final class ScenarioLibraryModel: ObservableObject {
         }
     }
 
+    func eraseAllData() async throws {
+        do {
+            let readable = try await store.eraseAllData()
+            snapshot = .available(readable)
+            isLoading = false
+        } catch {
+            await refreshAfterFailedMutation()
+            throw error
+        }
+    }
+
     private func refreshAfterFailedMutation() async {
         snapshot = await store.snapshot()
         isLoading = false

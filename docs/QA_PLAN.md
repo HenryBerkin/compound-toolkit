@@ -191,7 +191,7 @@ milestone owns release-candidate evidence:
 - `IOS-RES-001–005`: final after-fee KPI, nominal/real/fee context, target outcomes, disclaimer/assumptions, chart text/table alternative, and no monthly screen.
 - `IOS-LIFE-001–005`: cold launch/default, background/foreground, relaunch after save, no-network operation, failure/retry/protected-storage state.
 
-IGC-013 adds these planned evidence groups without weakening the existing IDs:
+IGC-013 implements these evidence groups without weakening the existing IDs:
 
 - `IOS-CONTENT-001–006`: complete bundled Education hierarchy and every specified
   glossary term; methodology/exclusions/disclaimer accuracy; useful
@@ -210,6 +210,20 @@ IGC-013 adds these planned evidence groups without weakening the existing IDs:
   `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1` matches app-only appearance/
   coach access; no invented collected-data/tracking entry, third-party dependency, or
   new network/capability/entitlement.
+
+IGC-013 final specialist evidence on Xcode 26.2 / iOS Simulator 26.2 is **56/56**
+complete unit/fixture/store/content/preference/reset/privacy tests and **23/23**
+complete iPhone UI tests, with zero failures or skips. Result bundles are
+`/private/tmp/igc-013-unit-final-2.xcresult` and
+`/private/tmp/igc-013-ui-final-2.xcresult`. Focused adaptive iPad routes, compact
+iPhone accessibility-size Dark Mode content, and the complete Education/contextual
+route smoke under unreachable HTTP/HTTPS proxy each pass 1/1 in
+`/private/tmp/igc-013-ui-ipad-routes-final.xcresult`,
+`/private/tmp/igc-013-ui-compact-ax-dark-final.xcresult`, and
+`/private/tmp/igc-013-ui-offline-proxy-final.xcresult`. Debug and Release simulator
+builds pass with zero build warnings/errors. This is implementation evidence for
+Product Manager review, not release-candidate, signed-archive, physical-device, manual
+VoiceOver speech/order, Increase Contrast measurement, or final legal-copy approval.
 
 ## 9. Supported PWA regression inventory
 

@@ -1,5 +1,492 @@
 # iOS Engineer handoff
 
+## IGC-013 native secondary content and preferences ready for review
+
+Status: **Ready for review**. IGC-013 is not Done, accepted, integrated, merged or
+pushed. Stop here; do not begin another milestone.
+
+### Task control, base and commits
+
+- Task: IGC-013 — Complete native secondary content and preferences (iOS).
+- Authority: IGC-D022; this remained the only active engineering milestone.
+- Repository: `/Users/henryberkin/Projects/IGC`.
+- Base branch: `project/ios-migration-audit`.
+- Exact accepted base:
+  `22c24a12488139b9f9c6c33a7ac5a0d579986349`.
+- Task branch: `codex/igc-013-native-secondary-content`.
+- Required isolated worktree:
+  `/private/tmp/igc-013-native-secondary-content`.
+- Exact implementation/source/test commit:
+  `7803db18471a06b61973e9d848f922a2d8d3cf81`
+  (`feat(ios): complete secondary content and preferences`).
+- The documentation/handoff commit is the immediate successor at task-branch tip. Its
+  immutable hash is recorded in the final specialist response because a commit cannot
+  contain its own hash.
+- Complete review range:
+  `22c24a12488139b9f9c6c33a7ac5a0d579986349..codex/igc-013-native-secondary-content`.
+  Review it with:
+
+  ```sh
+  git log --oneline \
+    22c24a12488139b9f9c6c33a7ac5a0d579986349..codex/igc-013-native-secondary-content
+  git diff \
+    22c24a12488139b9f9c6c33a7ac5a0d579986349..codex/igc-013-native-secondary-content
+  ```
+
+Preflight confirmed that the integration checkout was clean on
+`project/ios-migration-audit`, resolved exactly to the accepted base, and had no task
+branch or worktree. The branch/worktree was created directly from the exact commit.
+Every edit, build, test and commit was made in the required isolated worktree. Nothing
+was rebased, merged, pulled, pushed, uploaded, archived or submitted; no toolchain,
+signing, bundle, capability or entitlement setting was changed.
+
+### Delivered feature architecture
+
+IGC-013 extends the accepted IGC-007/IGC-012 implementation without changing shared
+calculation, validation, fixtures, terminology, schema, scenario meaning, ordinary
+delete-one semantics, or corrupt/unsupported preservation:
+
+- Education is a static Swift hierarchy bundled in the app. Its root routes are
+  **Understanding your projection**, **How calculations work**, **Glossary**,
+  **What this projection excludes**, and **Projection disclaimer**.
+- Glossary rows remain in the accepted order: **Annual growth rate (APR)**,
+  **Compounding**, **Inflation**, **Annual fee**, **After fees**,
+  **Today’s money / purchasing power**, **Contribution frequency**,
+  **Contribution timing**, **Preset and Custom**, and **Target**. Each opens a
+  separately titled bundled definition.
+- Calculator exposes **How calculations work** in Rates and assumptions and
+  **Projection disclaimer** beside its projection action. Projection exposes
+  **How calculations work** in Assumptions and **Projection disclaimer** beside its
+  headline disclaimer. All four are typed Calculator-stack routes; they never select
+  the Education tab and preserve the other three tab stacks and scroll state.
+- The non-modal Calculator coach appears before the normal form on a first launch. It
+  never blocks Calculator. **Choose a preset** dismisses it and moves keyboard and
+  accessibility focus to the Preset picker without choosing one. **Dismiss** only
+  dismisses. Neither action changes the Custom 7% APR / 3% inflation / 0.20% fee
+  baseline. A failed write dismisses for the session, shows a non-blocking explanation
+  and allows the coach to return on relaunch.
+- Settings now has **Appearance**, **Data on this device**, and **About and help**.
+  It provides System/Light/Dark, the separately confirmed destructive reset, About
+  IGC, bundled Privacy, and Projection disclaimer. No Support or public Privacy row,
+  fabricated URL, contact, web view or remote content was added.
+- About displays **Investment Growth Calculator**, **IGC**, and actual bundle
+  `CFBundleShortVersionString` / `CFBundleVersion` (`1.0 (1)` in verified builds).
+- Privacy distinguishes in-app calculation, Application Support scenarios, app
+  preferences, no IGC account/app-operated sync, normal backup lifecycle, delete-one,
+  recovery and global deletion, and absent analytics/advertising/tracking/remote
+  configuration/account connection/payment/live data/support diagnostics.
+- A successful global reset returns Calculator to
+  `CalculatorDraft.customBaseline`, clears loaded-scenario context, clears all four
+  navigation paths, selects Calculator, restores System/coach defaults, and displays
+  **All app data deleted**. Calculator draft restoration after an ordinary termination
+  remains excluded and was not added.
+
+### Exact preference contract
+
+The injectable `AppPreferencesStore` is the only preference persistence boundary.
+Views observe `AppPreferencesModel`; there is no `@AppStorage` and no direct
+UserDefaults access in a view.
+
+| Preference | Stable key | Stable values | Default |
+| --- | --- | --- | --- |
+| Appearance | `igc.appearance.v1` | `system`, `light`, `dark` | `system` |
+| Coach dismissal | `igc.coach.dismissed.v1` | Boolean | `false` |
+
+Production uses the standard app-only UserDefaults domain. UI automation uses an
+argument-selected, app-owned suite isolated by the same identifier as its temporary
+scenario store; this does not change normal production semantics. An absent or unknown
+appearance value reads as System. Unknown raw values are not rewritten, silently
+migrated or promoted to a theme. No earlier preference schema exists, so there is no
+migration. Reset removes and verifies only the two owned keys, preserving unrelated
+defaults.
+
+Deterministic injection can fail appearance writes, coach writes, reset before any
+mutation, or reset once after appearance removal. Production injects none. UI flags
+are `-uiAppearanceWriteFailure`, `-uiCoachWriteFailure`,
+`-uiPreferenceResetFailsOnce`, and `-uiScenarioEraseFailsOnce`. Tests prove session
+usability, no false persistence, authoritative relaunch state and retry.
+
+No scenario name, principal/balance, contribution, target, APR/rate, inflation, fee,
+duration, timing, identifier, timestamp or other financial/scenario value is written
+to UserDefaults. Unit tests compare the complete persistent domain with exactly the
+two owned keys.
+
+### Exact development/internal-beta copy boundary
+
+The implemented disclaimer is exactly:
+
+> IGC creates an illustrative projection from the assumptions you enter. It is not
+> financial advice, a forecast, or a recommendation. Rates and contributions are held
+> constant. The calculation does not model taxes, market volatility or the order of
+> returns, changing inflation, contribution limits, platform or transaction charges
+> beyond the annual fee you enter, pension or ISA rules, withdrawals, or investment
+> losses along a market path. Actual outcomes may be higher or lower.
+
+This is the IGC-D022-authorised development/internal-beta string. It is **not final
+legal, regulatory, external-beta or public-release approval**.
+
+The coach copy is exactly:
+
+- Heading: **Start with the example**
+- Body: **The visible values are a Custom illustrative example. You can use them as
+  they are, edit any value, or choose a preset.**
+- Actions: **Choose a preset** and **Dismiss**
+
+The global confirmation is exactly:
+
+- Title: **Delete all app data?**
+- Body: **This deletes saved scenarios and resets appearance, onboarding, and
+  calculator state on this device. This can’t be undone. Device backups have their own
+  lifecycle.**
+- Actions: **Delete all app data** (destructive) and **Cancel**
+
+The methodology says, verbatim across its visible paragraphs:
+
+- **The calculation proceeds month by month for the duration you select. Annual detail
+  groups those internal monthly periods, including a final partial year.**
+- **The annual growth rate (APR) is converted to an effective monthly rate according
+  to the selected daily, monthly, quarterly or annual compounding frequency.**
+- **Weekly contributions are converted using the amount × 52 ÷ 12. Annual
+  contributions are converted using the amount ÷ 12. Monthly contributions use the
+  amount entered.**
+- **With start-of-period timing, the monthly-equivalent contribution is added before
+  that period’s growth and fee. With end-of-period timing, growth and the asset-based
+  fee are applied before the contribution is added.**
+- **In each monthly period, growth occurs before the asset-based fee deduction. The
+  fee is applied to the post-growth balance; it is not subtracted from APR.**
+- **Today’s-money values divide the relevant future amount by the effect of your
+  inflation assumption over the elapsed time.**
+- **Rates and contributions remain constant throughout this deterministic projection.
+  The calculation does not create a variable market path or probability range.**
+
+The exact Understanding, exclusion, glossary-definition, About and Privacy paragraphs
+are the static constants/views in
+`igc-ios/InvestmentGrowthCalculator/Features/Education/EducationView.swift` and
+`igc-ios/InvestmentGrowthCalculator/Features/Settings/SettingsView.swift`; there is no
+remote fallback or loading state. Tests enforce the complete route hierarchy,
+glossary order, required methodology phrases, absence of “expected return”, exact
+disclaimer, truthful About bundle metadata, and all Privacy section headings.
+
+### Delete all app data sequencing and failure semantics
+
+`ScenarioStore` gains only `eraseAllData()`. `CodableScenarioStore` performs it under
+actor isolation and explicit global-reset authority:
+
+1. Refuse an injected/unavailable or pre-mutation failure without claiming mutation.
+2. Resolve the app-owned
+   `Application Support/InvestmentGrowthCalculator/SavedScenarios` directory without
+   treating a corrupt/unsupported document as an ordinary empty store.
+3. Remove that complete directory, deliberately covering
+   `scenarios-v1.store.json`, `Recovery/**`, and app-owned temporary material.
+4. Verify the directory is absent, re-read through the authoritative store, verify an
+   empty readable snapshot, then verify the recreated store directory has no remaining
+   item.
+5. Return success only after those checks.
+
+The main-actor coordinator conservatively sequences scenario erasure and removal of
+the two owned preference keys. It then refreshes/re-reads both observable stores.
+**All app data deleted** is possible only when both mutations returned success, the
+scenario snapshot re-read empty, and preferences re-read exactly at defaults.
+In-memory draft, loaded context, tab and paths are reset only after that result.
+
+There is deliberately no atomic-transaction claim across filesystem, UserDefaults and
+in-memory navigation. Any mutation error, partial result or unverified re-read returns
+**Deletion did not complete**, identifies readable scenarios, unreadable/unsupported
+state, unknown recovery-material erasure, or remaining preference where possible,
+keeps Settings usable, focuses the failure banner and retains **Try again**. It never
+shows success. Representative injected failure after document removal leaves recovery
+material, reports it as unverified, and succeeds only on retry. Unit coverage creates
+fresh store/model instances after a partial result to prove relaunch/retry semantics.
+
+Ordinary delete-one, atomic write, exact-source corrupt/unsupported recovery evidence,
+and recovery reset behaviour are unchanged. Dedicated regression tests still prove
+corrupt/unsupported distinction and preservation outside global-reset authority.
+
+### Privacy manifest and static inventory
+
+The synchronized app source group automatically includes
+`igc-ios/InvestmentGrowthCalculator/PrivacyInfo.xcprivacy`; no project-file edit was
+needed. Source, Debug and Release built manifests parse as plists. The optimized
+Release app contains it at:
+
+`/private/tmp/igc-013-release-final/Build/Products/Release-iphonesimulator/InvestmentGrowthCalculator.app/PrivacyInfo.xcprivacy`
+
+Its complete semantic content is one `NSPrivacyAccessedAPITypes` item:
+
+- `NSPrivacyAccessedAPIType` =
+  `NSPrivacyAccessedAPICategoryUserDefaults`
+- `NSPrivacyAccessedAPITypeReasons` = `["CA92.1"]`
+
+There is no other top-level key, reason, required-reason category, collected-data type,
+tracking flag/domain or SDK declaration. A hosted unit test parses the built app
+manifest and enforces those exact keys/counts.
+
+Inventory evidence:
+
+- No `Package.resolved`, `XCRemoteSwiftPackageReference`,
+  `XCSwiftPackageProductDependency`, XCFramework, CocoaPods artifact, third-party SDK,
+  or embedded framework.
+- Optimized Release linkage is first-party/system Foundation, Charts, Combine,
+  CoreFoundation, SwiftUI, UIKit, Swift runtime, Objective-C and libSystem only.
+- Required-reason source scan finds only the declared UserDefaults access.
+- App source has no `Logger`, `os_log`, `NSLog` or `print` call. The optimized binary
+  has SwiftUI system runtime-issue logging symbols, but no app logging implementation
+  or scenario logging.
+- No runtime HTTP/HTTPS/WebSocket endpoint string; no URLSession/URLRequest/
+  NWConnection/WebKit, StoreKit, CloudKit, analytics, Crashlytics, advertising,
+  tracking/ATT/AdSupport/SKAdNetwork, remote configuration or support-diagnostics
+  source/project/linkage match.
+- No `.entitlements` file, `CODE_SIGN_ENTITLEMENTS`, App Group, iCloud/CloudKit, push
+  or `SystemCapabilities` setting. The unsigned simulator Release app reports no
+  entitlements. Bundle ID/team/deployment target remain
+  `uk.co.mochadesigns.igc` / `2FKVFS8X67` / iOS 17.
+- Release bundle metadata is version `1.0` build `1`, en-GB, iPhone+iPad, SDK 26.2,
+  and contains only the executable, Info.plist, PkgInfo and PrivacyInfo at app-root
+  depth; no embedded SDK/framework.
+
+This remains simulator-build evidence. A signed Release archive, Xcode privacy report,
+App Privacy questionnaire and final archive inspection remain mandatory later gates.
+
+### Files changed
+
+Implementation/source/tests in
+`7803db18471a06b61973e9d848f922a2d8d3cf81`:
+
+- `igc-ios/InvestmentGrowthCalculator/App/AppDataReset.swift`
+- `igc-ios/InvestmentGrowthCalculator/App/AppPreferences.swift`
+- `igc-ios/InvestmentGrowthCalculator/App/AppRoutes.swift`
+- `igc-ios/InvestmentGrowthCalculator/App/InvestmentGrowthCalculatorApp.swift`
+- `igc-ios/InvestmentGrowthCalculator/App/RootTabView.swift`
+- `igc-ios/InvestmentGrowthCalculator/Core/Persistence/CodableScenarioStore.swift`
+- `igc-ios/InvestmentGrowthCalculator/Core/Persistence/ScenarioStore.swift`
+- `igc-ios/InvestmentGrowthCalculator/Features/Calculator/CalculatorView.swift`
+- `igc-ios/InvestmentGrowthCalculator/Features/Education/EducationView.swift`
+- `igc-ios/InvestmentGrowthCalculator/Features/Results/ProjectionView.swift`
+- `igc-ios/InvestmentGrowthCalculator/Features/SavedScenarios/ScenarioLibraryModel.swift`
+- `igc-ios/InvestmentGrowthCalculator/Features/Settings/SettingsView.swift`
+- `igc-ios/InvestmentGrowthCalculator/PrivacyInfo.xcprivacy`
+- `igc-ios/InvestmentGrowthCalculator/SharedUI/ScenarioNameEntryView.swift`
+- `igc-ios/InvestmentGrowthCalculatorTests/AppPreferencesAndContentTests.swift`
+- `igc-ios/InvestmentGrowthCalculatorTests/CodableScenarioStoreTests.swift`
+- `igc-ios/InvestmentGrowthCalculatorUITests/InvestmentGrowthCalculatorUITests.swift`
+
+Permitted documentation/handoff closeout:
+
+- `TASKS.md`
+- `PROJECT_STATUS.md`
+- `CHANGELOG.md`
+- `docs/PRIVACY.md`
+- `docs/QA_PLAN.md`
+- `docs/RELEASE_CHECKLIST.md`
+- `handoffs/IOS_ENGINEER.md`
+
+No `project.pbxproj`, shared contract/fixture/schema, PWA file, protected specification,
+decision, roadmap, signing, version policy, capability or entitlement changed.
+
+### Final environment
+
+- macOS 26.5 (25F5042g)
+- Xcode 26.2 (17C52); no switch or install
+- Apple Swift 6.2.3 (`swiftlang-6.2.3.3.21`,
+  `clang-1700.6.3.2`)
+- iOS Simulator SDK 26.2 (23C53)
+- iPhone 17, iOS 26.2 (23C54),
+  `B8C76566-0A54-4ECF-BC13-A9CAEBF4307B`
+- iPhone 16e, iOS 26.2 (23C54),
+  `2DD9CF3B-E780-4786-A19A-C381A5F68A71`
+- iPad Pro 13-inch (M5), iOS 26.2 (23C54),
+  `95A18A80-BDFE-47BF-A8EE-264947EAB159`
+
+### Canonical final verification
+
+Complete unit/fixture/store/content/preference/reset/privacy suite: **56/56 passed**,
+zero failures, skips or expected failures. It includes all accepted calculation,
+validation and scenario regressions plus IGC-013 defaults/stable values/unknown
+fallback/writes/relaunch/injected failures, coach state, content/glossary/copy,
+actual bundle metadata, built manifest, all-data erasure/recovery, partial failure,
+retry and relaunch-after-partial coverage.
+
+```sh
+xcodebuild test \
+  -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
+  -scheme InvestmentGrowthCalculator \
+  -destination \
+  'platform=iOS Simulator,id=B8C76566-0A54-4ECF-BC13-A9CAEBF4307B' \
+  -resultBundlePath /private/tmp/igc-013-unit-final-2.xcresult \
+  -only-testing:InvestmentGrowthCalculatorTests
+```
+
+Complete UI suite: **23/23 passed** in 660.424 seconds, zero failures, skips or
+expected failures. It includes all accepted Calculator/Projection/annual-detail/
+scenario lifecycle/recovery regressions and seven IGC-013 UI cases for coach actions,
+focus/no selection/persistence/failure, every Education/Settings/contextual
+destination, glossary entries, all appearances/relaunch, actual About metadata,
+Privacy, destructive confirmation/Cancel/success/relaunch, loaded context/four paths,
+partial failure/no false success/retry, accessibility-size and Dark Mode.
+
+```sh
+xcodebuild test \
+  -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
+  -scheme InvestmentGrowthCalculator \
+  -destination \
+  'platform=iOS Simulator,id=B8C76566-0A54-4ECF-BC13-A9CAEBF4307B' \
+  -resultBundlePath /private/tmp/igc-013-ui-final-2.xcresult \
+  -only-testing:InvestmentGrowthCalculatorUITests
+```
+
+Focused adaptive iPad Education/glossary/all-contextual-route smoke: **1/1 passed**:
+
+```sh
+xcodebuild test \
+  -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
+  -scheme InvestmentGrowthCalculator \
+  -destination \
+  'platform=iOS Simulator,id=95A18A80-BDFE-47BF-A8EE-264947EAB159' \
+  -resultBundlePath /private/tmp/igc-013-ui-ipad-routes-final.xcresult \
+  -only-testing:InvestmentGrowthCalculatorUITests/InvestmentGrowthCalculatorUITests/testEducationHierarchyGlossaryAndContextualRoutesStayFeatureLocal
+```
+
+Focused compact iPhone 16e, accessibility-size, Dark Mode Education/Privacy smoke:
+**1/1 passed**:
+
+```sh
+xcodebuild test \
+  -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
+  -scheme InvestmentGrowthCalculator \
+  -destination \
+  'platform=iOS Simulator,id=2DD9CF3B-E780-4786-A19A-C381A5F68A71' \
+  -resultBundlePath /private/tmp/igc-013-ui-compact-ax-dark-final.xcresult \
+  -only-testing:InvestmentGrowthCalculatorUITests/InvestmentGrowthCalculatorUITests/testAccessibilitySizeDarkEducationAndPrivacyRemainReadable
+```
+
+Unreachable-proxy offline smoke: simulator launchd `HTTP_PROXY` and `HTTPS_PROXY` were
+temporarily set to `http://127.0.0.1:9`; the complete Education/glossary/all-contextual
+route test passed **1/1**, and both variables were successfully removed afterwards.
+Result bundle:
+`/private/tmp/igc-013-ui-offline-proxy-final.xcresult`.
+
+Final Debug and optimized Release generic-simulator builds both passed with zero
+reported build/analyzer warnings or errors:
+
+```sh
+xcodebuild build \
+  -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
+  -scheme InvestmentGrowthCalculator -configuration Debug \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /private/tmp/igc-013-debug-final \
+  -resultBundlePath /private/tmp/igc-013-debug-build-final.xcresult \
+  CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=YES ARCHS=arm64
+
+xcodebuild build \
+  -project igc-ios/InvestmentGrowthCalculator.xcodeproj \
+  -scheme InvestmentGrowthCalculator -configuration Release \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /private/tmp/igc-013-release-final \
+  -resultBundlePath /private/tmp/igc-013-release-build-final.xcresult \
+  CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=YES ARCHS=arm64
+```
+
+`plutil -lint` passes for source, Debug and Release manifests. Built Release `plutil`
+inspection, app-root placement, `otool -L`, `file`, `codesign` entitlement output,
+embedded-bundle search, `nm`/endpoint scans, project package/capability/entitlement
+search, required-reason/API/network/logging/service scans, `git diff --check`, staged
+diff check and final diff check pass as described above. Checks without XCTest/Xcode
+actions have no result bundle.
+
+### Failed, interrupted and superseded evidence
+
+All failures were retained and were resolved before the canonical runs:
+
+| Bundle / check | Result | Finding and resolution |
+| --- | --- | --- |
+| `/private/tmp/igc-013-unit-initial.xcresult` | 55/55 passed | Initial full unit suite before final relaunch-partial test. |
+| `/private/tmp/igc-013-unit-final.xcresult` | 55/55 passed | Full unit repeat before the 56th test was added. |
+| `/private/tmp/igc-013-ui-focused-initial.xcresult` | 0/7 passed | Coach Section identifier was inherited by child buttons; identifier placement and scroll-aware interaction corrected. |
+| `/private/tmp/igc-013-ui-focused-second.xcresult` | 2/7 passed | Obscured-field, overlong identifier query and contextual presentation automation findings; tests/route presentation corrected. |
+| `/private/tmp/igc-013-ui-focused-third.xcresult` | 1/5 passed | Exact display assertion and scroll/status routing findings; assertions and typed local routes corrected. |
+| `/private/tmp/igc-013-ui-focused-fourth.xcresult` | 1/4 passed | Direct destination links were not path-owned and reset status was offscreen; typed paths and status focus/scroll corrected. |
+| `/private/tmp/igc-013-ui-focused-fifth.xcresult` | 1/3 passed | Remaining reset-retry status and contextual-route automation findings; corrected. |
+| `/private/tmp/igc-013-ui-focused-sixth.xcresult` | 2/2 passed | Final targeted reset-retry and contextual-route correction evidence. |
+| `/private/tmp/igc-013-ui-final.xcresult` | 22/23 passed | New coach changed the starting geometry of a legacy keyboard/scroll test. Production behaviour was unchanged; that legacy test now dismisses the separately tested coach before its original lifecycle. |
+| `/private/tmp/igc-013-ui-focus-regression.xcresult` | 0/1, interrupted | A trial with a larger swipe cap was manually cancelled when it proved non-deterministic. |
+| `/private/tmp/igc-013-ui-focus-regression-2.xcresult` | 1/1 passed | Isolated corrected legacy lifecycle before the final 23/23 suite. |
+| First sandboxed offline-proxy setup | failed before mutation | CoreSimulator access was denied by the sandbox. The authorised retry reached the simulator. |
+| First authorised proxy setup | failed before mutation | iPhone 16e was not booted. It was booted, both proxy variables were set, the route smoke passed, and both variables were removed. |
+
+Preparatory generic Debug `build` and `build-for-testing` also passed before the final
+bundled commands; no result bundle was requested for those preparatory checks. They are
+superseded by the final Debug/Release build bundles and complete test actions.
+
+XCTest result bundles record non-failing SwiftUI
+**Invalid frame dimension (negative or non-finite)** runtime warnings in several
+legacy UI transitions, and the iPad automation log records transient remote
+accessibility-hierarchy warnings. Assertions and final suites pass; no new app logging
+or crash occurs. Product Manager may decide whether to create a separate diagnostic
+task, but IGC-013 did not broaden scope to unrelated chart/layout remediation.
+
+### Accessibility, adaptation and offline evidence boundary
+
+- New article/privacy/glossary views use visible semantic headings and fixed-size
+  multiline text inside scrolling, bounded 720-point reading measures.
+- Coach and reset UI have visible text, minimum 44-point actions, descriptive labels/
+  hints, no colour-only state, keyboard and accessibility focus changes, and failure/
+  Cancel restoration. Failure banners receive accessibility focus; successful reset
+  scrolls to and focuses the visible status.
+- System/Light/Dark use semantic SwiftUI colours only; no custom theme/token or
+  contrast-dependent state was added.
+- Full iPhone tests cover portrait and supported landscape. Focused iPhone 16e covers
+  compact width plus accessibility-size Dark Mode; iPad Pro 13-inch covers regular
+  width and the same native tab/stack architecture, with no bespoke window/sidebar.
+- UI automation queries the accessibility hierarchy, labels/values/identifiers,
+  heading visibility, keyboard focus, coach preset focus, loaded/reset status focus and
+  destructive failure focus. IGC-007’s accepted VoiceOver-enabled Calculator/results
+  evidence remains unchanged.
+- No manual spoken VoiceOver order/focus session, Increase Contrast measurement, Bold
+  Text matrix or physical-device secondary-content run was performed. These remain
+  honest review/release gaps rather than inferred passes.
+- Offline route smoke passed with unreachable proxies. Static content has no loading
+  state, runtime endpoint, network API/framework or web view. The accepted calculation/
+  scenario offline behaviour also remains covered by the complete regressions.
+
+### Skipped work, limitations and remaining gates
+
+- Physical-device execution was skipped under IGC-D019. Henry’s iOS 27 device is not
+  an authorised attached-debug target for maintained Xcode 26.2; no workaround or
+  toolchain switch was attempted.
+- No signed device archive, effective locked-device data-protection check, Xcode
+  privacy report, TestFlight build, upload, App Store Connect record, metadata,
+  screenshots, questionnaire, export-compliance response or submission was created.
+- The exact disclaimer and other content are authorised development/internal-beta
+  copy only. Final legal/regulatory/financial-promotion review remains open.
+- Public Privacy and Support URLs/contact are owner dependencies. No Support row ships
+  in this implementation because no truthful useful destination is approved.
+- App Privacy answers/no-collection position, signed archive manifest aggregation and
+  backup/uninstall wording require release-candidate revalidation.
+- Comparison, monthly native detail, import/export/share, draft restoration, accounts,
+  sync, CloudKit/App Groups, networking/live data, analytics/diagnostics, advertising/
+  tracking, premium/StoreKit/payment, notification/widget/Shortcut and bespoke iPad
+  work remain excluded.
+
+### Review and rollback
+
+Product Manager review should:
+
+1. Confirm the branch range starts at the exact accepted base and contains only the
+   implementation commit plus documentation closeout.
+2. Review the exact disclaimer/content boundary, preference keys/isolation, manifest,
+   complete directory erasure and cross-store no-false-success conditions.
+3. Re-run the 56-test unit suite, 23-test UI suite and Release build commands above.
+4. Inspect the built Release manifest with `plutil -p` and confirm no protected/shared/
+   PWA/project-signing file changed.
+5. Treat remaining legal, manual accessibility, physical-device and release gates as
+   open; do not mark IGC-013 Done without accepted review evidence.
+
+Rollback is two ordinary reverts on the task/integration branch after Product Manager
+direction: revert the documentation closeout commit first, then revert
+`7803db18471a06b61973e9d848f922a2d8d3cf81`. Do not rewrite shared history, delete
+recovery tags or regenerate fixtures. The final task worktree was checked clean after
+the closeout commit.
+
 ## IGC-012 native scenario lifecycle correction ready for review
 
 Status: **Ready for review**. Stop here; do not begin another task.

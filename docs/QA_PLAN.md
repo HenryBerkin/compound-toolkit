@@ -180,9 +180,9 @@ All scenario tests assert schema V1 meaning: opaque stable ID (new native UUID),
 
 ## 8. Native feature and navigation inventory
 
-IGC-007 now implements the Calculator-to-Projection, annual-detail, tab-navigation,
-fixture, and local-free portions below. IGC-012 owns the still-planned scenario/store
-portions; later milestones own secondary content and release evidence:
+IGC-007 implements the Calculator-to-Projection, annual-detail, tab-navigation,
+fixture, and local-free portions below. Accepted and integrated IGC-012 implements the
+scenario/store portions; later milestones own secondary content and release evidence:
 
 - `IOS-NAV-001–006`: Calculator, Saved scenarios, Education, Settings/About tabs; typed routes; Calculator → Results → Annual detail; saved-scenario load; tab switching retains feature-local draft state without stale result leakage.
 - `IOS-UI-001–006`: draft text separate from canonical values; invalid errors/focus/recovery; validated results snapshot; annual-only detail; save/rename/delete confirmation/recovery; no local-free feature locked.
@@ -261,7 +261,7 @@ Fixture/specification changes require an accepted Shared decision, compatibility
 | Architecture/design readiness | Accepted architecture; QA inventory reviewed; IGC-005 decisions traced; bundle/team owner inputs before project creation. | Passed: architecture/design/QA accepted; bundle, Team Name, and Team ID implemented and development-signed. |
 | Calculation-core parity | Both V1 consumers, every fixture/schema/checkpoint/validation and invariants pass; raw tolerance evidence. | Passed for V1: Web 85-test evidence and native 27/27 accepted fixture/unit/UI evidence. |
 | Vertical slice | Native validated draft → raw result → annual accessible alternative; local-free/offline and fixture gate. | Passed under IGC-007/IGC-D019: simulator matrix plus signed physical install/direct launch/manual smoke. Debugger-attached execution skipped on unsupported Xcode 26.2/iOS 27 pairing. |
-| Scenario lifecycle | V1 CRUD, atomic/recovery/failure/reset/relaunch evidence and truthful backup wording. | Planned. |
+| Scenario lifecycle | V1 CRUD, atomic/recovery/failure/reset/relaunch evidence and truthful backup wording. | Passed under IGC-012/IGC-D021: corrected specialist and independent PM evidence includes 40/40 unit/fixture/store tests, 16/16 UI tests, current-source recovery preservation, save gating, relaunch and offline checks. Physical release-candidate recheck remains open under IGC-D019. |
 | Accessibility readiness | Automated/simulator/device/VoiceOver/manual evidence; Dynamic Type/adaptive/contrast/motion/keyboard findings resolved or accepted. | Partial: IGC-007 simulator/accessibility suite and requested physical smoke passed; feature-complete and release-candidate evidence remains open. |
 | Web regression | Supported PWA passes; known defects/vulnerabilities/deployment risk triaged with owner/exception. | Historical audit/85-test evidence; rerun for change/release. |
 | TestFlight/release candidate | iOS parity/regression/device/offline/recovery/privacy evidence, no unresolved release blockers, approved known-issue list. | Planned. |
@@ -276,7 +276,9 @@ lint/build/browser evidence; and accepted IGC-007 native evidence. Native eviden
 and accessibility/locale runs, plus successful development signing, physical
 installation, direct launch, and requested manual smoke on iOS 27.0. The attached
 debugger attempt is explicitly skipped under IGC-D019 because Xcode 26.2 supports
-devices only through iOS 26.2. Scenario lifecycle, feature-complete accessibility,
+devices only through iOS 26.2. IGC-012 scenario lifecycle evidence is accepted under
+IGC-D021 with independent 40/40 unit/fixture/store, 16/16 UI, and Release simulator
+checks. Feature-complete accessibility, supported-pairing physical persistence,
 privacy/archive, TestFlight, and App Store evidence remain planned.
 
 Product Manager/Technical Lead review accepted this inventory and traceability under

@@ -1,8 +1,8 @@
 # Product Manager handoff
 
-Current phase: IGC-007 is Done, accepted, integrated, development-signed, installed,
-and manually validated on a physical iPhone. IGC-012 native scenario lifecycle is
-approved and Ready for specialist dispatch from the exact Product Manager base.
+Current phase: IGC-007 and IGC-012 are Done, accepted, and integrated. The IGC-007
+foundation was development-signed, installed, and manually validated on a physical
+iPhone. IGC-012 now provides the accepted local native scenario lifecycle.
 Branch: `project/ios-migration-audit`.
 Baseline: `recovered-pwa-baseline-2026-07-28`.
 
@@ -29,11 +29,13 @@ iOS 27, or a device in the maintained Xcode toolchain’s documented range. No t
 switch or project workaround is currently authorised. Calculator scroll retention
 across tab visits is expected feature-local state.
 
-IGC-D020 authorises IGC-012 in `TASKS.md`. Dispatch it in thread
-`IGC-012 — Native Scenario Lifecycle and Persistence` to the iOS Engineer using
-`gpt-5.6-sol` at `xhigh`, with required isolated worktree
-`/private/tmp/igc-012-native-scenario-lifecycle` and branch
-`codex/igc-012-native-scenario-lifecycle`. Use only the exact base in the reissued
-Product Manager prompt. The earlier prompt based on
-`212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn. Do not implement in the
-integration checkout, push, merge, upload, or alter Apple services.
+IGC-D021 accepts corrected IGC-012 specialist head
+`20af11c905a2c2bf16fe46af132725d97a1cf7f9`. Product Manager review independently
+passed 40/40 unit/fixture/store tests, 16/16 UI tests, and the Release simulator build,
+then integrated it with merge commit
+`853555794173814a9299d257d6ff12786c7b26dc`. Exact-current-source recovery evidence,
+Projection save gating, normal scenario CRUD/relaunch, shared fixture parity, and the
+first-party local-only boundary are accepted. Physical-device execution remains
+skipped under IGC-D019’s Xcode 26.2/iOS 27 compatibility rule. No next engineering
+milestone is authorised until Product Manager roadmap review; do not push, upload, or
+alter Apple services without owner approval.

@@ -293,7 +293,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-012 — Implement native scenario lifecycle and persistence
 
 - Owner: iOS Engineer
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-007, IGC-008, IGC-009;
@@ -359,6 +359,17 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     unchanged. Physical-device execution and release archive/privacy-report inspection
     were skipped as out of specialist scope or unavailable under the accepted
     Xcode 26.2 / iOS 27 pairing.
+- Product Manager acceptance and integration (2026-07-29):
+  - accepted the corrected exact specialist head
+    `20af11c905a2c2bf16fe46af132725d97a1cf7f9` with no remaining findings;
+  - independently repeated 40/40 unit/fixture/store tests, 16/16 UI tests, and the
+    Release simulator build with no failures or skips;
+  - confirmed `git diff --check`, protected-contract/PWA/project scope, privacy and
+    dependency boundaries, and clean specialist/integration worktrees;
+  - integrated the accepted head into `project/ios-migration-audit` with merge commit
+    `853555794173814a9299d257d6ff12786c7b26dc`;
+  - accepted physical-device execution as skipped under IGC-D019’s documented
+    Xcode 26.2/iOS 27 compatibility boundary, without a project workaround.
 - Required completion handoff: update `handoffs/IOS_ENGINEER.md` with exact base,
   branch/head commits, store/envelope/mapping and recovery behaviour, files changed,
   every check and environment, privacy/dependency findings, skips/limitations, review
@@ -367,7 +378,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Specialist: iOS Engineer using `gpt-5.6-sol` at `xhigh` reasoning.
 - Branch/worktree: `codex/igc-012-native-scenario-lifecycle` in required isolated
   worktree `/private/tmp/igc-012-native-scenario-lifecycle`.
-- Dispatch control: the earlier prompt based on
+- Historical dispatch control: the earlier prompt based on
   `212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn. The Product Manager’s
   reissued standalone prompt supplies the exact accepted management-update base; if
   the integration head differs, stop for reissue rather than rebasing or guessing.

@@ -371,3 +371,33 @@
   App Store operations, or change shared calculation/schema meaning. It uses an
   isolated worktree and stops at Ready for review. The earlier prompt based on
   `212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn and must not be dispatched.
+
+## IGC-D021 — Accept and integrate the corrected native scenario lifecycle
+
+- Date: 2026-07-29
+- Status: Accepted
+- Context: IGC-012 implemented the native V1 scenario mapping, private actor-backed
+  Codable Application Support store, save/Save-as-new, load, rename, duplicate,
+  confirmed delete, relaunch persistence, and recovery states. Initial Product Manager
+  review found stale recovery evidence and an active Projection save affordance for
+  unusable stores. Correction commit
+  `5d6c757871d82709fab27b20f41c6b50f001c360` made recovery evidence correspond to the
+  exact current source and added accessible store-state save gating.
+- Decision: accept exact corrected specialist head
+  `20af11c905a2c2bf16fe46af132725d97a1cf7f9` and integrate it into
+  `project/ios-migration-audit` through merge commit
+  `853555794173814a9299d257d6ff12786c7b26dc`. Mark IGC-012 Done.
+- Evidence: independent Product Manager reruns passed 40/40 unit/fixture/store tests,
+  16/16 UI tests, and the Release simulator build. `git diff --check`, protected
+  contract/PWA/project scope, privacy/dependency inventory, and clean worktrees passed.
+  Specialist evidence additionally records focused iPad, clean-install, relaunch, and
+  unreachable-proxy offline checks.
+- Scope boundary: shared calculation/scenario meaning, PWA, signing, capabilities,
+  entitlements, Settings-wide reset, appearance/onboarding persistence, comparison,
+  export, networking, analytics, premium, TestFlight, upload, and App Store services
+  remain unchanged or deferred.
+- Consequences: the native app now has accepted local scenario persistence. Future
+  physical persistence/recovery evidence must use a supported Xcode/device pairing
+  under IGC-D019. No subsequent engineering milestone is authorised by this decision;
+  Product Manager roadmap review must select and brief it from the new integration
+  head.

@@ -85,6 +85,10 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   corrupt or unsupported document before reset, including later corruption episodes,
   and aligned Projection Save availability with loading/unavailable/corrupt/
   unsupported store states using visible accessible explanations.
+- Accepted and integrated corrected IGC-012 at specialist head
+  `20af11c905a2c2bf16fe46af132725d97a1cf7f9`; the independent Product Manager gate
+  passed 40/40 unit/fixture/store tests, 16/16 UI tests, and the Release simulator
+  build before merge commit `853555794173814a9299d257d6ff12786c7b26dc`.
 
 ### Not changed
 

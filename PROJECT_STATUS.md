@@ -5,16 +5,17 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: IGC-007 is accepted, integrated, signed, installed, and manually validated on
-  a physical iPhone; IGC-012 native scenario lifecycle is approved and Ready.
+- Phase: IGC-007 and IGC-012 are accepted and integrated. The IGC-007 foundation was
+  development-signed, installed, and manually validated on a physical iPhone; the
+  integrated native app now also includes the accepted local scenario lifecycle.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
 - Verified structural migration commit: `78f2415`.
-- Native implementation: IGC-007 Calculator-to-Projection vertical slice integrated
-  into `project/ios-migration-audit` and passed its physical-device gate under
-  IGC-D019.
+- Native implementation: IGC-007 Calculator-to-Projection vertical slice and IGC-012
+  scenario lifecycle are integrated into `project/ios-migration-audit`. IGC-007 passed
+  its physical-device gate under IGC-D019.
 - PWA status: supported IGC web edition and behavioural reference; maintenance may
   continue alongside the native client.
 - Public product/App Store name: **Investment Growth Calculator**.
@@ -106,8 +107,9 @@ launch was skipped because Apple documents Xcode 26.2 device support only throug
 26.2; the initial debugger failures are not an established IGC defect. IGC-D019 records
 the accepted gate and future compatible-toolchain/device rule.
 
-IGC-012 is **Ready for review** under IGC-D020. The specialist implementation is on
-`codex/igc-012-native-scenario-lifecycle` from exact base
+IGC-012 is **Done — accepted and integrated** under IGC-D020 and IGC-D021. The
+specialist implementation was created on `codex/igc-012-native-scenario-lifecycle`
+from exact base
 `9b5f17b41d768bf72af12c215b096d2e101962e0`; implementation commit
 `802ff473b9b6a091103591eefd87b79745116f4f` adds the exact native V1 mapping,
 actor-backed Codable Application Support store, save/Save-as-new, deterministic Saved
@@ -122,10 +124,15 @@ plus passing Debug and Release simulator builds. The normal Save/relaunch/load/S
 as new/rename/duplicate/delete paths, all 27 accepted IGC-007 tests, and focused
 recovery/Projection regressions pass. The prior focused iPad, clean-install, relaunch,
 and offline-dependency evidence remains recorded in the specialist handoff. The
-first-party privacy/dependency/API inventory is unchanged. Physical-device execution
-was skipped under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global
-Settings reset, appearance/onboarding persistence, comparison, export, networking,
-premium, TestFlight, archive/upload, and App Store work remain excluded.
+first-party privacy/dependency/API inventory is unchanged. Product Manager review
+independently repeated 40/40 unit/fixture/store tests, 16/16 UI tests, and the Release
+simulator build before accepting exact specialist head
+`20af11c905a2c2bf16fe46af132725d97a1cf7f9`, integrated by merge commit
+`853555794173814a9299d257d6ff12786c7b26dc`. Physical-device execution was skipped
+under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global Settings reset,
+appearance/onboarding persistence, comparison, export, networking, premium,
+TestFlight, archive/upload, and App Store work remain excluded. No subsequent
+engineering milestone is authorised until Product Manager roadmap review.
 
 ## Known issues and deferred work
 

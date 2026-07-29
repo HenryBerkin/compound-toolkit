@@ -401,3 +401,45 @@
   under IGC-D019. No subsequent engineering milestone is authorised by this decision;
   Product Manager roadmap review must select and brief it from the new integration
   head.
+
+## IGC-D022 — Authorise native secondary content and preferences
+
+- Date: 2026-07-29
+- Status: Accepted
+- Context: IGC-012 completed the architecture’s scenario-lifecycle step. The remaining
+  native-build sequence places secondary content before release evidence. Education
+  and Settings are still provisional, appearance and first-launch coach choices do not
+  persist, and the accepted Settings-wide Delete all app data control does not exist.
+  These concerns share the app-level navigation and preference boundary and the global
+  reset must coordinate with the now-accepted scenario store.
+- Decision: authorise IGC-013 as the next and only active engineering milestone. It
+  completes bundled Education/methodology/glossary/exclusions/disclaimer content,
+  contextual education routes, the accepted non-blocking first-launch coach,
+  System/Light/Dark appearance preferences, Settings/About/Privacy information, and
+  the confirmed global local-data reset. Keep them in one task so app-level state,
+  preference persistence, navigation reset, and reset failure semantics are designed
+  and tested together.
+- Preference/privacy decision: store only appearance and coach dismissal in the
+  standard app-only `UserDefaults` domain behind an injectable app-preference
+  boundary. Under Apple’s current required-reason API rules, IGC-013 must add and
+  validate an app-target privacy manifest declaring
+  `NSPrivacyAccessedAPICategoryUserDefaults` for app-only reason `CA92.1`. This is an
+  API-use declaration, not a collected-data, tracking, security, or compliance claim.
+  Scenario financial data and names remain in the accepted protected Application
+  Support store and must never move to UserDefaults.
+- Reset decision: one explicit confirmation authorises erasure of app-local scenario
+  records and recovery material plus app preferences. A cross-store transaction is not
+  claimed. The coordinator must sequence changes conservatively, re-read authoritative
+  stores, show success only for a verified empty/default result, and report a partial
+  or unknown result without false success. Calculator, loaded-scenario context,
+  selected tab, and navigation reset only after verified persistent success.
+- Content/release boundary: restrained copy may be implemented for development and
+  internal-beta validation under the accepted product/design terminology. This does
+  not approve final legal wording or external distribution. Legal/regulatory review,
+  final disclaimer/investment-risk wording, live owner-controlled Privacy and Support
+  destinations, support contact, metadata, TestFlight, archive/upload, and App Store
+  actions remain later gates.
+- Consequences: IGC-013 must start from the exact Product Manager management-update
+  commit supplied in its standalone prompt and use its isolated worktree. IGC-010
+  remains proposed Web work; IGC-011 remains deferred; no other feature or release
+  implementation is authorised.

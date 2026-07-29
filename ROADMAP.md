@@ -26,14 +26,18 @@
 
 ## Phase 3 — Native build
 
-- Implement and test the calculation engine first.
-- Build a small end-to-end calculator and results vertical slice.
-- Add saved scenarios, target analysis, education, accessibility, and appearance
-  support only in the approved sequence.
+- Calculation engine and fixture parity are accepted and integrated.
+- The Calculator-to-Projection vertical slice, target analysis, annual detail, and
+  physical-device foundation gate are accepted and integrated.
+- Native V1 saved scenarios and recovery are accepted and integrated.
+- IGC-013 is the authorised next milestone: complete bundled secondary content,
+  appearance/onboarding preferences, Settings-wide local-data reset, and the related
+  accessibility/adaptive evidence.
 - Add native two-scenario comparison in iOS 1.1, not 1.0.
 
 ## Phase 4 — iOS release readiness
 
+- Begin only after IGC-013 Product Manager acceptance and integration.
 - Complete regression and accessibility testing.
 - Recheck and complete privacy declarations and current App Store requirements against
   the release archive.

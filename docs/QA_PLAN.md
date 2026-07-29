@@ -1,6 +1,7 @@
 # IGC behavioural QA inventory
 
-Status: Accepted under IGC-D015; implementation evidence updated through IGC-D019
+Status: Accepted under IGC-D015; implementation evidence updated through IGC-D021 and
+IGC-013 secondary-content coverage authorised under IGC-D022
 Task: IGC-006 — Shared / iOS / Web
 Scope: behavioural inventory plus explicitly recorded implementation evidence; planned
 rows remain planned unless a dated task/gate says otherwise.
@@ -182,12 +183,33 @@ All scenario tests assert schema V1 meaning: opaque stable ID (new native UUID),
 
 IGC-007 implements the Calculator-to-Projection, annual-detail, tab-navigation,
 fixture, and local-free portions below. Accepted and integrated IGC-012 implements the
-scenario/store portions; later milestones own secondary content and release evidence:
+scenario/store portions. IGC-013 now owns secondary content/preferences; a later
+milestone owns release-candidate evidence:
 
 - `IOS-NAV-001–006`: Calculator, Saved scenarios, Education, Settings/About tabs; typed routes; Calculator → Results → Annual detail; saved-scenario load; tab switching retains feature-local draft state without stale result leakage.
 - `IOS-UI-001–006`: draft text separate from canonical values; invalid errors/focus/recovery; validated results snapshot; annual-only detail; save/rename/delete confirmation/recovery; no local-free feature locked.
 - `IOS-RES-001–005`: final after-fee KPI, nominal/real/fee context, target outcomes, disclaimer/assumptions, chart text/table alternative, and no monthly screen.
 - `IOS-LIFE-001–005`: cold launch/default, background/foreground, relaunch after save, no-network operation, failure/retry/protected-storage state.
+
+IGC-013 adds these planned evidence groups without weakening the existing IDs:
+
+- `IOS-CONTENT-001–006`: complete bundled Education hierarchy and every specified
+  glossary term; methodology/exclusions/disclaimer accuracy; useful
+  Calculator/Projection contextual routes without hidden tab switching; About/version
+  and bundled Privacy truthfulness; no broken Support/Privacy destination; offline,
+  Dynamic Type, VoiceOver heading/order and adaptive-layout evidence.
+- `IOS-PREF-001–006`: System default and Light/Dark application; relaunch persistence;
+  first-launch-only non-blocking coach; Choose a preset focus without selection;
+  dismissal persistence; injected preference-write failure remains session-usable and
+  never changes calculation/scenario data.
+- `IOS-RESET-001–006`: exact-scope confirmation and Cancel; verified scenario,
+  recovery-material and preference erasure; Calculator/loaded-context/tab/navigation
+  reset only after persistent success; partial/unknown failure has no false success;
+  retry/re-read and relaunch evidence.
+- `IOS-PRIV-001–003`: app-target privacy-manifest placement and validity;
+  `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1` matches app-only appearance/
+  coach access; no invented collected-data/tracking entry, third-party dependency, or
+  new network/capability/entitlement.
 
 ## 9. Supported PWA regression inventory
 

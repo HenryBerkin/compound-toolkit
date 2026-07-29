@@ -46,6 +46,10 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   relaunch persistence, accessibility behaviour, and focused store/UI tests without
   changing shared contracts or adding a dependency, network, sync, analytics, premium,
   or App Store path.
+- Added and authorised IGC-013 as the next native milestone for bundled secondary
+  content, contextual education, first-launch and appearance preferences, Settings/
+  About/Privacy, coordinated local-data reset, accessibility/adaptive coverage, and
+  the exact UserDefaults required-reason privacy-manifest boundary.
 
 ### Changed
 
@@ -89,6 +93,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   `20af11c905a2c2bf16fe46af132725d97a1cf7f9`; the independent Product Manager gate
   passed 40/40 unit/fixture/store tests, 16/16 UI tests, and the Release simulator
   build before merge commit `853555794173814a9299d257d6ff12786c7b26dc`.
+- Selected native secondary content and preferences as the dependency-ordered next
+  task under IGC-D022 while retaining final legal copy, public Support/Privacy
+  destinations, TestFlight, archive/upload, and App Store work as later release gates.
 
 ### Not changed
 

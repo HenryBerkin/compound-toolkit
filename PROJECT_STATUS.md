@@ -5,9 +5,10 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: IGC-007 and IGC-012 are accepted and integrated. The IGC-007 foundation was
+- Phase: IGC-007 and IGC-012 are accepted and integrated. IGC-013 is authorised and
+  Ready as the next native engineering milestone. The IGC-007 foundation was
   development-signed, installed, and manually validated on a physical iPhone; the
-  integrated native app now also includes the accepted local scenario lifecycle.
+  integrated native app also includes the accepted local scenario lifecycle.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -127,12 +128,23 @@ and offline-dependency evidence remains recorded in the specialist handoff. The
 first-party privacy/dependency/API inventory is unchanged. Product Manager review
 independently repeated 40/40 unit/fixture/store tests, 16/16 UI tests, and the Release
 simulator build before accepting exact specialist head
-`20af11c905a2c2bf16fe46af132725d97a1cf7f9`, integrated by merge commit
-`853555794173814a9299d257d6ff12786c7b26dc`. Physical-device execution was skipped
-under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global Settings reset,
+ `20af11c905a2c2bf16fe46af132725d97a1cf7f9`, integrated by merge commit
+ `853555794173814a9299d257d6ff12786c7b26dc`. Physical-device execution was skipped
+ under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global Settings reset,
 appearance/onboarding persistence, comparison, export, networking, premium,
-TestFlight, archive/upload, and App Store work remain excluded. No subsequent
-engineering milestone is authorised until Product Manager roadmap review.
+TestFlight, archive/upload, and App Store work were excluded from IGC-012.
+
+IGC-013 is **Ready — authorised under IGC-D022**. It is the architecture’s native
+secondary-content milestone: bundled Education/methodology/glossary/exclusions/
+disclaimer routes; contextual help; the non-blocking first-launch coach; persisted
+System/Light/Dark appearance; Settings/About/Privacy information; and the coordinated
+Settings-wide Delete all app data flow. It must retain shared calculation/scenario
+meaning and the accepted scenario-recovery behaviour, use only app-only UserDefaults
+for appearance/coach preferences behind an injectable boundary, add the corresponding
+`CA92.1` required-reason privacy manifest entry, and prove honest partial-failure
+handling. Final legal copy, public Privacy/Support destinations, TestFlight, archive/
+upload, App Store records and external services remain excluded and blocked on later
+release gates.
 
 ## Known issues and deferred work
 

@@ -3,7 +3,8 @@
 Status: Accepted planning baseline under IGC-D016 with IGC-012 source and simulator
 build evidence — no signed release archive has been inspected
 Task: IGC-008 (iOS / Shared), implementation evidence from IGC-012
-Checked: 2026-07-28
+Checked: 2026-07-29 for the IGC-013 UserDefaults required-reason decision; remaining
+release baseline checked 2026-07-28
 
 ## Scope and rule of interpretation
 
@@ -98,6 +99,16 @@ Apple’s current framework requires privacy manifests to report data collection
 
 What can be decided now:
 
+- **IGC-013 planning decision under IGC-D022:** appearance and first-launch coach
+  dismissal use the standard app-only `UserDefaults` domain behind an injectable
+  preference boundary; no financial scenario value or name may enter UserDefaults.
+  Apple lists `UserDefaults` as a required-reason API and identifies `CA92.1` for
+  app-only read/write access. IGC-013 therefore must add a valid app-target
+  `PrivacyInfo.xcprivacy` declaring only
+  `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1`.
+  [Describing use of required reason API](https://developer.apple.com/documentation/bundleresources/describing-use-of-required-reason-api),
+  [privacy accessed API types](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacyaccessedapitypes/nsprivacyaccessedapitype)
+  (confirmed current requirement, checked 2026-07-29).
 - **IGC-012 implementation evidence:** the Xcode project has no Swift package product,
   XCFramework, CocoaPods or other third-party dependency. The implemented persistence
   uses Foundation `FileManager`, `FileHandle`, `Data`, `JSONEncoder`/`JSONDecoder`,

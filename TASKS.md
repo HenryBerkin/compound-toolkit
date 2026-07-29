@@ -382,3 +382,91 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   `212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn. The Product Manager’s
   reissued standalone prompt supplies the exact accepted management-update base; if
   the integration head differs, stop for reissue rather than rebasing or guessing.
+
+## IGC-013 — Complete native secondary content and preferences
+
+- Owner: iOS Engineer
+- Status: Ready
+- Priority: P1
+- Platform: iOS
+- Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-007, IGC-008, IGC-009,
+  IGC-012; accepted IGC-D021 integration and IGC-D022 authorisation
+- Affected: native app composition and routes, Calculator/Projection contextual
+  education, Education, Settings/About, local preferences, Settings-wide local-data
+  reset, native unit/UI tests, privacy/release evidence, and iOS Engineer handoff
+- Objective: complete the architecture’s native secondary-content milestone by
+  replacing the provisional Education and Settings screens with accessible bundled
+  product content, persisting the accepted appearance and first-launch coach choices,
+  and implementing one truthful Settings-wide **Delete all app data** flow over the
+  accepted scenario store and app preferences.
+- Acceptance criteria:
+  - Education provides the accepted small offline hierarchy: Understanding your
+    projection, How calculations work, the specified glossary terms, exclusions, and
+    Projection disclaimer. Copy preserves the shared calculation meaning and avoids
+    advice, forecast, guarantee, recommendation, live-data, regulated-service, and
+    unsupported storage/security claims.
+  - Calculator and Projection expose useful local contextual routes to methodology or
+    disclaimer content without secretly switching the selected tab. Missing bundled
+    content is treated as a build defect, never a network/loading state.
+  - The accepted non-blocking **Start with the example** coach card appears on first
+    launch, leaves the Custom 7% / 3% / 0.20% baseline untouched, supports **Choose a
+    preset** and **Dismiss**, and persists only dismissal. A persistence failure must
+    not block calculation and may dismiss for the current session.
+  - Appearance defaults to **System**, offers only System/Light/Dark, applies at the
+    app root, persists across relaunch, and remains truthful if preference persistence
+    fails. Preferences are hidden behind a small injectable boundary rather than
+    scattered direct storage access.
+  - Settings uses the accepted Appearance, Data on this device, and About and help
+    hierarchy; About reads version/build from the bundle; bundled Privacy and
+    Projection disclaimer routes explain the implemented local-only/no-app-operated-
+    sync and backup caveat accurately. No broken or invented Privacy/Support URL or
+    contact destination is shown.
+  - **Delete all app data** uses the exact-scope destructive confirmation and resets
+    saved scenarios (including recovery material where the store can authoritatively
+    erase it), appearance, coach dismissal, Calculator to the accepted Custom
+    baseline, loaded-scenario context, selected tab, and all navigation paths.
+    Success appears only after persistent stores are re-read and empty/default; a
+    partial or unknown result reports failure and what remains unknown, retains a
+    retry path, and never claims transactional atomicity across separate stores.
+  - The scenario store gains only the minimum deliberate all-data erasure operation;
+    existing delete-one and corrupt/unsupported preservation behaviour remains
+    unchanged outside this separately confirmed global reset.
+  - Standard app-only `UserDefaults` is used for appearance/coach preferences through
+    the approved boundary. The app target includes a valid `PrivacyInfo.xcprivacy`
+    declaring only the required-reason API category
+    `NSPrivacyAccessedAPICategoryUserDefaults` with reason `CA92.1`; no collected-data
+    or tracking declaration is invented.
+  - Unit and focused UI tests cover preference defaults/write/relaunch/failure,
+    coach-card actions, all appearance choices, Education/Settings routes, bundled
+    content availability, global-reset success/Cancel/partial failure/relaunch,
+    recovery-material erasure, accessibility identifiers/labels/focus, Dynamic Type,
+    dark mode, adaptive iPad, and offline operation. All existing fixture, store, and
+    UI regressions still pass.
+  - Debug and Release simulator builds pass. The specialist inventories dependencies,
+    runtime APIs, privacy manifest placement/content, capabilities, entitlements,
+    networking, logging, and scope exclusions, and records every passed, failed,
+    skipped, and untested check honestly.
+- Content approval boundary: IGC-D022 authorises restrained development/internal-beta
+  copy within the accepted design guardrails. Final external-beta/public positioning,
+  investment-risk/disclaimer wording, legal/regulatory disposition, public Privacy and
+  Support URLs, and support contact remain release gates and are not certified here.
+- Explicit exclusions: calculation/schema/fixture changes; scenario import/export or
+  migration; native comparison; monthly UI; CSV/share; draft restoration after
+  termination; remote content; accounts; sync; CloudKit; App Groups; networking;
+  analytics; diagnostics; advertising/tracking; premium; StoreKit; new dependency;
+  new capability/entitlement; live Privacy/Support services; TestFlight; archive/
+  upload; App Store Connect records; metadata; screenshots; submission.
+- Required completion handoff: update `handoffs/IOS_ENGINEER.md` with the exact base,
+  branch and commit range; preference keys/version/defaults and migration behaviour;
+  every Education/Settings route and final implemented development copy; complete
+  reset sequencing, erasure scope, partial-failure/relaunch semantics and recovery
+  handling; privacy-manifest/API/dependency inventory; files changed; all test/build/
+  accessibility/adaptive/offline evidence and environment; skips/limitations; review
+  instructions; rollback guidance; and clean-worktree confirmation. Stop at
+  **Ready for review** without push or merge.
+- Specialist: iOS Engineer using `gpt-5.6-sol` at `xhigh` reasoning.
+- Branch/worktree: `codex/igc-013-native-secondary-content` in required isolated
+  worktree `/private/tmp/igc-013-native-secondary-content`.
+- Dispatch control: the standalone Product Manager prompt supplies the exact accepted
+  management-update base. If the integration head differs, stop and request a reissued
+  base rather than rebasing, merging, or guessing.

@@ -1,8 +1,9 @@
 # Product Manager handoff
 
-Current phase: IGC-007 and IGC-012 are Done, accepted, and integrated. The IGC-007
-foundation was development-signed, installed, and manually validated on a physical
-iPhone. IGC-012 now provides the accepted local native scenario lifecycle.
+Current phase: IGC-007 and IGC-012 are Done, accepted, and integrated. IGC-013 is
+authorised and Ready as the next native engineering milestone. The IGC-007 foundation
+was development-signed, installed, and manually validated on a physical iPhone.
+IGC-012 provides the accepted local native scenario lifecycle.
 Branch: `project/ios-migration-audit`.
 Baseline: `recovered-pwa-baseline-2026-07-28`.
 
@@ -36,6 +37,15 @@ then integrated it with merge commit
 `853555794173814a9299d257d6ff12786c7b26dc`. Exact-current-source recovery evidence,
 Projection save gating, normal scenario CRUD/relaunch, shared fixture parity, and the
 first-party local-only boundary are accepted. Physical-device execution remains
-skipped under IGC-D019’s Xcode 26.2/iOS 27 compatibility rule. No next engineering
-milestone is authorised until Product Manager roadmap review; do not push, upload, or
-alter Apple services without owner approval.
+skipped under IGC-D019’s Xcode 26.2/iOS 27 compatibility rule.
+
+IGC-D022 authorises IGC-013 — Complete native secondary content and preferences. It
+owns bundled Education and disclaimer routes, contextual help, the accepted first-
+launch coach, System/Light/Dark persistence, Settings/About/Privacy, and one truthful
+global local-data reset over scenarios, recovery material, app preferences, Calculator
+state and navigation. It uses a narrow standard app-only UserDefaults preference
+boundary and must add the current `CA92.1` UserDefaults required-reason privacy-manifest
+entry. It does not approve final legal copy, public Privacy/Support destinations,
+TestFlight, archive/upload or an App Store action. Dispatch only the standalone prompt
+whose exact base matches the current integration head; do not push, upload, or alter
+Apple services without owner approval.

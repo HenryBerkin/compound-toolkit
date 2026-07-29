@@ -371,6 +371,95 @@ final class CodableScenarioStoreTests: XCTestCase {
         }
     }
 
+    func testGlobalEraseRemovesDocumentAndRecoveryMaterialThenPersistsEmpty() async throws {
+        let store = makeStore()
+        _ = try await store.create(
+            scenario(id: "saved", name: "Saved before corruption", seconds: 10)
+        )
+        try writeRaw("{")
+        guard case let .corrupt(evidence) = await store.snapshot() else {
+            return XCTFail("Expected corrupt source with recovery material")
+        }
+        XCTAssertTrue(evidence.sourcePreserved)
+        XCTAssertFalse(try recoveryFiles().isEmpty)
+
+        let erased = try await store.eraseAllData()
+        XCTAssertTrue(erased.isEmpty)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: documentURL.path))
+        XCTAssertFalse(
+            FileManager.default.fileExists(
+                atPath: directoryURL.appendingPathComponent("Recovery").path
+            )
+        )
+
+        let relaunched = makeStore()
+        await assertAvailable(relaunched, expectedIDs: [])
+    }
+
+    func testGlobalEraseCanDeliberatelyRemoveUnsupportedSource() async throws {
+        try writeRaw(
+            """
+            {"storeVersion":2,"futurePayload":{"shape":"unknown"}}
+            """
+        )
+        let store = makeStore()
+        guard case .unsupported = await store.snapshot() else {
+            return XCTFail("Expected unsupported source")
+        }
+
+        let erased = try await store.eraseAllData()
+        XCTAssertTrue(erased.isEmpty)
+        await assertAvailable(makeStore(), expectedIDs: [])
+    }
+
+    func testGlobalErasePartialFailureNeverReturnsSuccessAndRetryClearsRecovery() async throws {
+        try writeRaw("{")
+        var failures = ScenarioStoreFailureInjection.none
+        failures.eraseAllDataFailureAfterDocumentRemovalCount = 1
+        let store = makeStore(failures: failures)
+        guard case .corrupt = await store.snapshot() else {
+            return XCTFail("Expected corrupt source")
+        }
+        XCTAssertFalse(try recoveryFiles().isEmpty)
+
+        do {
+            _ = try await store.eraseAllData()
+            XCTFail("Expected partial global-erasure failure")
+        } catch {
+            XCTAssertEqual(error as? ScenarioStoreError, .eraseAllDataIncomplete)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: documentURL.path))
+        XCTAssertFalse(try recoveryFiles().isEmpty)
+
+        let retry = try await store.eraseAllData()
+        XCTAssertTrue(retry.isEmpty)
+        XCTAssertFalse(
+            FileManager.default.fileExists(
+                atPath: directoryURL.appendingPathComponent("Recovery").path
+            )
+        )
+    }
+
+    func testGlobalEraseFailureBeforeMutationPreservesReadableScenario() async throws {
+        let healthy = makeStore()
+        _ = try await healthy.create(
+            scenario(id: "preserved", name: "Preserved", seconds: 10)
+        )
+        let before = try Data(contentsOf: documentURL)
+
+        var failures = ScenarioStoreFailureInjection.none
+        failures.eraseAllDataFailureBeforeMutation = true
+        let failing = makeStore(failures: failures)
+        do {
+            _ = try await failing.eraseAllData()
+            XCTFail("Expected global-erasure failure")
+        } catch {
+            XCTAssertEqual(error as? ScenarioStoreError, .eraseAllDataFailed)
+        }
+        XCTAssertEqual(try Data(contentsOf: documentURL), before)
+        await assertAvailable(healthy, expectedIDs: ["preserved"])
+    }
+
     private var documentURL: URL {
         directoryURL.appendingPathComponent(
             ScenarioStoreConfiguration.documentFilename

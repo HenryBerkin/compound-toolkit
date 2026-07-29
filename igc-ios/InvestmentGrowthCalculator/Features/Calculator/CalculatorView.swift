@@ -4,13 +4,18 @@ import UIKit
 struct CalculatorView: View {
     @Binding var draft: CalculatorDraft
     let loadedScenario: LoadedScenarioContext?
+    @ObservedObject var preferences: AppPreferencesModel
+    let appStatus: String?
     let onProjection: (ProjectionSnapshot) -> Void
 
     @State private var errors: [CalculatorField: String] = [:]
     @State private var calculationError: String?
     @State private var showsRemoveTargetConfirmation = false
     @FocusState private var focusedField: CalculatorField?
+    @FocusState private var presetFocused: Bool
     @AccessibilityFocusState private var loadedStatusFocused: Bool
+    @AccessibilityFocusState private var appStatusFocused: Bool
+    @AccessibilityFocusState private var presetAccessibilityFocused: Bool
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private let fieldOrder: [CalculatorField] = [
@@ -25,6 +30,42 @@ struct CalculatorView: View {
                         .foregroundStyle(.secondary)
                 }
                 .id("calculator.top")
+
+                if let appStatus {
+                    Section {
+                        ScenarioStatusBanner(kind: .success, message: appStatus)
+                            .accessibilityIdentifier("calculator.appStatus")
+                            .accessibilityFocused($appStatusFocused)
+                    }
+                }
+
+                if preferences.showsCoach {
+                    Section {
+                        Text("Start with the example")
+                            .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
+                            .accessibilityIdentifier("calculator.coach.heading")
+                        Text("The visible values are a Custom illustrative example. You can use them as they are, edit any value, or choose a preset.")
+                            .fixedSize(horizontal: false, vertical: true)
+                        ViewThatFits(in: .horizontal) {
+                            HStack {
+                                coachChoosePresetButton(using: proxy)
+                                coachDismissButton
+                            }
+                            VStack(alignment: .leading) {
+                                coachChoosePresetButton(using: proxy)
+                                coachDismissButton
+                            }
+                        }
+                    }
+                }
+
+                if let preferenceMessage = preferences.message {
+                    Section {
+                        ScenarioStatusBanner(kind: .failure, message: preferenceMessage)
+                            .accessibilityIdentifier("calculator.preferenceFailure")
+                    }
+                }
 
                 if let loadedScenario {
                     Section {
@@ -45,11 +86,14 @@ struct CalculatorView: View {
                             Text(preset.name).tag(Optional(preset.id))
                         }
                     }
+                    .focused($presetFocused)
+                    .accessibilityFocused($presetAccessibilityFocused)
                     .accessibilityIdentifier("calculator.preset")
                     Text("Presets update growth, inflation, fee and compounding.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
+                .id("calculator.preset.section")
 
                 Section("Investment") {
                     inputRow(
@@ -124,6 +168,12 @@ struct CalculatorView: View {
                     .onChange(of: draft.compoundFrequency) {
                         draft.reconcilePreset()
                     }
+                    NavigationLink(
+                        "How calculations work",
+                        value: CalculatorRoute.education(.calculations)
+                    )
+                    .frame(minHeight: 44)
+                    .accessibilityIdentifier("calculator.howCalculationsWork")
                 }
 
                 Section("Duration and timing") {
@@ -203,6 +253,12 @@ struct CalculatorView: View {
                     Text("Illustrative projection based on your assumptions. It is not financial advice or a forecast.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                    NavigationLink(
+                        "Projection disclaimer",
+                        value: CalculatorRoute.education(.disclaimer)
+                    )
+                    .frame(minHeight: 44)
+                    .accessibilityIdentifier("calculator.projectionDisclaimer")
                 }
             }
             .navigationTitle("Calculator")
@@ -240,12 +296,48 @@ struct CalculatorView: View {
                     loadedStatusFocused = true
                 }
             }
+            .onChange(of: appStatus) {
+                guard appStatus != nil else { return }
+                Task { @MainActor in
+                    await Task.yield()
+                    proxy.scrollTo("calculator.top", anchor: .top)
+                    appStatusFocused = true
+                }
+            }
             .onChange(of: focusedField) { oldField, newField in
                 if let oldField, oldField != newField {
                     validateField(oldField)
                 }
             }
         }
+    }
+
+    private func coachChoosePresetButton(
+        using proxy: ScrollViewProxy
+    ) -> some View {
+        Button("Choose a preset") {
+            preferences.dismissCoach()
+            Task { @MainActor in
+                await Task.yield()
+                withAnimation {
+                    proxy.scrollTo("calculator.preset.section", anchor: .center)
+                }
+                presetFocused = true
+                presetAccessibilityFocused = true
+            }
+        }
+        .buttonStyle(.borderedProminent)
+        .frame(minHeight: 44)
+        .accessibilityIdentifier("calculator.coach.choosePreset")
+    }
+
+    private var coachDismissButton: some View {
+        Button("Dismiss") {
+            preferences.dismissCoach()
+        }
+        .buttonStyle(.bordered)
+        .frame(minHeight: 44)
+        .accessibilityIdentifier("calculator.coach.dismiss")
     }
 
     private var presetBinding: Binding<PresetID?> {

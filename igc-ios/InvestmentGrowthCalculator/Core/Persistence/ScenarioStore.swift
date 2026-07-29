@@ -42,6 +42,8 @@ enum ScenarioStoreError: Error, Equatable, LocalizedError, Sendable {
     case reloadFailed
     case recoveryPreservationFailed
     case recoveryResetNotRequired
+    case eraseAllDataFailed
+    case eraseAllDataIncomplete
 
     var errorDescription: String? {
         switch self {
@@ -67,6 +69,10 @@ enum ScenarioStoreError: Error, Equatable, LocalizedError, Sendable {
             "The recovery evidence could not be preserved, so the saved data was not replaced."
         case .recoveryResetNotRequired:
             "The saved-scenario document does not require recovery."
+        case .eraseAllDataFailed:
+            "The saved scenarios and recovery material could not be deleted."
+        case .eraseAllDataIncomplete:
+            "Deletion stopped before all saved-scenario data could be verified absent."
         }
     }
 }
@@ -83,6 +89,7 @@ protocol ScenarioStore: Sendable {
     ) async throws -> ReadableScenarioSnapshot
     func delete(id: String) async throws -> ReadableScenarioSnapshot
     func resetAfterRecovery() async throws -> ReadableScenarioSnapshot
+    func eraseAllData() async throws -> ReadableScenarioSnapshot
 }
 
 struct ScenarioStoreConfiguration: Sendable {
@@ -130,6 +137,8 @@ struct ScenarioStoreFailureInjection: Sendable {
     var reloadAfterMutationFailure = false
     var recoveryCopyFailure = false
     var recoveryCopyFailureAfterSuccessfulCopies: Int?
+    var eraseAllDataFailureBeforeMutation = false
+    var eraseAllDataFailureAfterDocumentRemovalCount = 0
 
     static let none = ScenarioStoreFailureInjection()
 }

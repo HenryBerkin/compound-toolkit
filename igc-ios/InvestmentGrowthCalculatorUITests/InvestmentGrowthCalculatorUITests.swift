@@ -12,6 +12,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         let app = launch()
 
         XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Start with the example"].exists)
         XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
         XCTAssertEqual(app.textFields["calculator.principal"].value as? String, "10000 pounds")
         XCTAssertEqual(app.textFields["calculator.contribution"].value as? String, "250 pounds")
@@ -85,6 +86,11 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
     func testNextDoneFocusLossAndCorrectionValidationLifecycle() {
         let app = launch()
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        if dismissCoach.exists {
+            scrollToElement(dismissCoach, in: app)
+            dismissCoach.tap()
+        }
         let principal = app.textFields["calculator.principal"]
         replaceText(in: principal, with: "1,2")
         app.buttons["Next"].tap()
@@ -372,6 +378,376 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertFalse(unsupportedApp.staticTexts["No saved scenarios"].exists)
     }
 
+    func testCoachChoosePresetMovesToPickerWithoutSelectionAndPersists() {
+        let app = launch()
+        XCTAssertTrue(app.staticTexts["Start with the example"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
+
+        let choosePreset = app.buttons["calculator.coach.choosePreset"]
+        scrollToElement(choosePreset, in: app)
+        choosePreset.tap()
+        XCTAssertTrue(
+            app.staticTexts["Start with the example"].waitForNonExistence(timeout: 3)
+        )
+        let preset = app.buttons["calculator.preset"]
+        XCTAssertTrue(preset.isHittable)
+        XCTAssertTrue(preset.label.contains("Custom"))
+        let baselineFields = [
+            ("calculator.apr", "7 percent"),
+            ("calculator.inflation", "3 percent"),
+            ("calculator.fee", "0.20 percent"),
+        ]
+        for (identifier, expectedValue) in baselineFields {
+            let field = app.textFields[identifier]
+            scrollToElement(field, in: app)
+            XCTAssertEqual(field.value as? String, expectedValue)
+        }
+
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 4))
+        XCTAssertFalse(app.staticTexts["Start with the example"].exists)
+        XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
+    }
+
+    func testCoachDismissFailureIsSessionOnlyAndReturnsOnRelaunch() {
+        let app = launch(arguments: ["-uiCoachWriteFailure"])
+        XCTAssertTrue(app.staticTexts["Start with the example"].waitForExistence(timeout: 4))
+
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        scrollToElement(dismissCoach, in: app)
+        dismissCoach.tap()
+        XCTAssertTrue(
+            app.staticTexts["Start with the example"].waitForNonExistence(timeout: 3)
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["calculator.preferenceFailure"]
+                .waitForExistence(timeout: 3)
+        )
+        XCTAssertTrue(
+            app.staticTexts[
+                "The coach was dismissed for this session, but the preference was not saved."
+            ].exists
+        )
+
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Start with the example"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
+    }
+
+    func testEducationHierarchyGlossaryAndContextualRoutesStayFeatureLocal() {
+        let app = launch()
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        scrollToElement(dismissCoach, in: app)
+        dismissCoach.tap()
+        tab(named: "Education", in: app).tap()
+        XCTAssertTrue(app.navigationBars["Education"].waitForExistence(timeout: 4))
+
+        for identifier in [
+            "education.understanding",
+            "education.calculations",
+            "education.glossary",
+            "education.exclusions",
+            "education.disclaimer",
+        ] {
+            let route = app.buttons[identifier]
+            scrollToElement(route, in: app)
+            XCTAssertTrue(route.exists)
+        }
+
+        let understanding = app.buttons["education.understanding"]
+        scrollBackToElement(understanding, in: app)
+        understanding.tap()
+        XCTAssertTrue(
+            app.navigationBars["Understanding your projection"].waitForExistence(timeout: 3)
+        )
+        app.navigationBars["Understanding your projection"].buttons["Education"].tap()
+
+        let calculations = app.buttons["education.calculations"]
+        scrollBackToElement(calculations, in: app)
+        calculations.tap()
+        XCTAssertTrue(app.navigationBars["How calculations work"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Monthly calculation"].exists)
+        XCTAssertTrue(app.staticTexts["Contributions and timing"].exists)
+        app.navigationBars["How calculations work"].buttons["Education"].tap()
+
+        app.buttons["education.glossary"].tap()
+        XCTAssertTrue(app.navigationBars["Glossary"].waitForExistence(timeout: 3))
+        let expectedTerms = [
+            "Annual growth rate (APR)",
+            "Compounding",
+            "Inflation",
+            "Annual fee",
+            "After fees",
+            "Today’s money / purchasing power",
+            "Contribution frequency",
+            "Contribution timing",
+            "Preset and Custom",
+            "Target",
+        ]
+        for term in expectedTerms {
+            let row = app.buttons[term]
+            scrollToElement(row, in: app)
+            XCTAssertTrue(row.exists, "Missing glossary term \(term)")
+        }
+        app.navigationBars["Glossary"].buttons["Education"].tap()
+
+        let exclusions = app.buttons["education.exclusions"]
+        scrollToElement(exclusions, in: app)
+        exclusions.tap()
+        XCTAssertTrue(
+            app.navigationBars["What this projection excludes"].waitForExistence(timeout: 3)
+        )
+        app.navigationBars["What this projection excludes"].buttons["Education"].tap()
+
+        let educationDisclaimer = app.buttons["education.disclaimer"]
+        scrollToElement(educationDisclaimer, in: app)
+        educationDisclaimer.tap()
+        XCTAssertTrue(
+            app.navigationBars["Projection disclaimer"].waitForExistence(timeout: 3)
+        )
+        app.navigationBars["Projection disclaimer"].buttons["Education"].tap()
+
+        tab(named: "Calculator", in: app).tap()
+        let methodology = app.buttons["calculator.howCalculationsWork"]
+        scrollToElement(methodology, in: app)
+        methodology.tap()
+        XCTAssertTrue(app.navigationBars["How calculations work"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.navigationBars["Education"].exists)
+        app.navigationBars["How calculations work"].buttons["Calculator"].tap()
+        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 3))
+
+        let calculatorDisclaimer = app.buttons["calculator.projectionDisclaimer"]
+        scrollToElement(calculatorDisclaimer, in: app)
+        calculatorDisclaimer.tap()
+        XCTAssertTrue(
+            app.navigationBars["Projection disclaimer"].waitForExistence(timeout: 3)
+        )
+        app.navigationBars["Projection disclaimer"].buttons["Calculator"].tap()
+
+        openProjection(in: app)
+        let projectionMethodology = app.buttons["projection.howCalculationsWork"]
+        scrollToElement(projectionMethodology, in: app)
+        projectionMethodology.tap()
+        XCTAssertTrue(
+            app.navigationBars["How calculations work"].waitForExistence(timeout: 3)
+        )
+        app.navigationBars["How calculations work"].buttons["Projection"].tap()
+
+        let disclaimer = app.buttons["projection.projectionDisclaimer"]
+        scrollBackToElement(disclaimer, in: app)
+        disclaimer.tap()
+        XCTAssertTrue(app.navigationBars["Projection disclaimer"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.staticTexts.matching(
+                NSPredicate(
+                    format: "label BEGINSWITH %@",
+                    "IGC creates an illustrative projection"
+                )
+            ).firstMatch.exists
+        )
+        app.navigationBars["Projection disclaimer"].buttons["Projection"].tap()
+        XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 3))
+    }
+
+    func testSettingsAppearanceAboutPrivacyAndDisclaimerRoutes() {
+        let app = launch()
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        scrollToElement(dismissCoach, in: app)
+        dismissCoach.tap()
+        tab(named: "Settings", in: app).tap()
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 4))
+
+        selectAppearance("Light", in: app)
+        XCTAssertTrue(
+            app.buttons["settings.appearance"].label.localizedCaseInsensitiveContains("Light")
+        )
+        selectAppearance("Dark", in: app)
+        XCTAssertTrue(
+            app.buttons["settings.appearance"].label.localizedCaseInsensitiveContains("Dark")
+        )
+
+        app.terminate()
+        app.launch()
+        tab(named: "Settings", in: app).tap()
+        XCTAssertTrue(
+            app.buttons["settings.appearance"].label.localizedCaseInsensitiveContains("Dark")
+        )
+        selectAppearance("System", in: app)
+
+        app.buttons["settings.about"].tap()
+        XCTAssertTrue(app.navigationBars["About IGC"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.descendants(matching: .any)["about.productName"]
+                .label.contains("Investment Growth Calculator")
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["about.shorthand"].label.contains("IGC")
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["about.versionBuild"].label.contains("1.0 (1)")
+        )
+        app.navigationBars["About IGC"].buttons["Settings"].tap()
+
+        app.buttons["settings.privacy"].tap()
+        XCTAssertTrue(app.navigationBars["Privacy"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Calculation"].exists)
+        scrollToElement(app.staticTexts["Services not present"], in: app)
+        XCTAssertTrue(app.staticTexts["Services not present"].exists)
+        app.navigationBars["Privacy"].buttons["Settings"].tap()
+
+        let settingsDisclaimer = app.buttons["settings.disclaimer"]
+        scrollToElement(settingsDisclaimer, in: app)
+        settingsDisclaimer.tap()
+        XCTAssertTrue(app.navigationBars["Projection disclaimer"].waitForExistence(timeout: 3))
+    }
+
+    func testDeleteAllCancelThenSuccessResetsPersistentAndInMemoryState() {
+        let app = launch()
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        scrollToElement(dismissCoach, in: app)
+        dismissCoach.tap()
+        saveCurrentProjection(as: "Delete all candidate", in: app)
+
+        tab(named: "Saved", in: app).tap()
+        scenarioRow(named: "Delete all candidate", in: app).tap()
+        XCTAssertTrue(
+            app.descendants(matching: .any)["calculator.loadedStatus"]
+                .waitForExistence(timeout: 4)
+        )
+
+        tab(named: "Education", in: app).tap()
+        app.buttons["education.understanding"].tap()
+        XCTAssertTrue(
+            app.navigationBars["Understanding your projection"].waitForExistence(timeout: 3)
+        )
+
+        tab(named: "Settings", in: app).tap()
+        selectAppearance("Dark", in: app)
+        let deleteButton = app.buttons["settings.deleteAllData"]
+        scrollToElement(deleteButton, in: app)
+        deleteButton.tap()
+        XCTAssertTrue(app.alerts["Delete all app data?"].waitForExistence(timeout: 3))
+        let confirmationBody = app.staticTexts.matching(
+            NSPredicate(
+                format: "label == %@",
+                "This deletes saved scenarios and resets appearance, onboarding, and calculator state on this device. This can’t be undone. Device backups have their own lifecycle."
+            )
+        ).firstMatch
+        XCTAssertTrue(
+            confirmationBody.exists
+        )
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.navigationBars["Settings"].exists)
+        XCTAssertTrue(deleteButton.exists)
+
+        deleteButton.tap()
+        app.buttons["settings.confirmDeleteAllData"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 6))
+        XCTAssertTrue(
+            app.descendants(matching: .any)["calculator.appStatus"]
+                .waitForExistence(timeout: 3)
+        )
+        XCTAssertTrue(app.staticTexts["All app data deleted"].exists)
+        XCTAssertTrue(app.staticTexts["Start with the example"].exists)
+        XCTAssertFalse(app.descendants(matching: .any)["calculator.loadedStatus"].exists)
+        let principal = app.textFields["calculator.principal"]
+        scrollToElement(principal, in: app)
+        XCTAssertEqual(principal.value as? String, "10000 pounds")
+        let contribution = app.textFields["calculator.contribution"]
+        scrollToElement(contribution, in: app)
+        XCTAssertEqual(contribution.value as? String, "250 pounds")
+        XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
+
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.staticTexts["No saved scenarios"].waitForExistence(timeout: 3))
+        tab(named: "Education", in: app).tap()
+        XCTAssertTrue(app.navigationBars["Education"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.navigationBars["Understanding your projection"].exists)
+        tab(named: "Settings", in: app).tap()
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.buttons["settings.appearance"].label.localizedCaseInsensitiveContains("System")
+        )
+
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts["Start with the example"].exists)
+        tab(named: "Saved", in: app).tap()
+        XCTAssertTrue(app.staticTexts["No saved scenarios"].waitForExistence(timeout: 3))
+    }
+
+    func testDeleteAllPartialFailureHasNoFalseSuccessAndRetryCompletes() {
+        let app = launch(arguments: ["-uiScenarioEraseFailsOnce"])
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        scrollToElement(dismissCoach, in: app)
+        dismissCoach.tap()
+        saveCurrentProjection(as: "Partial reset candidate", in: app)
+        tab(named: "Settings", in: app).tap()
+
+        let deleteButton = app.buttons["settings.deleteAllData"]
+        scrollToElement(deleteButton, in: app)
+        deleteButton.tap()
+        app.buttons["settings.confirmDeleteAllData"].firstMatch.tap()
+
+        let failure = app.descendants(matching: .any)["settings.deleteFailure"]
+        XCTAssertTrue(failure.waitForExistence(timeout: 5))
+        XCTAssertTrue(
+            app.staticTexts.matching(
+                NSPredicate(format: "label CONTAINS %@", "Deletion did not complete")
+            ).firstMatch.exists
+        )
+        XCTAssertTrue(
+            app.staticTexts.matching(
+                NSPredicate(
+                    format: "label CONTAINS %@",
+                    "recovery-material erasure could not be verified"
+                )
+            ).firstMatch.exists
+        )
+        XCTAssertFalse(app.staticTexts["All app data deleted"].exists)
+        XCTAssertTrue(app.navigationBars["Settings"].exists)
+
+        app.buttons["Try again"].tap()
+        let calculatorTab = tab(named: "Calculator", in: app)
+        XCTAssertTrue(waitForSelected(calculatorTab))
+        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 6))
+        XCTAssertTrue(
+            app.descendants(matching: .any)["calculator.appStatus"]
+                .waitForExistence(timeout: 3)
+        )
+        XCTAssertTrue(app.staticTexts["All app data deleted"].exists)
+        XCTAssertTrue(app.staticTexts["Start with the example"].exists)
+    }
+
+    func testAccessibilitySizeDarkEducationAndPrivacyRemainReadable() {
+        let app = launch(arguments: ["-uiAccessibilityText"])
+        let dismissCoach = app.buttons["calculator.coach.dismiss"]
+        scrollToElement(dismissCoach, in: app)
+        dismissCoach.tap()
+        tab(named: "Settings", in: app).tap()
+        selectAppearance("Dark", in: app)
+
+        tab(named: "Education", in: app).tap()
+        let calculations = app.buttons["education.calculations"]
+        scrollToElement(calculations, in: app)
+        calculations.tap()
+        XCTAssertTrue(app.navigationBars["How calculations work"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Monthly calculation"].exists)
+        scrollToElement(app.staticTexts["Constant assumptions"], in: app)
+        XCTAssertTrue(app.staticTexts["Constant assumptions"].exists)
+
+        tab(named: "Settings", in: app).tap()
+        let privacy = app.buttons["settings.privacy"]
+        scrollToElement(privacy, in: app)
+        privacy.tap()
+        XCTAssertTrue(app.navigationBars["Privacy"].waitForExistence(timeout: 3))
+        scrollToElement(app.staticTexts["Deletion"], in: app)
+        XCTAssertTrue(app.staticTexts["Deletion"].exists)
+    }
+
     private func launch(arguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = [
@@ -415,6 +791,15 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Saved “\(name)”"].exists)
     }
 
+    private func selectAppearance(_ appearance: String, in app: XCUIApplication) {
+        let picker = app.buttons["settings.appearance"]
+        scrollToElement(picker, in: app)
+        picker.tap()
+        let option = app.buttons[appearance].firstMatch
+        XCTAssertTrue(option.waitForExistence(timeout: 3))
+        option.tap()
+    }
+
     private func scenarioRow(named name: String, in app: XCUIApplication) -> XCUIElement {
         app.buttons.matching(
             NSPredicate(
@@ -445,6 +830,12 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         let predicate = NSPredicate(format: "enabled == true")
         let expectation = expectation(for: predicate, evaluatedWith: element)
         return XCTWaiter.wait(for: [expectation], timeout: 4) == .completed
+    }
+
+    private func waitForSelected(_ element: XCUIElement) -> Bool {
+        let predicate = NSPredicate(format: "selected == true")
+        let expectation = expectation(for: predicate, evaluatedWith: element)
+        return XCTWaiter.wait(for: [expectation], timeout: 6) == .completed
     }
 
     private func replaceText(in field: XCUIElement, with replacement: String) {

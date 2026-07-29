@@ -1,6 +1,6 @@
 # IGC project status
 
-Updated: 2026-07-28
+Updated: 2026-07-29
 Owner: Product Manager and Technical Lead
 
 ## Current state
@@ -106,13 +106,26 @@ launch was skipped because Apple documents Xcode 26.2 device support only throug
 26.2; the initial debugger failures are not an established IGC defect. IGC-D019 records
 the accepted gate and future compatible-toolchain/device rule.
 
-IGC-012 is Ready under IGC-D020 as the next engineering milestone. It adds the accepted
-native V1 scenario model, actor-backed Codable Application Support store, save/load/
-rename/duplicate/delete lifecycle, recovery states, and persistence tests. It does not
-add global settings reset, appearance/onboarding persistence, comparison, export,
-networking, premium, TestFlight, or App Store work. The earlier chat prompt based on
-`212cf6056bd37ca22d5aff9db542f9aab4acdd19` is withdrawn; only the reissued prompt
-using the exact management-update base may be dispatched.
+IGC-012 is **Ready for review** under IGC-D020. The specialist implementation is on
+`codex/igc-012-native-scenario-lifecycle` from exact base
+`9b5f17b41d768bf72af12c215b096d2e101962e0`; implementation commit
+`802ff473b9b6a091103591eefd87b79745116f4f` adds the exact native V1 mapping,
+actor-backed Codable Application Support store, save/Save-as-new, deterministic Saved
+root, load, rename, duplicate, confirmed delete, recovery states, and persistence
+coverage. Product Manager review requested corrections at
+`be572a2825c4988b67049f21bdf8ea56c151c5c6`; correction commit
+`5d6c757871d82709fab27b20f41c6b50f001c360` now requires exact current-source
+recovery evidence before reset and disables Projection Save with an accessible,
+state-specific reason while storage is loading, unavailable, corrupt, or unsupported.
+Final correction evidence is 40/40 unit/fixture/store tests and 16/16 iPhone UI tests,
+plus passing Debug and Release simulator builds. The normal Save/relaunch/load/Save
+as new/rename/duplicate/delete paths, all 27 accepted IGC-007 tests, and focused
+recovery/Projection regressions pass. The prior focused iPad, clean-install, relaunch,
+and offline-dependency evidence remains recorded in the specialist handoff. The
+first-party privacy/dependency/API inventory is unchanged. Physical-device execution
+was skipped under the accepted Xcode 26.2/iOS 27 compatibility boundary. Global
+Settings reset, appearance/onboarding persistence, comparison, export, networking,
+premium, TestFlight, archive/upload, and App Store work remain excluded.
 
 ## Known issues and deferred work
 

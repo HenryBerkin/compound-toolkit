@@ -3,12 +3,14 @@ import UIKit
 
 struct CalculatorView: View {
     @Binding var draft: CalculatorDraft
+    let loadedScenario: LoadedScenarioContext?
     let onProjection: (ProjectionSnapshot) -> Void
 
     @State private var errors: [CalculatorField: String] = [:]
     @State private var calculationError: String?
     @State private var showsRemoveTargetConfirmation = false
     @FocusState private var focusedField: CalculatorField?
+    @AccessibilityFocusState private var loadedStatusFocused: Bool
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private let fieldOrder: [CalculatorField] = [
@@ -21,6 +23,19 @@ struct CalculatorView: View {
                 Section {
                     Text("Explore an illustrative projection using your assumptions.")
                         .foregroundStyle(.secondary)
+                }
+                .id("calculator.top")
+
+                if let loadedScenario {
+                    Section {
+                        Text("Loaded “\(loadedScenario.name)”")
+                            .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
+                            .accessibilityIdentifier("calculator.loadedStatus")
+                            .accessibilityFocused($loadedStatusFocused)
+                        Text("Review the assumptions, then view the projection.")
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 Section("Preset") {
@@ -218,6 +233,13 @@ struct CalculatorView: View {
             .onChange(of: draft.apr) { draft.reconcilePreset() }
             .onChange(of: draft.inflation) { draft.reconcilePreset() }
             .onChange(of: draft.fee) { draft.reconcilePreset() }
+            .onChange(of: loadedScenario?.id) {
+                Task { @MainActor in
+                    await Task.yield()
+                    proxy.scrollTo("calculator.top", anchor: .top)
+                    loadedStatusFocused = true
+                }
+            }
             .onChange(of: focusedField) { oldField, newField in
                 if let oldField, oldField != newField {
                     validateField(oldField)
@@ -354,11 +376,25 @@ struct CalculatorView: View {
 
     private func submit(using proxy: ScrollViewProxy) {
         calculationError = nil
-        let validation = draft.validation()
-        errors = validation.errors
-        guard validation.errors.isEmpty, let input = validation.input else {
-            focusFirstError(using: proxy)
-            return
+        let usesUntouchedLoadedValues = loadedScenario.map {
+            draft.hasSameCanonicalDraftFields(as: $0.draftAtLoad)
+        } ?? false
+        let input: CalculationInput
+        let targetToday: Double?
+
+        if usesUntouchedLoadedValues, let loadedScenario {
+            errors = [:]
+            input = loadedScenario.input
+            targetToday = loadedScenario.targetToday
+        } else {
+            let validation = draft.validation()
+            errors = validation.errors
+            guard validation.errors.isEmpty, let validatedInput = validation.input else {
+                focusFirstError(using: proxy)
+                return
+            }
+            input = validatedInput
+            targetToday = validation.parsed.targetToday
         }
 
         draft.presetID = PresetCatalog.truthfulSelection(
@@ -369,7 +405,8 @@ struct CalculatorView: View {
             let snapshot = try ProjectionSnapshot(
                 input: input,
                 presetID: draft.presetID,
-                targetToday: validation.parsed.targetToday
+                targetToday: targetToday,
+                sourceScenarioID: loadedScenario?.id
             )
             focusedField = nil
             onProjection(snapshot)

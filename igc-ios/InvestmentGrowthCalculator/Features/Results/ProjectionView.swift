@@ -3,11 +3,14 @@ import SwiftUI
 
 struct ProjectionView: View {
     let snapshot: ProjectionSnapshot
+    @ObservedObject var scenarioLibrary: ScenarioLibraryModel
     let showAnnualDetail: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showAfterFees = true
     @State private var showTodayMoney = true
+    @State private var showsSaveSheet = false
+    @State private var savedStatus: String?
 
     private var chartPoints: [ProjectionChartPoint] {
         ProjectionPresenter.chartPoints(input: snapshot.input, result: snapshot.result)
@@ -25,6 +28,29 @@ struct ProjectionView: View {
                 Text("Illustrative projection based on constant rates and contributions.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+
+                if let savedStatus {
+                    ScenarioStatusBanner(kind: .success, message: savedStatus)
+                        .accessibilityIdentifier("projection.savedStatus")
+                }
+
+                if let explanation = saveAvailability.explanation {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label(explanation.title, systemImage: explanation.symbol)
+                            .font(.headline)
+                        Text(explanation.detail)
+                            .font(.subheadline)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.orange.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(
+                        "\(explanation.title). \(explanation.detail)"
+                    )
+                    .accessibilityIdentifier(saveAvailability.accessibilityIdentifier)
+                }
 
                 kpi
                 todayMoneyContext
@@ -48,6 +74,67 @@ struct ProjectionView: View {
         }
         .navigationTitle("Projection")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(saveActionLabel) {
+                    guard saveAvailability.allowsSaving else { return }
+                    showsSaveSheet = true
+                }
+                .disabled(!saveAvailability.allowsSaving)
+                .accessibilityHint(saveAvailability.buttonHint)
+                .accessibilityIdentifier("projection.save")
+            }
+        }
+        .sheet(isPresented: $showsSaveSheet) {
+            ScenarioNameEntryView(
+                title: "Save scenario",
+                initialName: suggestedName,
+                actionLabel: "Save",
+                accessibilityPrefix: "projection.saveSheet",
+                submit: { name in
+                    try await scenarioLibrary.createNew(
+                        from: snapshot,
+                        proposedName: name
+                    )
+                },
+                onSuccess: { name in
+                    savedStatus = "Saved “\(name)”"
+                }
+            )
+        }
+        .onChange(of: saveAvailability) {
+            if !saveAvailability.allowsSaving {
+                showsSaveSheet = false
+            }
+        }
+    }
+
+    private var saveActionLabel: String {
+        snapshot.sourceScenarioID == nil ? "Save" : "Save as new"
+    }
+
+    private var suggestedName: String {
+        if snapshot.input.months == 0 {
+            return "\(snapshot.input.years)-year projection"
+        }
+        return "\(snapshot.input.totalMonths)-month projection"
+    }
+
+    private var saveAvailability: ProjectionSaveAvailability {
+        guard !scenarioLibrary.isLoading,
+              let storeSnapshot = scenarioLibrary.snapshot else {
+            return .loading
+        }
+        switch storeSnapshot {
+        case .available:
+            return .available
+        case .unavailable:
+            return .unavailable
+        case .corrupt:
+            return .corrupt
+        case .unsupported:
+            return .unsupported
+        }
     }
 
     private var kpi: some View {
@@ -270,6 +357,79 @@ struct ProjectionView: View {
                 .monospacedDigit()
         } label: {
             Text(label)
+        }
+    }
+}
+
+private enum ProjectionSaveAvailability: Equatable {
+    case available
+    case loading
+    case unavailable
+    case corrupt
+    case unsupported
+
+    var allowsSaving: Bool {
+        self == .available
+    }
+
+    var accessibilityIdentifier: String {
+        switch self {
+        case .available:
+            "projection.saveState.available"
+        case .loading:
+            "projection.saveState.loading"
+        case .unavailable:
+            "projection.saveState.unavailable"
+        case .corrupt:
+            "projection.saveState.corrupt"
+        case .unsupported:
+            "projection.saveState.unsupported"
+        }
+    }
+
+    var buttonHint: String {
+        switch self {
+        case .available:
+            "Creates a new saved scenario."
+        case .loading:
+            "Saving is disabled while saved scenarios load."
+        case .unavailable:
+            "Saving is disabled while local storage is unavailable."
+        case .corrupt:
+            "Saving is disabled until saved-scenario recovery is resolved."
+        case .unsupported:
+            "Saving is disabled to protect the newer saved-scenario format."
+        }
+    }
+
+    var explanation: (title: String, detail: String, symbol: String)? {
+        switch self {
+        case .available:
+            nil
+        case .loading:
+            (
+                "Saving is temporarily unavailable",
+                "Saved scenarios are still loading. You can continue reviewing this projection.",
+                "hourglass"
+            )
+        case .unavailable:
+            (
+                "Can’t save while storage is unavailable",
+                "Local saved-scenario storage cannot be reached right now. You can continue reviewing this projection and try again later.",
+                "lock.slash"
+            )
+        case .corrupt:
+            (
+                "Resolve saved-scenario recovery before saving",
+                "The existing saved-scenario document needs recovery. Saving is disabled to protect it, but this projection remains available.",
+                "exclamationmark.triangle"
+            )
+        case .unsupported:
+            (
+                "Can’t save to the newer saved format",
+                "This app cannot safely add to the stored saved-scenario format. Saving is disabled to protect it, but this projection remains available.",
+                "externaldrive.badge.exclamationmark"
+            )
         }
     }
 }

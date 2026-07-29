@@ -5,21 +5,19 @@ Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: IGC-007 and IGC-012 are accepted and integrated. IGC-013 is implemented on
-  its isolated task branch and **Ready for review**, not integrated. The IGC-007
+- Phase: IGC-007, IGC-012, and IGC-013 are accepted and integrated. The IGC-007
   foundation was development-signed, installed, and manually validated on a physical
-  iPhone; the integrated base also includes the accepted local scenario lifecycle.
+  iPhone; the integrated native app now also includes the accepted local scenario
+  lifecycle, secondary content, app preferences, and verified global local-data reset.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
 - Recovery point: annotated tag `recovered-pwa-baseline-2026-07-28`.
 - Verified structural migration commit: `78f2415`.
-- Native implementation: IGC-007 Calculator-to-Projection vertical slice and IGC-012
-  scenario lifecycle are integrated into `project/ios-migration-audit`. IGC-013
-  implementation commit `7803db18471a06b61973e9d848f922a2d8d3cf81`
-  completes secondary content/preferences on
-  `codex/igc-013-native-secondary-content` for Product Manager review. IGC-007 passed
-  its physical-device gate under IGC-D019.
+- Native implementation: IGC-007 Calculator-to-Projection vertical slice, IGC-012
+  scenario lifecycle, and IGC-013 secondary content/preferences are integrated into
+  `project/ios-migration-audit`. IGC-007 passed its physical-device gate under
+  IGC-D019.
 - PWA status: supported IGC web edition and behavioural reference; maintenance may
   continue alongside the native client.
 - Public product/App Store name: **Investment Growth Calculator**.
@@ -137,8 +135,8 @@ simulator build before accepting exact specialist head
 appearance/onboarding persistence, comparison, export, networking, premium,
 TestFlight, archive/upload, and App Store work were excluded from IGC-012.
 
-IGC-013 is **Ready for review — implemented under IGC-D022, not accepted or
-integrated**. Exact-base implementation commit
+IGC-013 is **Done — accepted and integrated** under IGC-D022 and IGC-D023. Exact-base
+implementation commit
 `7803db18471a06b61973e9d848f922a2d8d3cf81` adds bundled
 Education/methodology/glossary/exclusions/disclaimer content; feature-local Calculator
 and Projection education routes; the non-blocking first-launch coach; injectable
@@ -154,10 +152,15 @@ final runs. Focused iPad routes, compact-iPhone accessibility-size Dark Mode con
 and unreachable-proxy offline routes each pass 1/1. Debug and Release simulator builds
 pass with zero build warnings/errors; both app bundles contain a valid manifest and
 the optimized Release bundle contains no embedded framework, endpoint, capability or
-entitlement addition. Physical execution remains skipped under IGC-D019. Final legal
-copy, public Privacy/Support destinations, supported-device/manual accessibility
-sign-off, TestFlight, signed archive/privacy report, upload, App Store records and
-external services remain later release gates.
+entitlement addition. Product Manager review independently repeated 56/56 unit tests,
+23/23 UI tests, the Release simulator build, manifest parsing and packaging, scope
+checks, and clean-worktree checks before accepting exact specialist head
+`425af8e302269e52a0971815fdb70241854404d2`, integrated by merge commit
+`a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`. Physical execution remains skipped
+under IGC-D019. Final legal copy, public Privacy/Support destinations, supported-device
+manual accessibility sign-off, TestFlight, signed archive/privacy report, upload,
+App Store records and external services remain later release gates. No subsequent
+engineering milestone is authorised until Product Manager roadmap review.
 
 ## Known issues and deferred work
 

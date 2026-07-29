@@ -1,7 +1,7 @@
 # IGC behavioural QA inventory
 
-Status: Accepted under IGC-D015; implementation evidence updated through IGC-D021 and
-IGC-013 secondary-content coverage authorised under IGC-D022
+Status: Accepted under IGC-D015; implementation evidence updated through accepted and
+integrated IGC-013 under IGC-D023
 Task: IGC-006 — Shared / iOS / Web
 Scope: behavioural inventory plus explicitly recorded implementation evidence; planned
 rows remain planned unless a dated task/gate says otherwise.
@@ -221,9 +221,11 @@ route smoke under unreachable HTTP/HTTPS proxy each pass 1/1 in
 `/private/tmp/igc-013-ui-ipad-routes-final.xcresult`,
 `/private/tmp/igc-013-ui-compact-ax-dark-final.xcresult`, and
 `/private/tmp/igc-013-ui-offline-proxy-final.xcresult`. Debug and Release simulator
-builds pass with zero build warnings/errors. This is implementation evidence for
-Product Manager review, not release-candidate, signed-archive, physical-device, manual
-VoiceOver speech/order, Increase Contrast measurement, or final legal-copy approval.
+builds pass with zero build warnings/errors. Product Manager review independently
+repeated the complete 56-test and 23-test suites plus the Release simulator build
+before acceptance under IGC-D023. This is accepted implementation evidence, not
+release-candidate, signed-archive, physical-device, manual VoiceOver speech/order,
+Increase Contrast measurement, or final legal-copy approval.
 
 ## 9. Supported PWA regression inventory
 

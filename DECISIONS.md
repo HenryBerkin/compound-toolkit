@@ -443,3 +443,36 @@
   commit supplied in its standalone prompt and use its isolated worktree. IGC-010
   remains proposed Web work; IGC-011 remains deferred; no other feature or release
   implementation is authorised.
+
+## IGC-D023 — Accept and integrate native secondary content and preferences
+
+- Date: 2026-07-29
+- Status: Accepted
+- Context: IGC-013 implemented the authorised bundled Education, contextual help,
+  first-launch coach, System/Light/Dark preferences, Settings/About/Privacy, deliberate
+  scenario/recovery erasure, and verified cross-store Delete all app data flow. It
+  also introduced the narrow app-only UserDefaults boundary and corresponding
+  `CA92.1` required-reason privacy manifest entry.
+- Decision: accept exact specialist head
+  `425af8e302269e52a0971815fdb70241854404d2` and integrate it into
+  `project/ios-migration-audit` through merge commit
+  `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`. Mark IGC-013 Done.
+- Evidence: independent Product Manager reruns passed 56/56
+  unit/fixture/store/content/preference/reset/privacy tests, 23/23 UI tests, and the
+  Release simulator build. Source and packaged privacy manifests parse and contain
+  only `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1`. `git diff --check`,
+  protected contract/PWA/project scope, dependency/network/capability/entitlement
+  boundaries, and clean worktrees passed. Specialist evidence additionally records
+  focused adaptive-iPad routes, compact accessibility-size Dark Mode content, and
+  unreachable-proxy offline checks.
+- Scope boundary: the accepted copy remains development/internal-beta content, not
+  final legal or external-distribution approval. Public Privacy/Support destinations,
+  support contact, signed archive/privacy report, physical-device/manual accessibility
+  sign-off, TestFlight, App Store records, metadata, upload and submission remain open.
+  Shared calculation/scenario meaning, PWA behaviour, signing, capabilities,
+  entitlements, comparison, export, networking, analytics and premium remain unchanged.
+- Consequences: the native feature implementation now covers the architecture’s
+  Calculator/Projection, local scenario lifecycle, and secondary-content milestones.
+  No subsequent engineering milestone is authorised by this decision; Product Manager
+  roadmap review must select and brief the next release-oriented task from the new
+  integration head.

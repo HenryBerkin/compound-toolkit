@@ -386,7 +386,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-013 — Complete native secondary content and preferences
 
 - Owner: iOS Engineer
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: iOS
 - Dependencies: IGC-003, IGC-004, IGC-005, IGC-006, IGC-007, IGC-008, IGC-009,
@@ -470,3 +470,16 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Dispatch control: the standalone Product Manager prompt supplies the exact accepted
   management-update base. If the integration head differs, stop and request a reissued
   base rather than rebasing, merging, or guessing.
+- Product Manager acceptance and integration (2026-07-29):
+  - accepted exact specialist head
+    `425af8e302269e52a0971815fdb70241854404d2` with no blocking findings;
+  - independently repeated 56/56 unit/fixture/store/content/preference/reset/privacy
+    tests, 23/23 UI tests, and the Release simulator build with no failures or skips;
+  - validated the source and packaged privacy manifests with the sole
+    `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1` declaration;
+  - confirmed `git diff --check`, protected-contract/PWA/project scope, dependency,
+    networking, capability and entitlement boundaries, and clean worktrees;
+  - integrated the accepted head into `project/ios-migration-audit` with merge commit
+    `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`;
+  - retained physical-device/manual accessibility, final legal/public copy,
+    signed-archive/privacy-report, TestFlight and App Store work as later gates.

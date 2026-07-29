@@ -56,8 +56,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   boundary, and exact `NSPrivacyAccessedAPICategoryUserDefaults` / `CA92.1` app-target
   privacy manifest. Final evidence is 56/56 unit and 23/23 UI tests plus passing
   focused iPad, compact accessibility-size Dark Mode, unreachable-proxy offline,
-  Debug, Release, manifest, and static privacy/dependency checks. The task stops at
-  Ready for review; final legal/public Support/Privacy/release work remains open.
+  Debug, Release, manifest, and static privacy/dependency checks. Final legal/public
+  Support/Privacy/release work remains open.
 
 ### Changed
 
@@ -104,6 +104,11 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Selected native secondary content and preferences as the dependency-ordered next
   task under IGC-D022 while retaining final legal copy, public Support/Privacy
   destinations, TestFlight, archive/upload, and App Store work as later release gates.
+- Accepted and integrated IGC-013 at specialist head
+  `425af8e302269e52a0971815fdb70241854404d2`; the independent Product Manager gate
+  passed 56/56 unit tests, 23/23 UI tests, the Release simulator build, and packaged
+  privacy-manifest validation before merge commit
+  `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`.
 
 ### Not changed
 

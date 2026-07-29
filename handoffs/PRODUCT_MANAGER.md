@@ -1,9 +1,10 @@
 # Product Manager handoff
 
-Current phase: IGC-007 and IGC-012 are Done, accepted, and integrated. IGC-013 is
-authorised and Ready as the next native engineering milestone. The IGC-007 foundation
-was development-signed, installed, and manually validated on a physical iPhone.
-IGC-012 provides the accepted local native scenario lifecycle.
+Current phase: IGC-007, IGC-012, and IGC-013 are Done, accepted, and integrated. The
+IGC-007 foundation was development-signed, installed, and manually validated on a
+physical iPhone. IGC-012 provides the accepted local native scenario lifecycle;
+IGC-013 completes the accepted secondary content, app preferences, and global
+local-data reset milestone.
 Branch: `project/ios-migration-audit`.
 Baseline: `recovered-pwa-baseline-2026-07-28`.
 
@@ -39,13 +40,17 @@ Projection save gating, normal scenario CRUD/relaunch, shared fixture parity, an
 first-party local-only boundary are accepted. Physical-device execution remains
 skipped under IGC-D019’s Xcode 26.2/iOS 27 compatibility rule.
 
-IGC-D022 authorises IGC-013 — Complete native secondary content and preferences. It
-owns bundled Education and disclaimer routes, contextual help, the accepted first-
-launch coach, System/Light/Dark persistence, Settings/About/Privacy, and one truthful
-global local-data reset over scenarios, recovery material, app preferences, Calculator
-state and navigation. It uses a narrow standard app-only UserDefaults preference
-boundary and must add the current `CA92.1` UserDefaults required-reason privacy-manifest
-entry. It does not approve final legal copy, public Privacy/Support destinations,
-TestFlight, archive/upload or an App Store action. Dispatch only the standalone prompt
-whose exact base matches the current integration head; do not push, upload, or alter
-Apple services without owner approval.
+IGC-D023 accepts exact IGC-013 specialist head
+`425af8e302269e52a0971815fdb70241854404d2`. Product Manager review independently
+passed 56/56 unit tests, 23/23 UI tests, the Release simulator build, source and
+packaged privacy-manifest validation, scope checks, and clean-worktree checks. The
+accepted head is integrated by merge commit
+`a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`. The native app now includes bundled
+Education/disclaimer routes, contextual help, the first-launch coach, System/Light/
+Dark persistence, Settings/About/Privacy, and verified global local-data reset, with
+the sole UserDefaults required-reason declaration `CA92.1`.
+
+Final legal/public copy, public Privacy/Support destinations, physical-device/manual
+accessibility sign-off, signed archive/privacy report, TestFlight, upload and App Store
+actions remain open. No next engineering milestone is authorised until Product Manager
+roadmap review; do not push, upload, or alter Apple services without owner approval.

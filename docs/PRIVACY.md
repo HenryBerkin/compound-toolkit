@@ -1,7 +1,8 @@
 # IGC privacy review and release evidence
 
-Status: Accepted planning baseline under IGC-D016 with IGC-013 source and simulator
-build evidence — no signed release archive has been inspected
+Status: Accepted planning baseline under IGC-D016 with Product Manager-accepted
+IGC-013 source and simulator-build evidence under IGC-D023 — no signed release archive
+has been inspected
 Task: IGC-008 (iOS / Shared), implementation evidence through IGC-013
 Checked: 2026-07-29 for IGC-013 implementation evidence; remaining release baseline
 checked 2026-07-28

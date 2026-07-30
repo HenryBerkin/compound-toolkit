@@ -60,5 +60,7 @@ enum EducationRoute: Hashable {
 enum SettingsRoute: Hashable {
     case about
     case privacy
+    case support
+    case methodology
     case disclaimer
 }

@@ -121,6 +121,10 @@ struct RootTabView: View {
                         AboutIGCView(bundle: .main)
                     case .privacy:
                         PrivacyInformationView()
+                    case .support:
+                        SupportView()
+                    case .methodology:
+                        EducationArticleView(article: .calculations)
                     case .disclaimer:
                         EducationArticleView(article: .disclaimer)
                     }

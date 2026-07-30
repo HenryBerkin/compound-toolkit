@@ -238,6 +238,22 @@ final class CoreInvariantTests: XCTestCase {
         }
     }
 
+    /// The support destinations are force-unwrapped literals reached from Settings, so
+    /// a typo would be a launch-time crash rather than a broken link. Pin them to the
+    /// owner-controlled addresses recorded in the release checklist.
+    func testSupportDestinationsAreTheOwnerControlledAddresses() {
+        XCTAssertEqual(
+            SupportDestination.pageURL.absoluteString,
+            "https://igc.mochadesigns.co.uk/support"
+        )
+        XCTAssertEqual(SupportDestination.email, "support@mochadesigns.co.uk")
+        XCTAssertEqual(
+            SupportDestination.emailURL.absoluteString,
+            "mailto:support@mochadesigns.co.uk"
+        )
+        XCTAssertEqual(SupportDestination.pageURL.scheme, "https")
+    }
+
     /// UK savings accounts advertise an effective annual rate, so the preset must not
     /// quietly compound a nominal rate into something higher than the figure shown.
     func testSavingsAccountPresetTreatsItsRateAsAnEffectiveAnnualRate() {

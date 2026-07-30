@@ -237,6 +237,31 @@ This work is a correctness and wording gate, not a release gate. Final legal cop
 review, physical-device sign-off, and App Review submission remain open. A new
 TestFlight build is required for these corrections to reach any tester.
 
+## Remaining public-submission gaps
+
+The binary itself carries no known submission blocker. The archive inspection for
+`1.0 (2)` matches the `1.0 (1)` baseline, the app icon is a 1024×1024 PNG with no alpha
+channel, no placeholder or TODO copy remains in shipping source, and export compliance
+is now declared in the Info.plist. What remains is App Store Connect metadata plus two
+verification passes:
+
+- Screenshots. The device family is `1,2`, so **iPad screenshots are mandatory**, not
+  optional, unless iPad support is dropped.
+- Primary category. Still undecided. Note that `LSApplicationCategoryType` is empty in
+  the project, but on iOS that key is a macOS artefact and is not read by the App Store;
+  the category is chosen only in App Store Connect, so this is a metadata decision and
+  not a code gap.
+- Final App Privacy questionnaire, age rating, reviewer notes and release mode.
+- Physical-device pass, including large Dynamic Type. IGC-014 added two text blocks to
+  Calculator (preset summary, effective-growth note) that have only been seen in the
+  simulator.
+- Landscape on iPhone is enabled in the supported orientations but has no automated
+  coverage; the Projection chart is the likely pinch point.
+
+Deferred deliberately: `FeatureAvailability` is injected into `RootTabView` and never
+read by any view. It is the intended premium seam, so it is harmless but currently
+unexercised.
+
 ## Known issues and deferred work
 
 - The preset picker initially displays “Global index (DIY)” while the untouched

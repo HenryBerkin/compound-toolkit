@@ -585,8 +585,16 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(
             app.descendants(matching: .any)["about.shorthand"].label.contains("IGC")
         )
-        XCTAssertTrue(
-            app.descendants(matching: .any)["about.versionBuild"].label.contains("1.0 (1)")
+        // Assert the display shape, not a literal build number: pinning the build here
+        // breaks this test on every release bump. Exact agreement with the host bundle
+        // is already covered by testAboutUsesActualHostAppBundleVersionAndBuild.
+        let versionBuildLabel = app.descendants(matching: .any)["about.versionBuild"].label
+        XCTAssertNotNil(
+            versionBuildLabel.range(
+                of: #"\d+\.\d+(\.\d+)? \(\d+\)"#,
+                options: .regularExpression
+            ),
+            "About should show a version and build, got: \(versionBuildLabel)"
         )
         app.navigationBars["About IGC"].buttons["Settings"].tap()
 
@@ -596,6 +604,19 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         scrollToElement(app.staticTexts["Services not present"], in: app)
         XCTAssertTrue(app.staticTexts["Services not present"].exists)
         app.navigationBars["Privacy"].buttons["Settings"].tap()
+
+        let settingsSupport = app.buttons["settings.support"]
+        scrollToElement(settingsSupport, in: app)
+        settingsSupport.tap()
+        XCTAssertTrue(app.navigationBars["Support"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.descendants(matching: .any)["support.page"].exists)
+        XCTAssertTrue(app.descendants(matching: .any)["support.email"].exists)
+        let supportMethodology = app.buttons["support.methodology"]
+        scrollToElement(supportMethodology, in: app)
+        supportMethodology.tap()
+        XCTAssertTrue(app.navigationBars["How calculations work"].waitForExistence(timeout: 3))
+        app.navigationBars["How calculations work"].buttons["Support"].tap()
+        app.navigationBars["Support"].buttons["Settings"].tap()
 
         let settingsDisclaimer = app.buttons["settings.disclaimer"]
         scrollToElement(settingsDisclaimer, in: app)

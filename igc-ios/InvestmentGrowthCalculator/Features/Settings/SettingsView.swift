@@ -82,6 +82,9 @@ struct SettingsView: View {
                 NavigationLink("Privacy", value: SettingsRoute.privacy)
                 .accessibilityIdentifier("settings.privacy")
 
+                NavigationLink("Support", value: SettingsRoute.support)
+                .accessibilityIdentifier("settings.support")
+
                 NavigationLink(
                     "Projection disclaimer",
                     value: SettingsRoute.disclaimer
@@ -197,6 +200,53 @@ struct AboutIGCView: View {
     }
 }
 
+enum SupportDestination {
+    static let email = "support@mochadesigns.co.uk"
+    static let pageURL = URL(string: "https://igc.mochadesigns.co.uk/support")!
+    static let emailURL = URL(string: "mailto:support@mochadesigns.co.uk")!
+}
+
+struct SupportView: View {
+    var body: some View {
+        List {
+            Section("Getting help") {
+                Text("IGC calculates on this device and has no account to recover, so most questions are about how the projection is built. Education covers the method, the glossary and what the projection excludes.")
+                NavigationLink(
+                    "How calculations work",
+                    value: SettingsRoute.methodology
+                )
+                .frame(minHeight: 44)
+                .accessibilityIdentifier("support.methodology")
+            }
+
+            Section("Contact") {
+                Link(destination: SupportDestination.pageURL) {
+                    LabeledContent("Support page", value: "igc.mochadesigns.co.uk/support")
+                }
+                .frame(minHeight: 44)
+                .accessibilityIdentifier("support.page")
+                .accessibilityLabel("Support page. Opens igc.mochadesigns.co.uk slash support in your browser.")
+
+                Link(destination: SupportDestination.emailURL) {
+                    LabeledContent("Email", value: SupportDestination.email)
+                }
+                .frame(minHeight: 44)
+                .accessibilityIdentifier("support.email")
+                .accessibilityLabel("Email support at mochadesigns.co.uk. Opens your mail app.")
+            }
+
+            Section {
+                Text("These open your browser or mail app. IGC does not send anything on your behalf, and no scenario, balance or contribution is attached to a message you choose to write.")
+            }
+        }
+        .navigationTitle("Support")
+        .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: 720)
+        .frame(maxWidth: .infinity)
+        .accessibilityIdentifier("settings.supportInformation")
+    }
+}
+
 struct PrivacyInformationView: View {
     var body: some View {
         ScrollView {
@@ -224,6 +274,10 @@ struct PrivacyInformationView: View {
                 privacySection(
                     "Services not present",
                     "This implementation has no analytics, advertising, tracking, remote configuration, account connection, payment, live market data or support diagnostics."
+                )
+                privacySection(
+                    "Support links",
+                    "Support in Settings offers a web address and an email address. Choosing one hands over to your browser or mail app; IGC itself makes no network request and attaches no scenario, balance, contribution or diagnostic data to anything you then choose to send."
                 )
             }
             .padding()

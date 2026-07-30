@@ -183,10 +183,29 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   Apple's own file data protection (`FileProtectionType.complete`), which is a use of
   OS-provided encryption rather than an implementation of an algorithm. Takes effect
   from the next build (iOS).
+- Added a **Support** route to Settings, giving the app its first in-product help
+  destination: the owner-controlled support page and email, a link into the methodology
+  article, and an explicit statement that choosing either hands over to the browser or
+  mail app while IGC sends nothing and attaches no scenario data. `PrivacyInformationView`
+  gains a matching "Support links" section so the new outbound affordance cannot
+  undercut the standing no-network claim. A unit test pins both destinations to the
+  addresses recorded in the release checklist, since they are force-unwrapped literals
+  whose typo would be a launch crash rather than a broken link (iOS).
 - Added a dormant App Store pointer for the web edition (`src/lib/iosApp.ts`). The
   footer link renders only when `IOS_APP_IS_LIVE` is true; it is false until the public
   listing exists, so the link and its URL are currently tree-shaken out of the build
   entirely. Publishing it is a one-line change (Web).
+
+### Fixed — web update delivery
+
+- Changed the service-worker registration from `autoUpdate` to `prompt`. The app already
+  shipped an "Update available / Refresh" banner wired to `onNeedRefresh`, but
+  vite-plugin-pwa only invokes that callback in prompt mode, so under `autoUpdate` the
+  banner was unreachable and returning visitors were silently served the previously
+  cached build until they reloaded by hand. The generated worker now calls
+  `skipWaiting` only on the `SKIP_WAITING` message the Refresh button sends. The first
+  deploy after this change still requires a manual reload, because the worker already
+  cached on a visitor's device is the old `autoUpdate` one (Web).
 
 ### Changed — terminology and presets
 

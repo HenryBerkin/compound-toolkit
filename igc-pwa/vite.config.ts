@@ -27,7 +27,11 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt', not 'autoUpdate': the app ships an "Update available / Refresh"
+      // banner wired to onNeedRefresh, which vite-plugin-pwa only invokes in prompt
+      // mode. Under autoUpdate the banner never appeared and returning visitors were
+      // silently served the previous build until they reloaded by hand.
+      registerType: 'prompt',
       injectRegister: false,
       includeAssets: ['icons/*.png', 'icons/*.svg'],
       manifest: {

@@ -1,10 +1,13 @@
 # iOS Engineer handoff
 
-## Native 1.0 local release candidate ready for Product Manager review
+## Native 1.0 local release candidate accepted and integrated
 
-Status: **Ready for review**. This is a local release-preparation gate, not a new
-feature task. No App Store Connect record, upload, TestFlight build, push, merge or
-external-service change was made.
+Status: **Accepted and integrated**. This is a local release-preparation gate, not a
+new feature task. Candidate commit
+`36eff61d12f7cf0c0a6afcc8cebd3dc33c8a9109` was integrated into
+`project/ios-migration-audit` by merge commit
+`fe1231e0007d0485afa72c7b4cd0127452b8a46a`. No App Store Connect record, upload,
+TestFlight build, push or external-service change was made.
 
 - Candidate branch: `codex/igc-release-candidate`
 - Exact accepted base: `0c3155493b4ce6c2650da0745bd0890d5fd3f2ae`

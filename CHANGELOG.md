@@ -116,6 +116,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   unit tests, 23/23 iPhone UI tests, a focused adaptive-iPad route, and a signed
   zero-warning archive inspection without adding a capability, entitlement,
   dependency, network path or App Store action.
+- Accepted and integrated release-candidate commit
+  `36eff61d12f7cf0c0a6afcc8cebd3dc33c8a9109` by merge commit
+  `fe1231e0007d0485afa72c7b4cd0127452b8a46a`.
 
 ### Not changed
 

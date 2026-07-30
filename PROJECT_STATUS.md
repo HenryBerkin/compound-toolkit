@@ -9,14 +9,16 @@ Owner: Product Manager and Technical Lead
   foundation was development-signed, installed, and manually validated on a physical
   iPhone; the integrated native app now also includes the accepted local scenario
   lifecycle, secondary content, app preferences, and verified global local-data reset.
-- Release preparation: a local release-candidate branch
+- Release preparation: the accepted release-candidate branch
   `codex/igc-release-candidate` was created from exact accepted branding head
   `0c3155493b4ce6c2650da0745bd0890d5fd3f2ae`. On Xcode 26.6 / iOS 26.5 SDK,
   56/56 unit tests, 23/23 iPhone UI tests, and the focused adaptive-iPad route test
   pass. A signed `1.0 (1)` archive builds with zero Xcode warnings/errors and passes
   the identity, signature, orientation, icon, privacy-manifest and binary inspections
-  recorded canonically in `docs/RELEASE_CHECKLIST.md`. No upload or App Store Connect
-  action has been made.
+  recorded canonically in `docs/RELEASE_CHECKLIST.md`. Candidate commit
+  `36eff61d12f7cf0c0a6afcc8cebd3dc33c8a9109` was integrated by merge commit
+  `fe1231e0007d0485afa72c7b4cd0127452b8a46a`. No upload or App Store Connect action
+  has been made.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -170,12 +172,12 @@ manual accessibility sign-off, TestFlight, signed archive/privacy report, upload
 App Store records and external services remain later release gates. No subsequent
 engineering milestone is authorised until Product Manager roadmap review.
 
-Release-candidate preparation is now **Ready for Product Manager review**. The
-candidate adds explicit supported-orientation metadata required for the adaptive
-iPhone/iPad target; it does not change product behaviour, calculation, persistence,
-signing identity, capability or entitlement scope. `docs/RELEASE_CHECKLIST.md` is the
-single canonical evidence record; the iOS handoff links to it rather than duplicating
-the full command transcript.
+Release-candidate preparation is **Accepted and integrated**. The candidate adds
+explicit supported-orientation metadata required for the adaptive iPhone/iPad target;
+it does not change product behaviour, calculation, persistence, signing identity,
+capability or entitlement scope. `docs/RELEASE_CHECKLIST.md` is the single canonical
+evidence record; the iOS handoff links to it rather than duplicating the full command
+transcript.
 
 ## Known issues and deferred work
 

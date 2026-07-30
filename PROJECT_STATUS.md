@@ -270,10 +270,19 @@ unexercised.
 - The internal TestFlight build `1.0 (1)` predates the IGC-014 corrections, so it still
   shows the APR wording, the previous savings preset, and the annual-detail and
   breakdown presentation defects. Build `1.0 (2)` carries the corrections and is
-  archived, exported and inspected locally, but **has not been uploaded**: this machine
-  holds no App Store Connect API key and no stored upload credential, and Apple account
-  authentication is an owner operation. Until the owner uploads it from Xcode
-  Organizer, no tester has the corrected app.
+  archived, exported and inspected locally, but predates the Settings support route and
+  the export-compliance key. Build `1.0 (3)` supersedes it and is the build to upload:
+  it is archived and inspected at
+  `~/Library/Developer/Xcode/Archives/2026-07-31/IGC 1.0 (3).xcarchive`.
+- `1.0 (3)` **has not been exported or uploaded.** Command-line export now fails with
+  `No signing certificate "iOS Distribution" found`, alongside
+  `DVTDeveloperAccountManager: Invalid credentials in keychain ... missing
+  Xcode-Username`. No Apple Distribution certificate is present in the login keychain
+  and the stored Xcode account session is invalid, so distribution signing cannot be
+  performed non-interactively. Xcode Organizer's **Distribute App** resolves both: it
+  authenticates interactively, obtains the distribution certificate, re-signs the
+  archive and uploads in one flow. This machine also holds no App Store Connect API key,
+  so upload remains an owner operation regardless.
 - Committed PWA documentation and package naming lag behind product behaviour.
 - The web viewport disables pinch zoom, an accessibility risk not to reproduce natively.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.

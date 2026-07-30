@@ -144,6 +144,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Excluded the public Privacy and Support paths from the PWA calculator’s app-shell
   navigation fallback so an existing service worker cannot replace those pages with
   the calculator.
+- Released the supported Web edition as patch version 0.8.2 so its visible footer
+  reflects the post-0.8.1 hosting and routing release.
 
 ### Not changed
 

@@ -4,7 +4,7 @@ All notable changes to this project will be documented here.
 
 ---
 
-## Unreleased — Supported Web Edition
+## 0.8.2 – Supported Web Edition
 
 ### Fixed
 - Keep the public Privacy and Support pages outside the calculator service worker's

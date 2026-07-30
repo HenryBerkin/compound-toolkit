@@ -11,7 +11,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
     func testCleanLaunchShowsExactCustomBaselineAndStableTabs() {
         let app = launch()
 
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Start with the example"].exists)
         XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
         XCTAssertEqual(app.textFields["calculator.principal"].value as? String, "10000 pounds")
@@ -39,7 +39,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertFalse(app.buttons["Export"].exists)
 
         app.buttons["Go to Calculator"].tap()
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 2))
         XCTAssertEqual(app.textFields["calculator.years"].value as? String, "15")
     }
 
@@ -77,7 +77,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         scrollToElement(projectionButton, in: app)
         projectionButton.tap()
 
-        XCTAssertTrue(app.navigationBars["Calculator"].exists)
+        XCTAssertTrue(app.navigationBars["IGC"].exists)
         XCTAssertFalse(app.navigationBars["Projection"].exists)
         XCTAssertTrue(app.staticTexts["calculator.error.principal"].waitForExistence(timeout: 3))
         XCTAssertEqual(app.textFields["calculator.principal"].value as? String, "0 pounds")
@@ -135,7 +135,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(target.waitForExistence(timeout: 4))
         XCTAssertTrue(app.staticTexts["calculator.error.target"].exists)
         assertHasKeyboardFocus(target)
-        XCTAssertTrue(app.navigationBars["Calculator"].exists)
+        XCTAssertTrue(app.navigationBars["IGC"].exists)
         XCTAssertFalse(app.navigationBars["Projection"].exists)
     }
 
@@ -240,7 +240,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["saved.count"].waitForExistence(timeout: 4))
 
         scenarioRow(named: "Loaded plan", in: app).tap()
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 4))
         let loadedStatus = app.descendants(matching: .any)["calculator.loadedStatus"]
         XCTAssertTrue(loadedStatus.waitForExistence(timeout: 3))
         XCTAssertTrue(loadedStatus.label.contains("Loaded “Loaded plan”"))
@@ -405,7 +405,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
         app.terminate()
         app.launch()
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 4))
         XCTAssertFalse(app.staticTexts["Start with the example"].exists)
         XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
     }
@@ -515,8 +515,8 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         methodology.tap()
         XCTAssertTrue(app.navigationBars["How calculations work"].waitForExistence(timeout: 3))
         XCTAssertFalse(app.navigationBars["Education"].exists)
-        app.navigationBars["How calculations work"].buttons["Calculator"].tap()
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 3))
+        app.navigationBars["How calculations work"].buttons["IGC"].tap()
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 3))
 
         let calculatorDisclaimer = app.buttons["calculator.projectionDisclaimer"]
         scrollToElement(calculatorDisclaimer, in: app)
@@ -524,7 +524,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(
             app.navigationBars["Projection disclaimer"].waitForExistence(timeout: 3)
         )
-        app.navigationBars["Projection disclaimer"].buttons["Calculator"].tap()
+        app.navigationBars["Projection disclaimer"].buttons["IGC"].tap()
 
         openProjection(in: app)
         let projectionMethodology = app.buttons["projection.howCalculationsWork"]
@@ -644,7 +644,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
         deleteButton.tap()
         app.buttons["settings.confirmDeleteAllData"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 6))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 6))
         XCTAssertTrue(
             app.descendants(matching: .any)["calculator.appStatus"]
                 .waitForExistence(timeout: 3)
@@ -673,7 +673,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
 
         app.terminate()
         app.launch()
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 4))
         XCTAssertTrue(app.staticTexts["Start with the example"].exists)
         tab(named: "Saved", in: app).tap()
         XCTAssertTrue(app.staticTexts["No saved scenarios"].waitForExistence(timeout: 3))
@@ -713,7 +713,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         app.buttons["Try again"].tap()
         let calculatorTab = tab(named: "Calculator", in: app)
         XCTAssertTrue(waitForSelected(calculatorTab))
-        XCTAssertTrue(app.navigationBars["Calculator"].waitForExistence(timeout: 6))
+        XCTAssertTrue(app.navigationBars["IGC"].waitForExistence(timeout: 6))
         XCTAssertTrue(
             app.descendants(matching: .any)["calculator.appStatus"]
                 .waitForExistence(timeout: 3)

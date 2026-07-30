@@ -109,6 +109,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   passed 56/56 unit tests, 23/23 UI tests, the Release simulator build, and packaged
   privacy-manifest validation before merge commit
   `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`.
+- Added the established IGC mark as the native app icon and changed the Calculator
+  screen title to **IGC**, while retaining **Calculator** as the functional tab label.
 
 ### Not changed
 

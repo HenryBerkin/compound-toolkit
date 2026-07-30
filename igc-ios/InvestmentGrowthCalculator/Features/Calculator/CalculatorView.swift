@@ -261,7 +261,7 @@ struct CalculatorView: View {
                     .accessibilityIdentifier("calculator.projectionDisclaimer")
                 }
             }
-            .navigationTitle("Calculator")
+            .navigationTitle("IGC")
             .frame(maxWidth: 720)
             .frame(maxWidth: .infinity)
             .toolbar {

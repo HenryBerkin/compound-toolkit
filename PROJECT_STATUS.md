@@ -36,7 +36,8 @@ Owner: Product Manager and Technical Lead
 - PWA status: supported IGC web edition and behavioural reference, published at
   `https://igc.mochadesigns.co.uk/` on Cloudflare Pages from production branch
   `project/ios-migration-audit`. Release commit
-  `aa229307cadb2e8c63c21659c4a9e86afd101340` passed the Pages production build;
+  `f6d514169ab1ca2824d8da931b75eb2fbab4522f` passed the Pages production build
+  `6ca2abea-4875-4aaa-86f0-9efb2d12b353`;
   the owner-controlled custom domain is Active with SSL enabled. Public Privacy and
   Support destinations are `https://igc.mochadesigns.co.uk/privacy` and
   `https://igc.mochadesigns.co.uk/support`; no analytics, tracking, Function, database

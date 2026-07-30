@@ -276,10 +276,12 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   approved public Privacy and Support pages, corrects the explicit Custom initial
   preset state under IGC-D011, and restores browser zoom. Type-check, all 85 Web tests
   and the production build pass. Cloudflare production build
-  `0eaaa0e2-5c6c-4c21-a424-aab96f1df71a` deployed exact commit
-  `aa229307cadb2e8c63c21659c4a9e86afd101340`; the custom domain is Active with SSL.
+  `6ca2abea-4875-4aaa-86f0-9efb2d12b353` deployed exact Web 0.8.2 release commit
+  `f6d514169ab1ca2824d8da931b75eb2fbab4522f`; the custom domain is Active with SSL.
   Live checks returned 200 for the calculator and verified the approved Privacy and
-  Support pages through their clean redirecting URLs.
+  Support pages through their clean redirecting URLs. The service-worker app-shell
+  fallback explicitly excludes both public routes so existing PWA control no longer
+  replaces them with the calculator after the 0.8.2 update activates.
 
 ## IGC-011 — Select premium model and entitlement boundary
 

@@ -119,6 +119,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Accepted and integrated release-candidate commit
   `36eff61d12f7cf0c0a6afcc8cebd3dc33c8a9109` by merge commit
   `fe1231e0007d0485afa72c7b4cd0127452b8a46a`.
+- Prepared the exact initial App Store Connect record fields and separated them from
+  later metadata/submission inputs; no Apple record or external-service change was
+  made.
 
 ### Not changed
 

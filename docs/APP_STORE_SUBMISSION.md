@@ -3,7 +3,8 @@
 Status: Accepted planning baseline under IGC-D016 — not a submission readiness
 certification
 Task: IGC-008 (iOS / Shared)
-Checked: 2026-07-28
+Checked: 2026-07-30 for current App Store Connect record-creation fields; original
+policy review 2026-07-28
 Scope: Native iOS 1.0 only. A signed local release-candidate archive exists; no App
 Store Connect record, upload, TestFlight build, or store action exists. Detailed
 current evidence is recorded once in `docs/RELEASE_CHECKLIST.md`.
@@ -29,19 +30,59 @@ In App Review notes, explain that no account or reviewer login is needed; calcul
 
 ## Owner-controlled identity and record setup
 
+### Prepared New App record inputs
+
+The following values are ready for the App Store Connect **New App** dialog. They do
+not create a record or authorise submission.
+
+| New App field | Prepared value | Status |
+| --- | --- | --- |
+| Platforms | **iOS** only | Confirmed. This one platform covers the accepted iPhone and iPad app; do not add macOS, tvOS or visionOS. |
+| Name | **Investment Growth Calculator** | Confirmed product decision; 28 characters. Availability is checked authoritatively only when Apple validates the new record. |
+| Primary Language | **English (U.K.)** | Confirmed by IGC-D005 and the app’s en-GB/GBP-only 1.0 scope. |
+| Bundle ID | **uk.co.mochadesigns.igc** | Confirmed by IGC-D018. It must appear as an explicit eligible Bundle ID in Apple’s selector. |
+| SKU | **IGC-IOS-001** | Product Manager recommendation, pending owner approval. It is internal, not customer-visible, and immutable after record creation. |
+| User Access | **Full Access** | Product Manager recommendation, pending owner approval. This is the simplest setting for the owner-led account; it can be narrowed later if additional restricted users are added. |
+
+Apple’s current form uses these fields and requires an Account Holder, Admin or App
+Manager role. The Account Holder must also have accepted the latest agreement in
+Business. [Add a new app](https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app/),
+[App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information)
+
+Account-side preflight remains deliberately unexecuted because the available browser
+session is not signed in:
+
+- Confirm the latest Apple agreement is accepted.
+- Confirm `uk.co.mochadesigns.igc` appears in the Bundle ID selector. The local
+  development archive used an Xcode-managed wildcard provisioning profile, which does
+  not prove that the required explicit App ID is already registered.
+- If it is absent, register one explicit App ID with description
+  **Investment Growth Calculator**, exact bundle ID `uk.co.mochadesigns.igc`, and no
+  new project capability. Registration requires Account Holder or Admin authority.
+  [Register an App ID](https://developer.apple.com/help/account/identifiers/register-an-app-id)
+- Confirm Apple accepts the public name. A public App Store search cannot establish
+  record-name availability.
+
+Category, copyright, territories, trader status, privacy/support URLs, age rating,
+App Privacy answers, screenshots and version metadata are later configuration or
+submission inputs; they are not fields in the initial New App dialog.
+
 | Input | Classification | Decision / consequence |
 | --- | --- | --- |
 | Public name: `Investment Growth Calculator` | **App-specific fact** | It is 28 characters, within Apple’s 2–30-character name limit, but availability/acceptance remains a release-time check. Do not create or reserve a record in this task. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Display/icon shorthand: `IGC` | **App-specific fact** | Use only as supporting identity; it must not make the app look like an investment firm or product. |
 | Bundle identifier and reverse-DNS namespace | **App-specific fact — confirmed** | IGC-D018 fixes `uk.co.mochadesigns.igc`. The explicit App ID and application target must match it. Bundle ID cannot be changed after upload. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Apple Developer Team, signing ownership, Account Holder access | **Team identity confirmed / open release input** | Team Name `Henry Berkin` and Team ID `2FKVFS8X67` are owner-confirmed for project signing. Provider/legal entity, final signing responsibility, and Account Holder access remain release/operations inputs. Do not share individual credentials or use a different team. |
-| App Store SKU | **Open owner input** | Select immediately before the App Store Connect record; it is internal, immutable after creation, and may use letters/numbers/hyphens/periods/underscores (not a leading punctuation mark). [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
+| App Store SKU | **Prepared owner input** | Product Manager recommends `IGC-IOS-001`. Owner approval remains required before record creation because the internal value cannot be changed afterwards. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Provider/legal entity and copyright | **Open owner input** | The version metadata requires a copyright owner/year; decide whether the publisher is an individual or legal entity after the regulated-content review. |
 | Privacy-policy and support URLs | **Open owner input** | A public privacy-policy URL is required for iOS; support URL is required version information and must provide usable contact details. No URL is invented here. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/), [platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information) |
 | Primary category | **Open owner input** | Choose the category that best describes the final binary. **PM recommendation:** Finance is intuitive but raises financial-service expectations; Utilities or Productivity may fit a standalone calculator. Select only after legal/marketing review; an optional secondary category must not misrepresent scope. |
 | App Groups, iCloud/CloudKit, associated domains, StoreKit, payment | **Release-time verification** | Scope excludes all of these in 1.0. Archive entitlements and capability settings must prove their absence; associated domains are also unnecessary unless a future support/web feature specifically needs them. |
 
-**Product Manager recommendation:** start `1.0.0` with monotonically increasing build strings (for example `1`, then `2`); use semantic-looking public versions only if release policy adopts them. Apple identifies a build by bundle ID, version number, and build string. [Upload builds](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds/)
+**Product Manager recommendation:** retain the verified public version `1.0` and use
+monotonically increasing build strings (`1`, then `2`, and so on). Apple identifies a
+build by bundle ID, version number, and build string.
+[Upload builds](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds/)
 
 ## Technical upload and binary checks
 
@@ -50,7 +91,7 @@ In App Review notes, explain that no account or reviewer login is needed; calcul
 | Upload toolchain | **Confirmed current requirement** | Since 2026-04-28, App Store Connect uploads require Xcode 26 or later and an iOS 26 (or later) SDK. This is separate from the accepted iOS 17 deployment target. Recheck immediately before archive/upload. [Upcoming requirements](https://developer.apple.com/news/upcoming-requirements/) (checked 2026-07-28). |
 | Supported devices/architectures | **Release-time verification** | The dated signed-archive inspection in `docs/RELEASE_CHECKLIST.md` verifies arm64 iOS, iOS 17 minimum, iPhone+iPad family, explicit supported orientations and no unintended platform or extension. Repeat only after a binary-affecting change. |
 | Privacy manifest / required-reason APIs | **Release-time verification** | The signed archive contains a valid app-root manifest declaring only app-only UserDefaults reason `CA92.1`; the canonical archive/dependency evidence is in `docs/RELEASE_CHECKLIST.md`. Match final App Privacy answers to the processed build. [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy-manifest-files), [adding a privacy manifest](https://developer.apple.com/documentation/bundleresources/adding-a-privacy-manifest-to-your-app-or-third-party-sdk) |
-| Icons and launch assets | **Release-time verification** | Create an Asset Catalog and validate Xcode/App Store processing. The PWA PNG/SVG assets are visual reference only, not proof of native asset conformance. |
+| Icons and launch assets | **Release-time verification** | **Signed-archive pass:** the native Asset Catalog produced opaque sRGB 1024×1024 IGC `AppIcon` renditions for phone and pad. Processed-build validation remains after upload. |
 | Entitlements/capabilities | **Release-time verification** | Record the signed entitlement report and capability list; expected 1.0 result is no iCloud, App Group, associated-domain, push, Sign in with Apple, Health, contacts, payments, or StoreKit capability. |
 | Encryption/export compliance | **Release-time verification** | Each TestFlight build must answer export-compliance questions or supply approved documentation; determine actual cryptography use from the archive and Apple’s current questionnaire. System transport/storage protections must not be assumed to settle the answer. [TestFlight export compliance](https://developer.apple.com/help/app-store-connect/test-a-beta-version/provide-export-compliance-information-for-beta-builds) |
 | Age rating | **Open owner input** | Age rating is required; Apple’s updated questionnaire applies and must be answered from the final binary/content, not guessed as “4+”. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/), [upcoming requirements](https://developer.apple.com/news/upcoming-requirements/) |
@@ -91,8 +132,9 @@ prices, payment, or fabricated feature states.
 
 ### Confirmed current blockers
 
-- No App Store Connect record or upload has been authorised; SKU and remaining
-  owner-controlled record fields are unresolved.
+- No App Store Connect record or upload has been authorised. The New App values are
+  prepared, but the recommended immutable SKU/User Access settings and account-side
+  agreement, explicit-Bundle-ID and name checks still require owner approval/action.
 - No public privacy-policy or support URL has been selected/provided.
 - App Privacy, required age-rating responses, screenshots, final metadata, reviewer
   contact/notes, export-compliance and territory/trader responses remain open.

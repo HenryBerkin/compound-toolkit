@@ -12,7 +12,7 @@ Classifications: **Confirmed current requirement**, **App-specific fact**, **Pro
 | Gate / owner | Item | Classification | Evidence / status |
 | --- | --- | --- | --- |
 | Before Xcode project — Product Owner | Confirm Apple Developer Team/account ownership and reverse-DNS bundle identifier; retain provider/legal entity and final signing responsibility for the release record. | **Project identity confirmed / open release input** | IGC-D018 confirms `uk.co.mochadesigns.igc`, Team Name `Henry Berkin`, and Team ID `2FKVFS8X67`. The native project identity gate is complete. Provider/legal entity and final signing responsibility remain open for release operations; no different team is authorised. |
-| Before App Store Connect record — Product Owner / PM | Decide App Store SKU convention (do not create record yet), category options, copyright owner/year, territories, support and privacy-policy owner/URLs. | **Open owner input** | Decision log/approved URLs. **Open**. |
+| Before App Store Connect record — Product Owner / PM | Approve the immutable SKU and user access; confirm the latest agreement, explicit Bundle ID eligibility and name availability. Do not create the record without separate approval. | **Prepared owner input / release operation** | Prepared values: iOS; `Investment Growth Calculator`; English (U.K.); `uk.co.mochadesigns.igc`; recommended SKU `IGC-IOS-001`; recommended Full Access. Account-side checks remain open because the available browser session was not signed in. Category, URLs and other submission metadata are later fields, not New App dialog blockers. |
 | Before external beta/public copy — PM / Legal | Approve positioning and disclaimer strategy; assess UK/territory financial-promotion, advice, terminology/preset and trader-status risks. | **Legal/regulatory review recommended** | Counsel/owner disposition; approved copy boundaries. **Open**. |
 | Project foundation / before distribution — iOS Engineer | Recheck current Apple upload SDK requirement; plan iOS 17 deployment target separately; identify iPhone-primary/adaptive iPad device support. | **Release-time verification** | **Passed 2026-07-30:** Apple currently requires Xcode 26+ and iOS 26+ SDK; the candidate uses stable Xcode 26.6 (17F113), iOS 26.5 SDK, iOS 17 deployment, and explicit iPhone/iPad orientation metadata. Recheck only if upload is delayed or the rule changes. |
 | Project foundation — iOS Engineer | Create only approved target(s); set bundle ID/team/version/build; add no App Groups, iCloud/CloudKit, associated domains, StoreKit, push, accounts, payment, analytics or third-party SDKs. | **Release-time verification** | **Passed for the signed candidate:** app/unit/UI targets, `uk.co.mochadesigns.igc`, Team `2FKVFS8X67`, version `1.0 (1)`, iPhone+iPad family, and absence of unapproved capabilities/entitlements verified. |
@@ -40,8 +40,9 @@ Apple currently requires a public privacy-policy URL for iOS, accurate metadata,
 
 ### Confirmed current submission blockers
 
-- No App Store Connect record has been authorised or created; immutable SKU and the
-  remaining owner-controlled record fields are unresolved.
+- No App Store Connect record has been authorised or created. The initial field set is
+  prepared; owner approval of the recommended immutable SKU/User Access and signed-in
+  account preflight remain open.
 - Required public privacy-policy and support URLs have no owner-provided values.
 - Final App Privacy, age-rating, metadata, screenshots, reviewer contact/notes,
   export-compliance and territory/trader responses remain open.
@@ -60,7 +61,9 @@ evidence unless a processed build or beta test reveals a defect.
 - Provider/legal entity and final signing ownership. Bundle identifier
   `uk.co.mochadesigns.igc`, Team Name `Henry Berkin`, and Team ID `2FKVFS8X67` are
   confirmed in IGC-D018.
-- App Store SKU, provider/legal entity, copyright, category, territories and EU trader status if relevant.
+- Approve or replace the recommended App Store SKU `IGC-IOS-001` and Full Access
+  setting; provider/legal entity, copyright, category, territories and EU trader
+  status remain later inputs.
 - Support, privacy-policy and optional marketing URLs plus support contact.
 - Final age-rating questionnaire responses and release mode.
 - Device-backup policy/copy and whether diagnostics remain excluded.

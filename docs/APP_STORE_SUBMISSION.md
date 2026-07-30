@@ -4,7 +4,9 @@ Status: Accepted planning baseline under IGC-D016 — not a submission readiness
 certification
 Task: IGC-008 (iOS / Shared)
 Checked: 2026-07-28
-Scope: Native iOS 1.0 only; no App Store Connect record, native binary, or store action exists.
+Scope: Native iOS 1.0 only. A signed local release-candidate archive exists; no App
+Store Connect record, upload, TestFlight build, or store action exists. Detailed
+current evidence is recorded once in `docs/RELEASE_CHECKLIST.md`.
 
 ## Classification and review position
 
@@ -46,8 +48,8 @@ In App Review notes, explain that no account or reviewer login is needed; calcul
 | Topic | Classification | Release-time evidence |
 | --- | --- | --- |
 | Upload toolchain | **Confirmed current requirement** | Since 2026-04-28, App Store Connect uploads require Xcode 26 or later and an iOS 26 (or later) SDK. This is separate from the accepted iOS 17 deployment target. Recheck immediately before archive/upload. [Upcoming requirements](https://developer.apple.com/news/upcoming-requirements/) (checked 2026-07-28). |
-| Supported devices/architectures | **Release-time verification** | Confirm supported iPhone/iPad device family, iOS 17 minimum, valid App Store archive architectures, launch on physical iPhone and adaptive iPad, and no unintended platforms/extensions. No project exists to inspect. |
-| Privacy manifest / required-reason APIs | **Release-time verification** | Apple privacy manifests describe collected data and required-reason API use; invalid bundled manifests cause submission rejection. Do not fabricate one before source/dependencies/API inventory exists. Inspect the archive and every dependency after project creation. [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy-manifest-files), [adding a privacy manifest](https://developer.apple.com/documentation/bundleresources/adding-a-privacy-manifest-to-your-app-or-third-party-sdk) |
+| Supported devices/architectures | **Release-time verification** | The dated signed-archive inspection in `docs/RELEASE_CHECKLIST.md` verifies arm64 iOS, iOS 17 minimum, iPhone+iPad family, explicit supported orientations and no unintended platform or extension. Repeat only after a binary-affecting change. |
+| Privacy manifest / required-reason APIs | **Release-time verification** | The signed archive contains a valid app-root manifest declaring only app-only UserDefaults reason `CA92.1`; the canonical archive/dependency evidence is in `docs/RELEASE_CHECKLIST.md`. Match final App Privacy answers to the processed build. [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy-manifest-files), [adding a privacy manifest](https://developer.apple.com/documentation/bundleresources/adding-a-privacy-manifest-to-your-app-or-third-party-sdk) |
 | Icons and launch assets | **Release-time verification** | Create an Asset Catalog and validate Xcode/App Store processing. The PWA PNG/SVG assets are visual reference only, not proof of native asset conformance. |
 | Entitlements/capabilities | **Release-time verification** | Record the signed entitlement report and capability list; expected 1.0 result is no iCloud, App Group, associated-domain, push, Sign in with Apple, Health, contacts, payments, or StoreKit capability. |
 | Encryption/export compliance | **Release-time verification** | Each TestFlight build must answer export-compliance questions or supply approved documentation; determine actual cryptography use from the archive and Apple’s current questionnaire. System transport/storage protections must not be assumed to settle the answer. [TestFlight export compliance](https://developer.apple.com/help/app-store-connect/test-a-beta-version/provide-export-compliance-information-for-beta-builds) |
@@ -89,14 +91,17 @@ prices, payment, or fabricated feature states.
 
 ### Confirmed current blockers
 
-- No compliant archive exists; upload cannot occur until it is built with the currently required Xcode/SDK.
+- No App Store Connect record or upload has been authorised; SKU and remaining
+  owner-controlled record fields are unresolved.
 - No public privacy-policy or support URL has been selected/provided.
-- No App Privacy answers, required age-rating responses, screenshots, final metadata, reviewer contact/notes, or export-compliance response exist.
+- App Privacy, required age-rating responses, screenshots, final metadata, reviewer
+  contact/notes, export-compliance and territory/trader responses remain open.
 
-### Likely implementation-dependent blockers
+### Engineering position
 
-- Archive cannot demonstrate accurate privacy manifest/required-reason API/dependency declarations, entitlements, icon assets, architecture/device support, or actual no-network/no-analytics behaviour yet.
-- Metadata and screenshots cannot accurately represent an unbuilt app.
+The signed local archive and complete automated gate have no known engineering blocker
+to an internal TestFlight upload. See `docs/RELEASE_CHECKLIST.md`; do not duplicate
+archive results here.
 
 ### Release-time official-rule rechecks
 

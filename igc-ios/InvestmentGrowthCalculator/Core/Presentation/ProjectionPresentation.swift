@@ -33,7 +33,7 @@ enum IGCFormatters {
             return String(format: "£%.1fM", locale: locale, value / 1_000_000)
         }
         if magnitude >= 1_000 {
-            return String(format: "£%.0fK", locale: locale, value / 1_000)
+            return String(format: "£%.0fk", locale: locale, value / 1_000)
         }
         return gbp(value)
     }

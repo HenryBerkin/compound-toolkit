@@ -148,7 +148,7 @@ export const ScenarioManager: FC<Props> = ({
                   <span className="scenario-name">{s.name}</span>
                   <span className="scenario-meta">
                     {presetLabel}
-                    {formatGBP(s.inputs.principal)} · {(s.inputs.apr * 100).toFixed(2)}% APR ·{' '}
+                    {formatGBP(s.inputs.principal)} · {(s.inputs.apr * 100).toFixed(2)}% growth ·{' '}
                     {inflationLabel} · {feeLabel} · {durationLabel}
                   </span>
                 </div>

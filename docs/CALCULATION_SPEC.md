@@ -73,11 +73,29 @@ The curated presets are:
 | `global-index-diy` | 7% | 3% | 0.40% | Monthly |
 | `balanced-portfolio` | 6% | 3% | 0.75% | Monthly |
 | `equity-heavy-portfolio` | 9% | 3% | 1.00% | Monthly |
-| `savings-account` | 4% | 3% | 0% | Monthly |
+| `savings-account` | 4% | 3% | 0% | Annual |
 
 A preset is active only after deliberate selection and only while all preset-controlled
 fields still match it. Editing one of those fields changes the state to Custom.
 Preset names are presentation copy; the stable identifier is persisted.
+
+`savings-account` uses annual compounding deliberately. UK savings accounts advertise an
+effective annual rate (AER), and annual compounding is the only convention under which
+the entered rate is also the effective rate. Under monthly compounding the same 4% would
+produce 4.0742% effective growth, overstating an advertised 4% AER account.
+
+## User-facing terminology
+
+`apr` is a stable contract identifier and must not be renamed in schemas, fixtures, or
+persisted scenarios. It is **not** the user-facing term. Both clients present this field
+as **annual growth rate** and describe it as a nominal rate.
+
+In the United Kingdom, APR is a defined measure of the cost of credit rather than of
+investment growth, so no client surfaces "APR" as the name of this assumption. Because
+the rate is nominal, daily, monthly and quarterly compounding produce a slightly higher
+effective yearly growth than the figure entered; only annual compounding returns exactly
+that figure. Each client states the effective figure rather than leaving it to be
+inferred.
 
 ## Conversion formulae
 
@@ -207,6 +225,13 @@ Annual real ending balance, cumulative contributions, and cumulative interest us
 row-end divisor. This is horizon discounting of accumulated totals, not
 cashflow-by-cashflow inflation adjustment. Preserve this convention unless an accepted
 future model change replaces it.
+
+A client that presents an annual row as an additive breakdown in today's money must
+apply that row's single row-end divisor to every amount in the row, including the
+opening balance. Mixing divisors within one row produces a breakdown that does not sum
+to its own closing balance. A consequence of this convention is that an opening balance
+in today's money is not the previous row's closing balance, because the two use
+different divisors; a client presenting both must say so.
 
 ## Presentation and target rules
 

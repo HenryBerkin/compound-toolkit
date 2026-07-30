@@ -89,9 +89,11 @@ struct CalculatorView: View {
                     .focused($presetFocused)
                     .accessibilityFocused($presetAccessibilityFocused)
                     .accessibilityIdentifier("calculator.preset")
-                    Text("Presets update growth, inflation, fee and compounding.")
+                    Text(presetSummary)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("calculator.presetSummary")
                 }
                 .id("calculator.preset.section")
 
@@ -133,13 +135,13 @@ struct CalculatorView: View {
 
                 Section("Growth and costs") {
                     inputRow(
-                        label: "Annual growth rate (APR)",
+                        label: "Annual growth rate",
                         unit: "%",
                         text: $draft.apr,
                         field: .apr,
                         keyboard: .decimalPad,
                         identifier: "calculator.apr",
-                        helper: "Assumed yearly growth before fees and inflation."
+                        helper: "Assumed nominal yearly growth before fees and inflation."
                     )
                     inputRow(
                         label: "Inflation",
@@ -167,6 +169,13 @@ struct CalculatorView: View {
                     .accessibilityIdentifier("calculator.compounding")
                     .onChange(of: draft.compoundFrequency) {
                         draft.reconcilePreset()
+                    }
+                    if let effectiveGrowthNote {
+                        Text(effectiveGrowthNote)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityIdentifier("calculator.effectiveGrowth")
                     }
                     NavigationLink(
                         "How calculations work",
@@ -338,6 +347,33 @@ struct CalculatorView: View {
         .buttonStyle(.bordered)
         .frame(minHeight: 44)
         .accessibilityIdentifier("calculator.coach.dismiss")
+    }
+
+    /// The entered growth rate is nominal, so under daily, monthly or quarterly
+    /// compounding the realised yearly growth is higher than the number typed. State
+    /// the effective figure rather than leaving the user to infer it.
+    private var effectiveGrowthNote: String? {
+        guard draft.compoundFrequency != .annual else {
+            return "Annual compounding applies the rate you enter as the effective yearly growth."
+        }
+        guard let percent = CalculatorInputParser.number(draft.apr, allowBlank: false),
+              (0...999).contains(percent) else { return nil }
+        let annualRate = percent / 100
+        let monthlyRate = CalculationEngine.effectiveMonthlyRate(
+            annualRate: annualRate,
+            compoundFrequency: draft.compoundFrequency
+        )
+        let effectiveAnnualRate = pow(1 + monthlyRate, 12) - 1
+        return "\(IGCFormatters.percent(annualRate)) is a nominal rate. Compounded "
+            + "\(draft.compoundFrequency.title.lowercased()), it is "
+            + "\(IGCFormatters.percent(effectiveAnnualRate)) effective yearly growth."
+    }
+
+    private var presetSummary: String {
+        guard let id = draft.presetID else {
+            return "Presets update growth, inflation, fee and compounding."
+        }
+        return "This preset applies \(PresetCatalog.preset(id).assumptionSummary)."
     }
 
     private var presetBinding: Binding<PresetID?> {

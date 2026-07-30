@@ -42,7 +42,7 @@ enum EducationArticle: String, Hashable, Identifiable, Sendable {
                     heading: "Monthly calculation",
                     paragraphs: [
                         "The calculation proceeds month by month for the duration you select. Annual detail groups those internal monthly periods, including a final partial year.",
-                        "The annual growth rate (APR) is converted to an effective monthly rate according to the selected daily, monthly, quarterly or annual compounding frequency.",
+                        "The annual growth rate you enter is a nominal rate. It is converted to an effective monthly rate according to the selected daily, monthly, quarterly or annual compounding frequency. Only annual compounding returns exactly the rate you enter over a year; daily, monthly and quarterly compounding return slightly more.",
                     ]
                 ),
                 EducationSection(
@@ -55,7 +55,7 @@ enum EducationArticle: String, Hashable, Identifiable, Sendable {
                 EducationSection(
                     heading: "Growth, fees and inflation",
                     paragraphs: [
-                        "In each monthly period, growth occurs before the asset-based fee deduction. The fee is applied to the post-growth balance; it is not subtracted from APR.",
+                        "In each monthly period, growth occurs before the asset-based fee deduction. The fee is applied to the post-growth balance; it is not subtracted from the annual growth rate.",
                         "Today’s-money values divide the relevant future amount by the effect of your inflation assumption over the elapsed time.",
                     ]
                 ),
@@ -120,7 +120,7 @@ enum GlossaryTerm: Int, CaseIterable, Identifiable, Hashable, Sendable {
 
     var title: String {
         switch self {
-        case .annualGrowthRate: "Annual growth rate (APR)"
+        case .annualGrowthRate: "Annual growth rate"
         case .compounding: "Compounding"
         case .inflation: "Inflation"
         case .annualFee: "Annual fee"
@@ -136,7 +136,7 @@ enum GlossaryTerm: Int, CaseIterable, Identifiable, Hashable, Sendable {
     var definition: String {
         switch self {
         case .annualGrowthRate:
-            "The nominal yearly growth assumption before fees and inflation. IGC converts APR according to the compounding frequency you select."
+            "The nominal yearly growth assumption before fees and inflation. IGC converts it into a monthly rate according to the compounding frequency you select, so with daily, monthly or quarterly compounding the effective yearly growth is slightly higher than the rate you enter. IGC does not describe this rate as an APR: in the United Kingdom, APR is a defined measure of the cost of credit rather than of investment growth."
         case .compounding:
             "How the annual growth rate and annual fee are converted into monthly effects. IGC offers daily, monthly, quarterly and annual conversion conventions."
         case .inflation:

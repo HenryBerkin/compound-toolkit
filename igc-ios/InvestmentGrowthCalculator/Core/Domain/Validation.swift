@@ -68,7 +68,7 @@ enum CalculationValidator {
 
         let yearsIsInteger = candidate.years.isFinite && candidate.years.rounded(.towardZero) == candidate.years
         if !yearsIsInteger || candidate.years < 0 {
-            issues.append(.init(field: .years, message: "Enter a whole number of years from 0 to 60."))
+            issues.append(.init(field: .years, message: "Enter a whole number of years."))
         }
 
         let monthsIsInteger = candidate.months.isFinite && candidate.months.rounded(.towardZero) == candidate.months

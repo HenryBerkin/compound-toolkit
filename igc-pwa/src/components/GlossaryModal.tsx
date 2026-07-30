@@ -81,13 +81,17 @@ export const GlossaryModal: FC<Props> = ({ onClose }) => {
         </p>
 
         <section className="glossary-section">
-          <h3>Annual Growth Rate (APR)</h3>
+          <h3>Annual Growth Rate</h3>
           <p>
-            The assumed average yearly growth rate before fees and inflation are applied.
-            In this tool, APR represents the expected annual return of the investment itself.
-            Fees and inflation are modelled separately so their impact can be shown clearly.
-            If £10,000 grows at 7% for one year, it becomes £10,700, assuming no fees and
-            no additional contributions during that year.
+            The assumed nominal yearly growth rate before fees and inflation are applied.
+            It represents the expected annual return of the investment itself. Fees and
+            inflation are modelled separately so their impact can be shown clearly.
+            If £10,000 grows at 7% for one year with annual compounding, it becomes
+            £10,700, assuming no fees and no additional contributions during that year.
+            With daily, monthly or quarterly compounding the effective yearly growth is
+            slightly higher than the rate you enter. This tool does not describe the rate
+            as an APR: in the United Kingdom, APR is a defined measure of the cost of
+            credit rather than of investment growth.
           </p>
         </section>
 

@@ -477,3 +477,93 @@
   No subsequent engineering milestone is authorised by this decision; Product Manager
   roadmap review must select and brief the next release-oriented task from the new
   integration head.
+
+## IGC-D024 — Stop presenting the growth assumption as an APR
+
+- Date: 2026-07-30
+- Status: Accepted
+- Platform: Shared
+- Context: a pre-public-release accuracy review of the native app found that both
+  clients label the growth assumption "APR". In the United Kingdom, APR is a defined
+  measure of the cost of credit, not of investment growth; the corresponding
+  investment conventions are an annualised return or, for savings, AER. The PWA
+  additionally labelled the same field "Annual Interest Rate", giving three terms for
+  one assumption. The app is on internal TestFlight only, so no public expectation has
+  formed around the current wording.
+- Decision: present the field as **annual growth rate** in both clients and describe it
+  explicitly as a nominal rate. Retain `apr` as the contract identifier in
+  `docs/CALCULATION_SPEC.md`, `docs/SCENARIO_SCHEMA.md`, `shared/`, and persisted
+  scenarios. Record the user-facing terminology in the shared calculation contract so
+  the identifier and the presented term cannot drift apart again. State in both
+  glossaries why APR is not used.
+- Rationale: the term was factually wrong for a UK-English financial calculator and is
+  the kind of inaccuracy an App Store reviewer or an informed user would reasonably
+  challenge. Correcting copy without touching identifiers avoids any schema, fixture,
+  or migration impact.
+- Alternatives: keep "APR" with a clarifying note, as the PWA glossary previously did;
+  correct iOS only and accept deliberate cross-platform drift.
+- Consequences: copy-only change in both clients. No calculation, schema, fixture, or
+  persisted-data change. Saved scenarios are unaffected. Two iOS content tests and the
+  PWA glossary/preset strings were updated to match.
+
+## IGC-D025 — Align the Savings account preset with the UK AER convention
+
+- Date: 2026-07-30
+- Status: Accepted
+- Platform: Shared
+- Context: the `savings-account` preset shipped 4% with monthly compounding. Under the
+  accepted nominal-rate model that produces 4.0742% effective annual growth, whereas a
+  UK savings account advertising "4% AER" returns exactly 4%. On £10,000 over 15 years
+  the preset overstated the outcome by £193.58. The other three presets model
+  investments, where a nominal rate with monthly compounding is a defensible
+  convention; a savings account is the one preset whose real-world analogue is quoted
+  as an effective rate.
+- Decision: change `savings-account` to annual compounding in both clients and in the
+  preset table in `docs/CALCULATION_SPEC.md`, so the entered 4% is the effective rate.
+  Rename the PWA preset label to "4% AER". Leave the engine, the rate-conversion
+  formulae, the other three presets, and all fixtures unchanged.
+- Rationale: the preset is a curated example of a real product type and should not
+  misrepresent how that product's headline rate behaves. The correction is a preset
+  default, not a model change, so no fixture expectation moves.
+- Alternatives: keep monthly compounding and explain in copy that the rate is nominal;
+  leave the preset unchanged.
+- Consequences: no engine, contract-version, or fixture change; `calculation-v1.json`
+  covers explicit inputs rather than preset defaults and needed no update. Existing
+  saved scenarios are untouched because each scenario persists its own
+  `compoundFrequency`. A scenario saved against the previous preset now displays as
+  Custom, which is the existing truthful-selection behaviour working as designed and
+  affects only internal TestFlight data. A new iOS invariant test asserts the preset's
+  entered rate equals its effective annual rate.
+
+## IGC-D026 — Correct native results presentation so breakdowns add up and labels are honest
+
+- Date: 2026-07-30
+- Status: Accepted
+- Platform: iOS
+- Context: the same review found three presentation defects in the native results,
+  none of them in the engine, which reproduces the shared fixtures exactly.
+  Annual detail discounted a row's opening balance at the row's start date while
+  discounting every other amount in the row at the row's end date, so today's-money
+  rows did not sum to their own closing balance — £291.26 out in year 1 and £1,886.92
+  out in year 15 of the default scenario. In after-fee modes the "Growth" figure was
+  already net of fees while "Fees paid in this year" was listed beneath it, so
+  subtracting the fee gave the wrong closing balance. On Projection, the Breakdown list
+  placed the "Balance before fees" total among three amounts that add to a different
+  total.
+- Decision: apply one row-end divisor to every amount in an annual row, so both paths
+  add up exactly in nominal and today's-money modes; label after-fee growth "Growth
+  after fees" and the fee line "Fees deducted this year", with a per-row note stating
+  that growth is already net of the fee shown; move "Balance before fees" into the Fee
+  impact section and close the Breakdown list with its actual total. Record the
+  row-end-divisor rule in the shared calculation contract.
+- Rationale: each defect made a correct calculation read as an incorrect one. The
+  row-end divisor is already the contract's own convention for a row's closing balance,
+  so adopting it throughout the row preserves parity while restoring additivity.
+- Alternatives: preserve continuity between rows instead of additivity within a row;
+  remove the additive breakdown from today's-money modes entirely. Horizon discounting
+  cannot provide both properties, and the row is the unit users actually read.
+- Consequences: presentation-only change. Closing balances still equal the contract's
+  `realEndingBalance` and `realEndingBalanceAfterFees`, so fixture parity is unaffected.
+  Because divisors differ per row, an opening balance in today's money is not the
+  previous row's closing balance; the interface and the contract both now say so. A new
+  iOS invariant test asserts additivity on both paths in both bases.

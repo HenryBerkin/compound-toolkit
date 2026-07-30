@@ -475,7 +475,7 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         app.buttons["education.glossary"].tap()
         XCTAssertTrue(app.navigationBars["Glossary"].waitForExistence(timeout: 3))
         let expectedTerms = [
-            "Annual growth rate (APR)",
+            "Annual growth rate",
             "Compounding",
             "Inflation",
             "Annual fee",
@@ -658,7 +658,12 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         let contribution = app.textFields["calculator.contribution"]
         scrollToElement(contribution, in: app)
         XCTAssertEqual(contribution.value as? String, "250 pounds")
-        XCTAssertTrue(app.buttons["calculator.preset"].label.contains("Custom"))
+        // Reaching the fields above scrolls the preset picker off the top, and a Form
+        // drops off-screen rows from the hierarchy. Scroll back as the assertions above
+        // do, rather than depending on incidental layout.
+        let resetPreset = app.buttons["calculator.preset"]
+        scrollBackToElement(resetPreset, in: app)
+        XCTAssertTrue(resetPreset.label.contains("Custom"))
 
         tab(named: "Saved", in: app).tap()
         XCTAssertTrue(app.staticTexts["No saved scenarios"].waitForExistence(timeout: 3))

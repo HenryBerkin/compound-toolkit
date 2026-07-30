@@ -210,11 +210,42 @@ the IGC icon is present and not hidden. The TestFlight-installed Home Screen ico
 the decisive owner check; do not create a replacement build unless that installation
 reproduces the wireframe.
 
+## IGC-014 pre-public-release accuracy corrections
+
+IGC-014 is Done and accepted in IGC-D024, IGC-D025 and IGC-D026. An independent review
+of the native app, run against the shared contract and fixtures before any public
+release, found the calculation engine correct: an independent reimplementation
+reproduced `shared/fixtures/calculation-v1.json` exactly. Every defect it found was in
+terminology or presentation, and all are now corrected in both clients:
+
+- the growth assumption is no longer called an APR, a UK term for the cost of credit,
+  and is described as the nominal rate it is, with the implied effective yearly growth
+  stated rather than inferred;
+- the `savings-account` preset now treats its 4% as an effective annual rate, matching
+  how UK savings accounts advertise AER;
+- annual-detail rows apply one row-end inflation divisor throughout, so both paths add
+  up to their own closing balance, and after-fee growth and already-deducted fees are
+  labelled honestly;
+- the Projection breakdown separates its addends from its totals.
+
+Evidence: 58/58 iOS unit tests including two added invariants, 23/23 iOS UI tests, and
+Web lint, 85/85 tests and production build. No engine, contract-version, fixture,
+schema or persisted-data change was made, so fixture parity is unaffected and saved
+scenarios need no migration.
+
+This work is a correctness and wording gate, not a release gate. Final legal copy
+review, physical-device sign-off, and App Review submission remain open. A new
+TestFlight build is required for these corrections to reach any tester.
+
 ## Known issues and deferred work
 
 - The preset picker initially displays “Global index (DIY)” while the untouched
   defaults use the accepted Custom 0.20% fee. The decision is resolved; the supported
   PWA correction belongs to a separately verified Web task.
+- The internal TestFlight build `1.0 (1)` predates the IGC-014 corrections, so it still
+  shows the APR wording, the previous savings preset, and the annual-detail and
+  breakdown presentation defects. A new build is required before any external tester
+  or App Review sees the corrected app.
 - Committed PWA documentation and package naming lag behind product behaviour.
 - The web viewport disables pinch zoom, an accessibility risk not to reproduce natively.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.

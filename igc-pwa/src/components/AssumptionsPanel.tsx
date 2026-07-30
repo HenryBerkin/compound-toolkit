@@ -40,8 +40,10 @@ export const AssumptionsPanel: FC<Props> = ({ compoundFrequency }) => {
                 <ul className="assumptions-bullets">
                   <li>The model advances one month at a time.</li>
                   <li>
-                    APR is converted into an equivalent monthly growth rate based on your selected
-                    compounding frequency ({COMPOUND_LABELS[compoundFrequency]}).
+                    The annual growth rate is a nominal rate, converted into an equivalent monthly
+                    growth rate based on your selected compounding frequency (
+                    {COMPOUND_LABELS[compoundFrequency]}). Only annual compounding returns exactly
+                    the rate you enter over a year.
                   </li>
                   <li>Weekly contributions are converted into a monthly equivalent (52 weeks ÷ 12 months).</li>
                   <li>Annual contributions are spread as a monthly equivalent (amount ÷ 12).</li>

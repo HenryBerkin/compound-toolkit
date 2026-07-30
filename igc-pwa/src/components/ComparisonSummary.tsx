@@ -52,13 +52,13 @@ function timingLabel(timing: Scenario['inputs']['timing']): string {
 
 export const ComparisonSummary: FC<Props> = ({ compared }) => {
   const [a, b] = compared;
-  const summaryA = `${a.scenario.name} (APR ${formatPercent(a.scenario.inputs.apr)} | Fee ${formatFeePercent(
+  const summaryA = `${a.scenario.name} (Growth ${formatPercent(a.scenario.inputs.apr)} | Fee ${formatFeePercent(
     a.scenario.inputs.annualFeeRate ?? 0,
   )} | Infl. ${formatPercent(a.scenario.inputs.inflationRate ?? 0)} | ${formatDuration(
     a.scenario.inputs.years,
     a.scenario.inputs.months,
   )})`;
-  const summaryB = `${b.scenario.name} (APR ${formatPercent(b.scenario.inputs.apr)} | Fee ${formatFeePercent(
+  const summaryB = `${b.scenario.name} (Growth ${formatPercent(b.scenario.inputs.apr)} | Fee ${formatFeePercent(
     b.scenario.inputs.annualFeeRate ?? 0,
   )} | Infl. ${formatPercent(b.scenario.inputs.inflationRate ?? 0)} | ${formatDuration(
     b.scenario.inputs.years,

@@ -279,9 +279,9 @@ export const CalculatorForm: FC<Props> = ({
         <div className="form-row">
           <Field
             id="apr"
-            label="Annual Interest Rate"
+            label="Annual Growth Rate"
             error={errors.apr}
-            hint="Expected annual growth rate before inflation and fees. (APR)"
+            hint="Assumed nominal yearly growth before inflation and fees. Your compounding choice converts it into a monthly rate."
           >
             <div className="input-group">
               <input

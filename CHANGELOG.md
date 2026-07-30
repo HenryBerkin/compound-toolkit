@@ -154,8 +154,53 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   feedback email, Marketing/Privacy URLs and focused build-testing instructions. No
   external beta or App Review submission was made.
 
+### Fixed
+
+- Corrected annual detail so every amount in a year shares one row-end inflation
+  divisor. Today's-money rows previously discounted the opening balance at the year's
+  start and everything else at the year's end, so a row did not sum to its own closing
+  balance — £291.26 out in year 1 and £1,886.92 out in year 15 of the default scenario
+  (iOS, IGC-D026).
+- Labelled after-fee growth as **Growth after fees** and the fee line as **Fees
+  deducted this year**, and stated per row that growth is already net of the fee shown.
+  The previous labels invited users to subtract a fee that had already been applied
+  (iOS, IGC-D026).
+- Separated addends from totals in the Projection breakdown by moving **Balance before
+  fees** into Fee impact and closing the list with the final balance after fees
+  (iOS, IGC-D026).
+- Removed the duplicated 60-year claim from the years validation message, leaving the
+  duration rule as the single owner of that limit (iOS).
+- Corrected the compact chart-axis suffix to a lowercase `k` for UK convention (iOS).
+- Corrected the growth-chart accessibility hint, which described one series when two
+  are plotted (iOS).
+
+### Changed — terminology and presets
+
+- Replaced "APR" with **annual growth rate** throughout both clients and described the
+  rate explicitly as nominal. In the UK, APR is a defined measure of the cost of credit
+  rather than of investment growth. The PWA's conflicting "Annual Interest Rate" label
+  was corrected to match. `apr` remains the unchanged contract identifier in the
+  specification, schemas, fixtures and persisted scenarios, so there is no data or
+  migration impact (Shared, IGC-D024).
+- Added an explanation to both glossaries of why APR is not used, and stated the
+  effective yearly growth implied by the entered nominal rate and the selected
+  compounding. iOS shows this live beneath the compounding control (Shared, IGC-D024).
+- Changed the `savings-account` preset to annual compounding so its 4% is an effective
+  rate, matching how UK savings accounts advertise AER. Under monthly compounding it
+  produced 4.0742% and overstated £10,000 over 15 years by £193.58. The PWA label is
+  now "4% AER" (Shared, IGC-D025).
+- Showed each preset's applied growth, fee, inflation and compounding at the point of
+  choice on iOS, matching the figures the PWA already carries in its preset names, and
+  aligned the "Global index (DIY)" capitalisation across clients (Shared, IGC-D024).
+
 ### Not changed
 
+- Calculation engine, operation order, rate-conversion formulae, contract version 1,
+  `shared/fixtures/calculation-v1.json`, the scenario schema, and persisted saved
+  scenarios. The independent review reproduced the shared fixtures exactly; every
+  IGC-014 correction was to presentation or wording.
+- Premium, entitlement, StoreKit, account, backend, sync, export, comparison,
+  analytics and networking boundaries, all of which remain unstarted.
 - PWA calculation formulae, result behaviour, saved-scenario storage format and keys,
   dependencies, and licence.
 - Native IGC-007 source, signing settings, capabilities, entitlements, and shared Xcode

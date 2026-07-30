@@ -217,7 +217,15 @@ struct ProjectionView: View {
                     - snapshot.input.principal
                     - snapshot.result.totalContributions
             )
-            financialFact("Balance before fees", snapshot.result.finalBalance)
+            Divider()
+            financialFact(
+                "Final balance after fees",
+                snapshot.result.finalBalanceAfterFees
+            )
+            .fontWeight(.semibold)
+            Text("The three amounts above add up to the final balance after fees.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
     }
 
@@ -226,6 +234,7 @@ struct ProjectionView: View {
             Text("Fee impact")
                 .font(.headline)
                 .accessibilityAddTraits(.isHeader)
+            financialFact("Balance before fees", snapshot.result.finalBalance)
             financialFact("Fees paid", snapshot.result.totalFeesPaidNominal)
             financialFact(
                 "Difference caused by fees",
@@ -296,7 +305,7 @@ struct ProjectionView: View {
             }
             .frame(minHeight: 260, idealHeight: 280, maxHeight: 320)
             .accessibilityLabel("Balance over time")
-            .accessibilityHint("An audio graph of after-fee balances. Annual detail follows.")
+            .accessibilityHint("An audio graph of the series you have switched on: after-fee balances, and after-fee balances in today’s money. Annual detail follows.")
             .transaction { transaction in
                 if reduceMotion {
                     transaction.animation = nil

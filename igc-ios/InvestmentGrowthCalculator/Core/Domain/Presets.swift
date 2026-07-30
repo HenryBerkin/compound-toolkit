@@ -8,6 +8,17 @@ struct ProjectionPreset: Equatable, Identifiable, Sendable {
     let annualFeeRate: Double
     let compoundFrequency: CompoundFrequency
 
+    /// The assumptions this preset applies, so the figures are visible at the point of
+    /// choice rather than only afterwards on Projection.
+    var assumptionSummary: String {
+        [
+            "\(IGCFormatters.percent(apr)) growth",
+            "\(IGCFormatters.percent(annualFeeRate)) fee",
+            "\(IGCFormatters.percent(inflationRate)) inflation",
+            "\(compoundFrequency.title.lowercased()) compounding",
+        ].joined(separator: ", ")
+    }
+
     func matches(_ candidate: CalculationCandidate) -> Bool {
         candidate.apr == apr
             && candidate.inflationRate == inflationRate
@@ -28,7 +39,7 @@ enum PresetCatalog {
     static let all: [ProjectionPreset] = [
         .init(
             id: .globalIndexDIY,
-            name: "Global Index (DIY)",
+            name: "Global index (DIY)",
             apr: 0.07,
             inflationRate: 0.03,
             annualFeeRate: 0.004,
@@ -50,13 +61,16 @@ enum PresetCatalog {
             annualFeeRate: 0.01,
             compoundFrequency: .monthly
         ),
+        // UK savings accounts advertise an effective annual rate (AER). Annual
+        // compounding is the only convention under which the entered rate is the
+        // effective rate, so 4% here means 4% AER rather than 4.07%.
         .init(
             id: .savingsAccount,
             name: "Savings account",
             apr: 0.04,
             inflationRate: 0.03,
             annualFeeRate: 0,
-            compoundFrequency: .monthly
+            compoundFrequency: .annual
         ),
     ]
 

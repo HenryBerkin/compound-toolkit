@@ -152,7 +152,7 @@ final class AppPreferencesAndContentTests: XCTestCase {
         XCTAssertEqual(
             GlossaryTerm.allCases.map(\.title),
             [
-                "Annual growth rate (APR)",
+                "Annual growth rate",
                 "Compounding",
                 "Inflation",
                 "Annual fee",

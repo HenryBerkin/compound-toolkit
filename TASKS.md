@@ -495,3 +495,50 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`;
   - retained physical-device/manual accessibility, final legal/public copy,
     signed-archive/privacy-report, TestFlight and App Store work as later gates.
+
+## IGC-014 — Correct pre-public-release accuracy, terminology and results presentation
+
+- Owner: Product Manager
+- Status: Done
+- Priority: P1
+- Platform: Shared
+- Dependencies: IGC-009, IGC-013; accepted IGC-D024, IGC-D025, IGC-D026
+- Affected: shared calculation contract terminology and preset table, native
+  Calculator/Projection/annual-detail/Education copy and presentation, native
+  validation copy, native invariant tests, PWA calculator/glossary/assumptions/
+  scenario/comparison copy and starter presets
+- Objective: resolve the accuracy, terminology and presentation defects found by the
+  pre-public-release review of the native app, before the app leaves internal
+  TestFlight, without changing the accepted calculation model or contract version 1.
+- Acceptance criteria:
+  - The growth assumption is presented as **annual growth rate** and described as a
+    nominal rate in both clients; `apr` remains the unchanged contract identifier;
+    both glossaries explain why APR is not used. Met.
+  - Each client states the effective yearly growth implied by the entered nominal rate
+    and the selected compounding, rather than leaving it to be inferred. Met on iOS via
+    a live note under the compounding control; met on Web via the assumptions panel and
+    glossary.
+  - The `savings-account` preset treats its rate as an effective annual rate in both
+    clients and in the shared preset table. Met.
+  - Every amount in an annual-detail row shares one row-end divisor, so both the no-fee
+    and after-fee paths add up to their own closing balance in nominal and today's-money
+    modes. Met, with a new invariant test.
+  - After-fee growth is labelled as such, the fee line is identified as already
+    deducted, and the difference in divisors between rows is stated rather than hidden.
+    Met.
+  - The Projection breakdown separates its addends from totals. Met.
+  - Preset assumptions are visible at the point of choice on iOS. Met.
+  - Duplicated and conflicting duration validation copy is removed. Met.
+  - No change to the engine, contract version, fixtures, scenario schema, persisted
+    data, dependencies, networking, capabilities, or entitlements. Met.
+- Evidence:
+  - iOS: 58/58 unit, fixture, store, content, preference, reset and privacy tests pass,
+    including two added invariants for annual-row additivity and the savings preset's
+    effective rate; 23/23 UI tests pass.
+  - Web: `npm run lint`, 85/85 tests across two files, and `npm run build` pass.
+  - Fixture parity is unchanged: `shared/fixtures/calculation-v1.json` was not
+    modified, and the direct fixture-parity suites pass in both clients.
+- Scope boundary: this task corrects accuracy and wording only. Premium, entitlement,
+  export, comparison, sync and account work remain out of scope and unstarted. Final
+  legal copy review, physical-device sign-off, and App Store submission remain open
+  gates.

@@ -121,7 +121,7 @@ struct CalculatorDraft: Equatable, Sendable {
         let yearsValue = parseWholeNumber(
             years,
             field: .years,
-            message: "Enter a whole number of years from 0 to 60.",
+            message: "Enter a whole number of years.",
             errors: &errors
         )
         let monthsValue = parseWholeNumber(

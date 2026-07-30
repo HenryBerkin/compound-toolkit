@@ -12,9 +12,33 @@ private enum AnnualDetailMode: String, CaseIterable, Identifiable {
         switch self {
         case .afterFees: "Future-pound balances after the modelled annual fee."
         case .beforeFees: "Future-pound balances on the no-fee path."
-        case .afterFeesToday: "After-fee balances adjusted by the inflation assumption."
-        case .beforeFeesToday: "No-fee balances adjusted by the inflation assumption."
+        case .afterFeesToday:
+            "After-fee balances expressed in the purchasing power at the end of each year."
+        case .beforeFeesToday:
+            "No-fee balances expressed in the purchasing power at the end of each year."
         }
+    }
+
+    var isAfterFees: Bool {
+        self == .afterFees || self == .afterFeesToday
+    }
+
+    var isTodayMoney: Bool {
+        self == .afterFeesToday || self == .beforeFeesToday
+    }
+
+    /// Growth on the after-fee path is measured net of the fee already deducted, so the
+    /// fee line is context rather than a further subtraction.
+    var rowNote: String {
+        var note = isAfterFees
+            ? "Growth after fees is already net of the fee shown, so opening balance, "
+                + "contributions and growth add up to the closing balance."
+            : "Opening balance, contributions and growth add up to the closing balance."
+        if isTodayMoney {
+            note += " Every amount in a year uses that year’s end as its today’s-money "
+                + "basis, so an opening balance is not the previous year’s closing balance."
+        }
+        return note
     }
 }
 
@@ -89,11 +113,15 @@ struct AnnualDetailView: View {
         VStack(alignment: .leading, spacing: 10) {
             fact("Opening balance", openingBalance(row))
             fact("Contributions", contributions(row))
-            fact("Growth", growth(row))
-            if mode == .afterFees || mode == .afterFeesToday {
-                fact("Fees paid in this year", fees(row))
+            fact(mode.isAfterFees ? "Growth after fees" : "Growth", growth(row))
+            if mode.isAfterFees {
+                fact("Fees deducted this year", fees(row))
             }
             fact("Closing balance", closingBalance(row))
+            Text(mode.rowNote)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.vertical, 8)
     }
@@ -106,43 +134,31 @@ struct AnnualDetailView: View {
         pow(1 + snapshot.input.inflationRate, Double(period) / 12)
     }
 
+    /// Every amount in a row is discounted at the same row-end divisor the shared
+    /// contract uses for that row's closing balance. Mixing divisors within one row
+    /// breaks the additive reading the layout invites.
+    private func inTodayMoneyIfNeeded(_ nominal: Double, _ row: AnnualCalculationRow) -> Double {
+        mode.isTodayMoney ? nominal / discount(at: row.endPeriod) : nominal
+    }
+
     private func openingBalance(_ row: AnnualCalculationRow) -> Double {
-        let nominal = switch mode {
-        case .afterFees, .afterFeesToday: row.startingBalanceAfterFees
-        case .beforeFees, .beforeFeesToday: row.startingBalance
-        }
-        switch mode {
-        case .afterFeesToday, .beforeFeesToday:
-            return nominal / discount(at: row.endPeriod - row.periodCount)
-        case .afterFees, .beforeFees:
-            return nominal
-        }
+        let nominal = mode.isAfterFees ? row.startingBalanceAfterFees : row.startingBalance
+        return inTodayMoneyIfNeeded(nominal, row)
     }
 
     private func contributions(_ row: AnnualCalculationRow) -> Double {
-        switch mode {
-        case .afterFeesToday, .beforeFeesToday:
-            row.contributions / discount(at: row.endPeriod)
-        case .afterFees, .beforeFees:
-            row.contributions
-        }
+        inTodayMoneyIfNeeded(row.contributions, row)
     }
 
     private func growth(_ row: AnnualCalculationRow) -> Double {
-        switch mode {
-        case .beforeFees: row.interest
-        case .beforeFeesToday: row.interest / discount(at: row.endPeriod)
-        case .afterFees:
-            row.endingBalanceAfterFees - row.startingBalanceAfterFees - row.contributions
-        case .afterFeesToday:
-            closingBalance(row) - openingBalance(row) - contributions(row)
-        }
+        let nominal = mode.isAfterFees
+            ? row.endingBalanceAfterFees - row.startingBalanceAfterFees - row.contributions
+            : row.interest
+        return inTodayMoneyIfNeeded(nominal, row)
     }
 
     private func fees(_ row: AnnualCalculationRow) -> Double {
-        mode == .afterFeesToday
-            ? row.yearlyFeesPaid / discount(at: row.endPeriod)
-            : row.yearlyFeesPaid
+        inTodayMoneyIfNeeded(row.yearlyFeesPaid, row)
     }
 
     private func closingBalance(_ row: AnnualCalculationRow) -> Double {

@@ -196,4 +196,58 @@ final class CoreInvariantTests: XCTestCase {
         let availability = LocalFreeAvailability()
         XCTAssertTrue(AppFeature.allCases.allSatisfy(availability.isAvailable))
     }
+
+    /// Annual detail presents each row as an additive breakdown. That reading is only
+    /// honest if the underlying rows genuinely add up on both paths, and if every
+    /// today's-money amount in a row shares one row-end divisor.
+    func testAnnualRowsAreAdditiveOnBothPathsInNominalAndTodayMoney() throws {
+        let input = PresetCatalog.customBaseline
+        let result = try CalculationEngine.calculate(input)
+
+        for row in result.annualRows {
+            XCTAssertEqual(
+                row.startingBalance + row.contributions + row.interest,
+                row.endingBalance,
+                accuracy: 1e-6,
+                "No-fee year \(row.year) does not add up"
+            )
+
+            let growthAfterFees = row.endingBalanceAfterFees
+                - row.startingBalanceAfterFees
+                - row.contributions
+            XCTAssertEqual(
+                row.startingBalanceAfterFees + row.contributions + growthAfterFees,
+                row.endingBalanceAfterFees,
+                accuracy: 1e-6,
+                "After-fee year \(row.year) does not add up"
+            )
+
+            let divisor = pow(1 + input.inflationRate, Double(row.endPeriod) / 12)
+            XCTAssertEqual(
+                (row.startingBalance + row.contributions + row.interest) / divisor,
+                row.realEndingBalance,
+                accuracy: 1e-6,
+                "No-fee today’s-money year \(row.year) does not add up"
+            )
+            XCTAssertEqual(
+                (row.startingBalanceAfterFees + row.contributions + growthAfterFees) / divisor,
+                row.realEndingBalanceAfterFees,
+                accuracy: 1e-6,
+                "After-fee today’s-money year \(row.year) does not add up"
+            )
+        }
+    }
+
+    /// UK savings accounts advertise an effective annual rate, so the preset must not
+    /// quietly compound a nominal rate into something higher than the figure shown.
+    func testSavingsAccountPresetTreatsItsRateAsAnEffectiveAnnualRate() {
+        let preset = PresetCatalog.preset(.savingsAccount)
+        XCTAssertEqual(preset.compoundFrequency, .annual)
+
+        let monthlyRate = CalculationEngine.effectiveMonthlyRate(
+            annualRate: preset.apr,
+            compoundFrequency: preset.compoundFrequency
+        )
+        XCTAssertEqual(pow(1 + monthlyRate, 12) - 1, preset.apr, accuracy: 1e-12)
+    }
 }

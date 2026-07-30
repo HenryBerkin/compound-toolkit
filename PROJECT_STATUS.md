@@ -21,9 +21,10 @@ Owner: Product Manager and Technical Lead
   has been made.
 - App Store Connect record inputs are prepared in `docs/APP_STORE_SUBMISSION.md`:
   iOS, **Investment Growth Calculator**, English (U.K.),
-  `uk.co.mochadesigns.igc`, recommended immutable SKU `IGC-IOS-001`, and recommended
-  Full Access. Owner approval and signed-in Apple agreement/explicit-App-ID/name
-  checks remain required before record creation.
+  `uk.co.mochadesigns.igc`, immutable SKU `IGC-IOS-001`, and Full Access. The SKU and
+  access setting were owner-approved 2026-07-30. Signed-in Apple
+  agreement/explicit-App-ID/name checks and explicit creation authority remain
+  required before record creation.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.

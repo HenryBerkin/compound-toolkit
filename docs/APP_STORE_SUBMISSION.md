@@ -41,8 +41,8 @@ not create a record or authorise submission.
 | Name | **Investment Growth Calculator** | Confirmed product decision; 28 characters. Availability is checked authoritatively only when Apple validates the new record. |
 | Primary Language | **English (U.K.)** | Confirmed by IGC-D005 and the app’s en-GB/GBP-only 1.0 scope. |
 | Bundle ID | **uk.co.mochadesigns.igc** | Confirmed by IGC-D018. It must appear as an explicit eligible Bundle ID in Apple’s selector. |
-| SKU | **IGC-IOS-001** | Product Manager recommendation, pending owner approval. It is internal, not customer-visible, and immutable after record creation. |
-| User Access | **Full Access** | Product Manager recommendation, pending owner approval. This is the simplest setting for the owner-led account; it can be narrowed later if additional restricted users are added. |
+| SKU | **IGC-IOS-001** | Owner-approved 2026-07-30. It is internal, not customer-visible, and immutable after record creation. |
+| User Access | **Full Access** | Owner-approved 2026-07-30 for the owner-led account. It can be narrowed later if additional restricted users are added. |
 
 Apple’s current form uses these fields and requires an Account Holder, Admin or App
 Manager role. The Account Holder must also have accepted the latest agreement in
@@ -73,7 +73,7 @@ submission inputs; they are not fields in the initial New App dialog.
 | Display/icon shorthand: `IGC` | **App-specific fact** | Use only as supporting identity; it must not make the app look like an investment firm or product. |
 | Bundle identifier and reverse-DNS namespace | **App-specific fact — confirmed** | IGC-D018 fixes `uk.co.mochadesigns.igc`. The explicit App ID and application target must match it. Bundle ID cannot be changed after upload. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Apple Developer Team, signing ownership, Account Holder access | **Team identity confirmed / open release input** | Team Name `Henry Berkin` and Team ID `2FKVFS8X67` are owner-confirmed for project signing. Provider/legal entity, final signing responsibility, and Account Holder access remain release/operations inputs. Do not share individual credentials or use a different team. |
-| App Store SKU | **Prepared owner input** | Product Manager recommends `IGC-IOS-001`. Owner approval remains required before record creation because the internal value cannot be changed afterwards. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
+| App Store SKU | **Owner-approved input** | `IGC-IOS-001` was approved 2026-07-30. Do not substitute another value during record creation because the internal SKU cannot be changed afterwards. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Provider/legal entity and copyright | **Open owner input** | The version metadata requires a copyright owner/year; decide whether the publisher is an individual or legal entity after the regulated-content review. |
 | Privacy-policy and support URLs | **Open owner input** | A public privacy-policy URL is required for iOS; support URL is required version information and must provide usable contact details. No URL is invented here. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/), [platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information) |
 | Primary category | **Open owner input** | Choose the category that best describes the final binary. **PM recommendation:** Finance is intuitive but raises financial-service expectations; Utilities or Productivity may fit a standalone calculator. Select only after legal/marketing review; an optional secondary category must not misrepresent scope. |
@@ -132,9 +132,10 @@ prices, payment, or fabricated feature states.
 
 ### Confirmed current blockers
 
-- No App Store Connect record or upload has been authorised. The New App values are
-  prepared, but the recommended immutable SKU/User Access settings and account-side
-  agreement, explicit-Bundle-ID and name checks still require owner approval/action.
+- No App Store Connect record or upload has been authorised. The New App values,
+  including immutable SKU `IGC-IOS-001` and Full Access, are owner-approved.
+  Account-side agreement, explicit-Bundle-ID and name checks still require signed-in
+  verification.
 - No public privacy-policy or support URL has been selected/provided.
 - App Privacy, required age-rating responses, screenshots, final metadata, reviewer
   contact/notes, export-compliance and territory/trader responses remain open.

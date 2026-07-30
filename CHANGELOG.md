@@ -122,6 +122,8 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Prepared the exact initial App Store Connect record fields and separated them from
   later metadata/submission inputs; no Apple record or external-service change was
   made.
+- Recorded owner approval of immutable App Store SKU `IGC-IOS-001` and Full Access;
+  record creation remains a separately authorised external operation.
 
 ### Not changed
 

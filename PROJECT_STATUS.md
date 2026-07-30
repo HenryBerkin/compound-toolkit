@@ -22,8 +22,16 @@ Owner: Product Manager and Technical Lead
   Team `2FKVFS8X67`, then the owner-authorised App Store Connect record was created
   2026-07-30 with iOS, **Investment Growth Calculator**, English (U.K.), immutable SKU
   `IGC-IOS-001`, and Full Access. Apple assigned app ID `6796327865`; version `1.0`
-  is **Prepare for Submission**. No build has been uploaded, no TestFlight build
-  exists, and nothing has been submitted to Apple for review.
+  is **Prepare for Submission**.
+- Internal TestFlight: the owner-authorised Xcode 26.6 / iOS 26.5 SDK archive
+  `1.0 (1)` was uploaded on 2026-07-30 and Apple validated it as bundle
+  `uk.co.mochadesigns.igc`, arm64, iOS 17+, iPhone+iPad, with Team
+  `2FKVFS8X67`, no non-exempt encryption, no hidden app icon, no extension and no
+  unintended entitlement. App Store Connect Support and Privacy Policy URLs are live
+  and saved. Internal group **IGC Internal** has automatic distribution enabled,
+  contains build 1, and invited `henryberkin@gmail.com`; beta description, feedback
+  email, Privacy/Marketing URLs, and build-specific test focus are saved. Nothing has
+  been submitted for external TestFlight review or App Review.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -190,6 +198,17 @@ it does not change product behaviour, calculation, persistence, signing identity
 capability or entitlement scope. `docs/RELEASE_CHECKLIST.md` is the single canonical
 evidence record; the iOS handoff links to it rather than duplicating the full command
 transcript.
+
+The internal TestFlight release gate is **Passed**. Fresh archive
+`/private/tmp/IGC-1.0-1-TestFlight.xcarchive` passed identity, bundle metadata,
+signature, privacy-manifest and binary-content inspection before Xcode upload.
+App Store Connect processed build UUID `4c40e517-4b71-4af1-b6cb-2864607c7794`,
+reports Binary State **Validated**, and distributes it to the one-member
+**IGC Internal** group. The App Store Connect record thumbnail still showed its
+generic wireframe after processing, but archive and processed-build evidence both say
+the IGC icon is present and not hidden. The TestFlight-installed Home Screen icon is
+the decisive owner check; do not create a replacement build unless that installation
+reproduces the wireframe.
 
 ## Known issues and deferred work
 

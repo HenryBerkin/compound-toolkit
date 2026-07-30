@@ -85,11 +85,11 @@ build by bundle ID, version number, and build string.
 | Upload toolchain | **Confirmed current requirement** | Since 2026-04-28, App Store Connect uploads require Xcode 26 or later and an iOS 26 (or later) SDK. This is separate from the accepted iOS 17 deployment target. Recheck immediately before archive/upload. [Upcoming requirements](https://developer.apple.com/news/upcoming-requirements/) (checked 2026-07-28). |
 | Supported devices/architectures | **Release-time verification** | The dated signed-archive inspection in `docs/RELEASE_CHECKLIST.md` verifies arm64 iOS, iOS 17 minimum, iPhone+iPad family, explicit supported orientations and no unintended platform or extension. Repeat only after a binary-affecting change. |
 | Privacy manifest / required-reason APIs | **Release-time verification** | The signed archive contains a valid app-root manifest declaring only app-only UserDefaults reason `CA92.1`; the canonical archive/dependency evidence is in `docs/RELEASE_CHECKLIST.md`. Match final App Privacy answers to the processed build. [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy-manifest-files), [adding a privacy manifest](https://developer.apple.com/documentation/bundleresources/adding-a-privacy-manifest-to-your-app-or-third-party-sdk) |
-| Icons and launch assets | **Release-time verification** | **Signed-archive pass:** the native Asset Catalog produced opaque sRGB 1024×1024 IGC `AppIcon` renditions for phone and pad. Processed-build validation remains after upload. |
+| Icons and launch assets | **Release-time verification** | **Archive and processed-build pass:** the native Asset Catalog produced opaque sRGB 1024×1024 IGC `AppIcon` renditions plus compiled phone/pad icon files and primary-icon metadata. App Store Connect reports **App Icon Hidden: No**. The record thumbnail remained a generic wireframe after processing, so the owner’s TestFlight-installed Home Screen icon is the decisive visual check before any replacement build is considered. |
 | Entitlements/capabilities | **Release-time verification** | Record the signed entitlement report and capability list; expected 1.0 result is no iCloud, App Group, associated-domain, push, Sign in with Apple, Health, contacts, payments, or StoreKit capability. |
-| Encryption/export compliance | **Release-time verification** | Each TestFlight build must answer export-compliance questions or supply approved documentation; determine actual cryptography use from the archive and Apple’s current questionnaire. System transport/storage protections must not be assumed to settle the answer. [TestFlight export compliance](https://developer.apple.com/help/app-store-connect/test-a-beta-version/provide-export-compliance-information-for-beta-builds) |
+| Encryption/export compliance | **Release-time verification** | **Build 1 complete:** based on the actual first-party offline binary inventory, the App Store Connect question was answered **None of the algorithms mentioned above**. Apple records **App Uses Non-Exempt Encryption: No**. Reassess for every binary that adds cryptography, networking or an SDK. [TestFlight export compliance](https://developer.apple.com/help/app-store-connect/test-a-beta-version/provide-export-compliance-information-for-beta-builds) |
 | Age rating | **Open owner input** | Age rating is required; Apple’s updated questionnaire applies and must be answered from the final binary/content, not guessed as “4+”. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/), [upcoming requirements](https://developer.apple.com/news/upcoming-requirements/) |
-| TestFlight | **Confirmed current requirement** | Provide beta description, test focus and feedback email. External testing can require beta App Review; builds expire after 90 days. [TestFlight overview](https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview) |
+| TestFlight | **Internal gate passed 2026-07-30** | Build `1.0 (1)` is validated and attached to automatic-distribution group **IGC Internal**; the owner account is invited. Beta description, test focus, feedback email and web/privacy links are saved. External testing can require Beta App Review and remains unauthorised; the build expires after 90 days. [TestFlight overview](https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview) |
 
 ## Metadata inventory
 
@@ -126,16 +126,17 @@ prices, payment, or fabricated feature states.
 
 ### Confirmed current blockers
 
-- App Store Connect record `6796327865` exists with the approved values. No build
-  upload, TestFlight build or submission has been authorised or performed.
+- App Store Connect record `6796327865` contains validated internal TestFlight build
+  `1.0 (1)`. No external TestFlight review or App Review submission has been
+  authorised or performed.
 - App Privacy, required age-rating responses, screenshots, final metadata, reviewer
-  contact/notes, export-compliance and territory/trader responses remain open.
+  contact/notes, copyright/category and territory/trader responses remain open.
 
 ### Engineering position
 
-The signed local archive and complete automated gate have no known engineering blocker
-to an internal TestFlight upload. See `docs/RELEASE_CHECKLIST.md`; do not duplicate
-archive results here.
+The signed archive, upload, Apple processing and internal-group gates have passed.
+Owner installation from TestFlight is the next validation observation. See
+`docs/RELEASE_CHECKLIST.md`; do not duplicate archive results here.
 
 ### Release-time official-rule rechecks
 

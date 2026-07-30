@@ -50,7 +50,12 @@ Education/disclaimer routes, contextual help, the first-launch coach, System/Lig
 Dark persistence, Settings/About/Privacy, and verified global local-data reset, with
 the sole UserDefaults required-reason declaration `CA92.1`.
 
-Final legal/public copy, public Privacy/Support destinations, physical-device/manual
-accessibility sign-off, signed archive/privacy report, TestFlight, upload and App Store
-actions remain open. No next engineering milestone is authorised until Product Manager
-roadmap review; do not push, upload, or alter Apple services without owner approval.
+The public Privacy/Support destinations and the owner-authorised internal TestFlight
+gate now pass. Xcode uploaded validated build `1.0 (1)` to app ID `6796327865`;
+processed build UUID `4c40e517-4b71-4af1-b6cb-2864607c7794` is attached to automatic
+group **IGC Internal**, with `henryberkin@gmail.com` invited. Support/Privacy URLs,
+beta description, feedback email and build-specific test focus are saved; export
+compliance records no non-exempt encryption. No external TestFlight or App Review
+submission occurred. Owner installation and smoke feedback are next. Final
+App Privacy, screenshots, age rating, category/copyright, reviewer contact, territory/
+trader and public-copy/legal gates remain open.

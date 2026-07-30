@@ -146,6 +146,13 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   the calculator.
 - Released the supported Web edition as patch version 0.8.2 so its visible footer
   reflects the post-0.8.1 hosting and routing release.
+- Uploaded native iOS `1.0 (1)` with Xcode 26.6 for internal TestFlight. Apple
+  validated the correct bundle/team/device metadata, privacy manifest, entitlements,
+  icon visibility and no-non-exempt-encryption response; automatic group
+  **IGC Internal** contains the build and invited the owner account.
+- Saved the live Support and Privacy Policy URLs plus the TestFlight beta description,
+  feedback email, Marketing/Privacy URLs and focused build-testing instructions. No
+  external beta or App Review submission was made.
 
 ### Not changed
 

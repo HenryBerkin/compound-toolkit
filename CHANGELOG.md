@@ -141,6 +141,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   Custom.
 - Restored browser zoom by removing the maximum-scale and user-scalable restrictions
   from the PWA viewport declaration.
+- Excluded the public Privacy and Support paths from the PWA calculator’s app-shell
+  navigation fallback so an existing service worker cannot replace those pages with
+  the calculator.
 
 ### Not changed
 

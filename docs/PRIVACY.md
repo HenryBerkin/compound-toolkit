@@ -1,8 +1,7 @@
 # IGC privacy review and release evidence
 
 Status: Accepted planning baseline under IGC-D016 with Product Manager-accepted
-IGC-013 source and simulator-build evidence under IGC-D023 — no signed release archive
-has been inspected
+IGC-013 source, signed release-archive evidence, and live public Privacy/Support pages
 Task: IGC-008 (iOS / Shared), implementation evidence through IGC-013
 Checked: 2026-07-29 for IGC-013 implementation evidence; remaining release baseline
 checked 2026-07-28
@@ -59,7 +58,12 @@ Apple’s data types, purposes, linked-to-user criteria and tracking definition 
 
 Apple requires a publicly accessible privacy-policy URL for the App Store product page and for iOS app information. [App Privacy details](https://developer.apple.com/app-store/app-privacy-details/), [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) (confirmed current requirement, checked 2026-07-28).
 
-Before the store record is created, the owner must provide a public, owner-controlled policy URL and approve the policy. **Open owner input:** publisher/legal entity, support contact, policy URL, effective-date/change process, territories, and whether a separate privacy-choices URL is needed. This review does not draft legal terms or invent a URL.
+The owner approved and published the policy at
+`https://igc.mochadesigns.co.uk/privacy`, with Support at
+`https://igc.mochadesigns.co.uk/support` and confirmed contact
+`support@mochadesigns.co.uk`. The dated reachability and hosting evidence is recorded
+once in `docs/RELEASE_CHECKLIST.md`; this review does not duplicate its command
+transcript. Territory and final App Privacy questionnaire operations remain open.
 
 **Product Manager recommendation:** the policy and an in-app Privacy/About route should accurately cover:
 

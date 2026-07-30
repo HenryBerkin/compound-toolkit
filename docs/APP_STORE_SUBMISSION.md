@@ -56,9 +56,10 @@ ID `uk.co.mochadesigns.igc`, and no optional capability. Apple then accepted the
 name and created the record.
 [Register an App ID](https://developer.apple.com/help/account/identifiers/register-an-app-id)
 
-Category, copyright, territories, trader status, privacy/support URLs, age rating,
-App Privacy answers, screenshots and version metadata are later configuration or
-submission inputs; they are not fields in the initial New App dialog.
+Category, copyright, territories, trader status, age rating, App Privacy answers,
+screenshots and version metadata are later configuration or submission inputs; they
+are not fields in the initial New App dialog. The required Privacy and Support URLs
+were subsequently confirmed and published as recorded below.
 
 | Input | Classification | Decision / consequence |
 | --- | --- | --- |
@@ -68,7 +69,7 @@ submission inputs; they are not fields in the initial New App dialog.
 | Apple Developer Team, signing ownership, Account Holder access | **Team identity confirmed / open release input** | Team Name `Henry Berkin` and Team ID `2FKVFS8X67` are owner-confirmed for project signing. Provider/legal entity, final signing responsibility, and Account Holder access remain release/operations inputs. Do not share individual credentials or use a different team. |
 | App Store SKU | **Created record fact** | `IGC-IOS-001` was used for app ID `6796327865` and is now immutable. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Provider/legal entity and copyright | **Open owner input** | The version metadata requires a copyright owner/year; decide whether the publisher is an individual or legal entity after the regulated-content review. |
-| Privacy-policy and support URLs | **Open owner input** | A public privacy-policy URL is required for iOS; support URL is required version information and must provide usable contact details. No URL is invented here. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/), [platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information) |
+| Privacy-policy and support URLs | **Owner input confirmed / public gate passed** | Privacy: `https://igc.mochadesigns.co.uk/privacy`. Support: `https://igc.mochadesigns.co.uk/support`, using confirmed contact `support@mochadesigns.co.uk`. The canonical dated reachability and content evidence is in `docs/RELEASE_CHECKLIST.md`. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/), [platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information) |
 | Primary category | **Open owner input** | Choose the category that best describes the final binary. **PM recommendation:** Finance is intuitive but raises financial-service expectations; Utilities or Productivity may fit a standalone calculator. Select only after legal/marketing review; an optional secondary category must not misrepresent scope. |
 | App Groups, iCloud/CloudKit, associated domains, StoreKit, payment | **Release-time verification** | Scope excludes all of these in 1.0. Archive entitlements and capability settings must prove their absence; associated domains are also unnecessary unless a future support/web feature specifically needs them. |
 
@@ -97,7 +98,7 @@ build by bundle ID, version number, and build string.
 | Name / subtitle | **Release-time verification** | Name: 2–30 characters; subtitle: max 30. Validate final localised fields and availability. |
 | Promotional text / description / keywords | **Product Manager recommendation** | Promotional text max 170 characters; description max 4,000; keywords max 100 bytes, each over two characters. Draft only after PM/legal review; describe actual local calculation, GBP/UK-English scope and limitations, without unsupported accessibility/offline claims. [Platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information) |
 | Category, copyright, age rating, primary language | **Open owner input** | Complete from approved owner inputs; primary language should be English (UK) only if the final localisation is actually en-GB. |
-| Privacy/support/marketing URLs | **Open owner input** | Privacy and support URLs are required; marketing URL is optional. URLs must be live and owner-controlled at submission. |
+| Privacy/support/marketing URLs | **Required URLs confirmed** | Privacy and support use the live owner-controlled IGC URLs recorded above. The PWA root `https://igc.mochadesigns.co.uk/` may be used as the optional marketing URL if the owner approves it during metadata completion. |
 | Review notes/contact | **Release-time verification** | Provide reviewer contact and clear offline/no-login navigation instructions. Apple asks for full review access and explanations of non-obvious functionality. [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/) |
 | Disclaimers and assumptions | **Legal/regulatory review recommended** | Align words, screenshots, UI and review notes. Do not hide limitations in a support URL or claim regulator approval. |
 
@@ -127,7 +128,6 @@ prices, payment, or fabricated feature states.
 
 - App Store Connect record `6796327865` exists with the approved values. No build
   upload, TestFlight build or submission has been authorised or performed.
-- No public privacy-policy or support URL has been selected/provided.
 - App Privacy, required age-rating responses, screenshots, final metadata, reviewer
   contact/notes, export-compliance and territory/trader responses remain open.
 

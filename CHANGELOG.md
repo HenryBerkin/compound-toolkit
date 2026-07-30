@@ -131,8 +131,10 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Added approved public IGC Privacy and Support pages for the supported PWA, using the
   existing IGC identity, the confirmed Mocha Designs trading disclosure, and
   `support@mochadesigns.co.uk` without analytics, tracking, forms, or dynamic services.
-- Authorised the complete supported PWA for static Cloudflare Pages publication at
-  `igc.mochadesigns.co.uk`; live deployment and domain verification remain pending.
+- Published the complete supported PWA on static Cloudflare Pages at
+  `https://igc.mochadesigns.co.uk/`, with active SSL and clean public
+  `/privacy` and `/support` routes. No analytics, tracking, Function, database,
+  account or paid service was enabled.
 - Corrected the supported PWA’s initial preset display to explicit **Custom** while
   preserving the verified 7% / 3% / 0.20% baseline. Deliberate Global Index selection
   applies 0.40%, and editing a preset-controlled assumption returns the selector to

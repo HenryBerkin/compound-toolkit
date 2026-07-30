@@ -33,8 +33,14 @@ Owner: Product Manager and Technical Lead
   scenario lifecycle, and IGC-013 secondary content/preferences are integrated into
   `project/ios-migration-audit`. IGC-007 passed its physical-device gate under
   IGC-D019.
-- PWA status: supported IGC web edition and behavioural reference; maintenance may
-  continue alongside the native client.
+- PWA status: supported IGC web edition and behavioural reference, published at
+  `https://igc.mochadesigns.co.uk/` on Cloudflare Pages from production branch
+  `project/ios-migration-audit`. Release commit
+  `aa229307cadb2e8c63c21659c4a9e86afd101340` passed the Pages production build;
+  the owner-controlled custom domain is Active with SSL enabled. Public Privacy and
+  Support destinations are `https://igc.mochadesigns.co.uk/privacy` and
+  `https://igc.mochadesigns.co.uk/support`; no analytics, tracking, Function, database
+  or paid service was enabled.
 - Public product/App Store name: **Investment Growth Calculator**.
 - Shorthand/icon identity: **IGC**; long-form marketing:
   **IGC — Investment Growth Calculator**.

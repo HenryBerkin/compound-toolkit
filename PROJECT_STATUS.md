@@ -244,8 +244,11 @@ TestFlight build is required for these corrections to reach any tester.
   PWA correction belongs to a separately verified Web task.
 - The internal TestFlight build `1.0 (1)` predates the IGC-014 corrections, so it still
   shows the APR wording, the previous savings preset, and the annual-detail and
-  breakdown presentation defects. A new build is required before any external tester
-  or App Review sees the corrected app.
+  breakdown presentation defects. Build `1.0 (2)` carries the corrections and is
+  archived, exported and inspected locally, but **has not been uploaded**: this machine
+  holds no App Store Connect API key and no stored upload credential, and Apple account
+  authentication is an owner operation. Until the owner uploads it from Xcode
+  Organizer, no tester has the corrected app.
 - Committed PWA documentation and package naming lag behind product behaviour.
 - The web viewport disables pinch zoom, an accessibility risk not to reproduce natively.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.

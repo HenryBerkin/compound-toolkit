@@ -468,7 +468,8 @@
 - Scope boundary: the accepted copy remains development/internal-beta content, not
   final legal or external-distribution approval. Public Privacy/Support destinations,
   support contact, signed archive/privacy report, physical-device/manual accessibility
-  sign-off, TestFlight, App Store records, metadata, upload and submission remain open.
+  sign-off, TestFlight, metadata, upload and submission remain open. App Store Connect
+  record `6796327865` was subsequently created with the approved identity values.
   Shared calculation/scenario meaning, PWA behaviour, signing, capabilities,
   entitlements, comparison, export, networking, analytics and premium remain unchanged.
 - Consequences: the native feature implementation now covers the architecture’s

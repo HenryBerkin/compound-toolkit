@@ -17,14 +17,13 @@ Owner: Product Manager and Technical Lead
   the identity, signature, orientation, icon, privacy-manifest and binary inspections
   recorded canonically in `docs/RELEASE_CHECKLIST.md`. Candidate commit
   `36eff61d12f7cf0c0a6afcc8cebd3dc33c8a9109` was integrated by merge commit
-  `fe1231e0007d0485afa72c7b4cd0127452b8a46a`. No upload or App Store Connect action
-  has been made.
-- App Store Connect record inputs are prepared in `docs/APP_STORE_SUBMISSION.md`:
-  iOS, **Investment Growth Calculator**, English (U.K.),
-  `uk.co.mochadesigns.igc`, immutable SKU `IGC-IOS-001`, and Full Access. The SKU and
-  access setting were owner-approved 2026-07-30. Signed-in Apple
-  agreement/explicit-App-ID/name checks and explicit creation authority remain
-  required before record creation.
+  `fe1231e0007d0485afa72c7b4cd0127452b8a46a`.
+- App Store setup: the explicit App ID `uk.co.mochadesigns.igc` was registered under
+  Team `2FKVFS8X67`, then the owner-authorised App Store Connect record was created
+  2026-07-30 with iOS, **Investment Growth Calculator**, English (U.K.), immutable SKU
+  `IGC-IOS-001`, and Full Access. Apple assigned app ID `6796327865`; version `1.0`
+  is **Prepare for Submission**. No build has been uploaded, no TestFlight build
+  exists, and nothing has been submitted to Apple for review.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -174,8 +173,8 @@ checks, and clean-worktree checks before accepting exact specialist head
 `425af8e302269e52a0971815fdb70241854404d2`, integrated by merge commit
 `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`. Physical execution remains skipped
 under IGC-D019. Final legal copy, public Privacy/Support destinations, supported-device
-manual accessibility sign-off, TestFlight, signed archive/privacy report, upload,
-App Store records and external services remain later release gates. No subsequent
+manual accessibility sign-off, TestFlight, distribution upload, processed-build
+review, metadata completion and submission remain later release gates. No subsequent
 engineering milestone is authorised until Product Manager roadmap review.
 
 Release-candidate preparation is **Accepted and integrated**. The candidate adds

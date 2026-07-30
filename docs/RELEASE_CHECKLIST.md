@@ -12,7 +12,7 @@ Classifications: **Confirmed current requirement**, **App-specific fact**, **Pro
 | Gate / owner | Item | Classification | Evidence / status |
 | --- | --- | --- | --- |
 | Before Xcode project — Product Owner | Confirm Apple Developer Team/account ownership and reverse-DNS bundle identifier; retain provider/legal entity and final signing responsibility for the release record. | **Project identity confirmed / open release input** | IGC-D018 confirms `uk.co.mochadesigns.igc`, Team Name `Henry Berkin`, and Team ID `2FKVFS8X67`. The native project identity gate is complete. Provider/legal entity and final signing responsibility remain open for release operations; no different team is authorised. |
-| Before App Store Connect record — Product Owner / PM | Approve the immutable SKU and user access; confirm the latest agreement, explicit Bundle ID eligibility and name availability. Do not create the record without separate approval. | **Owner-approved inputs / open release operation** | Owner-approved 2026-07-30: iOS; `Investment Growth Calculator`; English (U.K.); `uk.co.mochadesigns.igc`; SKU `IGC-IOS-001`; Full Access. Account-side checks remain open because the available browser session was not signed in. Category, URLs and other submission metadata are later fields, not New App dialog blockers. |
+| Before App Store Connect record — Product Owner / PM | Approve the immutable SKU and user access; confirm the latest agreement, explicit Bundle ID eligibility and name availability. Do not create the record without separate approval. | **Passed 2026-07-30** | Owner-approved values were used. Explicit App ID `uk.co.mochadesigns.igc` was registered under Team `2FKVFS8X67`; Apple accepted **Investment Growth Calculator** and created iOS app ID `6796327865` with English (U.K.), SKU `IGC-IOS-001` and Full Access. Version `1.0` is **Prepare for Submission**. |
 | Before external beta/public copy — PM / Legal | Approve positioning and disclaimer strategy; assess UK/territory financial-promotion, advice, terminology/preset and trader-status risks. | **Legal/regulatory review recommended** | Counsel/owner disposition; approved copy boundaries. **Open**. |
 | Project foundation / before distribution — iOS Engineer | Recheck current Apple upload SDK requirement; plan iOS 17 deployment target separately; identify iPhone-primary/adaptive iPad device support. | **Release-time verification** | **Passed 2026-07-30:** Apple currently requires Xcode 26+ and iOS 26+ SDK; the candidate uses stable Xcode 26.6 (17F113), iOS 26.5 SDK, iOS 17 deployment, and explicit iPhone/iPad orientation metadata. Recheck only if upload is delayed or the rule changes. |
 | Project foundation — iOS Engineer | Create only approved target(s); set bundle ID/team/version/build; add no App Groups, iCloud/CloudKit, associated domains, StoreKit, push, accounts, payment, analytics or third-party SDKs. | **Release-time verification** | **Passed for the signed candidate:** app/unit/UI targets, `uk.co.mochadesigns.igc`, Team `2FKVFS8X67`, version `1.0 (1)`, iPhone+iPad family, and absence of unapproved capabilities/entitlements verified. |
@@ -29,7 +29,7 @@ Classifications: **Confirmed current requirement**, **App-specific fact**, **Pro
 | Before TestFlight — PM / QA | Make a privacy policy/support page live, verify URLs/contact details and policy/UI alignment; complete provisional App Privacy decision review. | **Release-time verification** | Public URL test and questionnaire evidence. **Open**. |
 | Release candidate — Designer / QA | Capture truthful screenshots: iPhone 6.9-inch and iPad 13-inch because native iPad support is intended; 1–10 non-transparent JPEG/JPG/PNG images per device class. | **Release-time verification** | Validated upload-ready assets; no future/native-excluded features. [Screenshot specifications](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/) |
 | Release candidate — PM / App Store Reviewer | Finalise name/subtitle, description, keywords, category, age-rating questionnaire, copyright, primary language, support/privacy URLs, reviewer contact and notes. | **Open owner input** | Metadata sheet and owner approval. **Open**. |
-| Before record/submission — Product Owner | Create App Store Connect record only after immutable SKU/bundle/provider decisions; choose territories and answer EU trader-status prompt as applicable. | **Open owner input** | Record settings checked by Account Holder. Apple requires an EU DSA trader declaration when distributing in the EU. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
+| Record setup / before submission — Product Owner | Create the App Store Connect record after immutable SKU/bundle approval; choose territories and answer EU trader-status prompts as applicable before distribution. | **Record passed / distribution inputs open** | Record `6796327865` was created as approved. Territory, pricing/availability and applicable EU DSA trader declarations remain later owner operations. [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/) |
 | Submission — App Store Reviewer | Select processed release build, supply complete accurate metadata/privacy information, export compliance, age rating, screenshots and reviewer instructions. | **Confirmed current requirement** | Submission record. **Open**. |
 | After upload / pre-review — QA / App Store Reviewer | Recheck processed build warnings, App Privacy label, entitlement/privacy manifest output, screenshot rendering, support/privacy URLs, reviewer access, and release setting. | **Release-time verification** | Dated pre-review sign-off. **Open**. |
 | Post-release — Product Owner / Support | Monitor support contact, privacy-policy accuracy, deletion/recovery reports and App Review changes; re-review before any data/SDK/network/monetisation scope change. | **Product Manager recommendation** | Change log and periodic owner review. **Open**. |
@@ -40,9 +40,6 @@ Apple currently requires a public privacy-policy URL for iOS, accurate metadata,
 
 ### Confirmed current submission blockers
 
-- No App Store Connect record has been authorised or created. The initial field set,
-  immutable SKU and Full Access are owner-approved; signed-in account preflight and
-  explicit creation authority remain open.
 - Required public privacy-policy and support URLs have no owner-provided values.
 - Final App Privacy, age-rating, metadata, screenshots, reviewer contact/notes,
   export-compliance and territory/trader responses remain open.
@@ -61,8 +58,9 @@ evidence unless a processed build or beta test reveals a defect.
 - Provider/legal entity and final signing ownership. Bundle identifier
   `uk.co.mochadesigns.igc`, Team Name `Henry Berkin`, and Team ID `2FKVFS8X67` are
   confirmed in IGC-D018.
-- SKU `IGC-IOS-001` and Full Access are owner-approved. Provider/legal entity,
-  copyright, category, territories and EU trader status remain later inputs.
+- App Store record `6796327865`, SKU `IGC-IOS-001` and Full Access are fixed.
+  Provider/legal entity, copyright, category, territories and EU trader status remain
+  later inputs.
 - Support, privacy-policy and optional marketing URLs plus support contact.
 - Final age-rating questionnaire responses and release mode.
 - Device-backup policy/copy and whether diagnostics remain excluded.
@@ -93,7 +91,7 @@ rechecked 2026-07-30; other source checks retain their recorded dates.
 | --- | --- | --- | --- |
 | Physical debugger/device OS exceeds maintained Xcode support | iOS Engineer/QA; physical debugging and RC | Debugger/logging failures can be misclassified as app defects | Stable Xcode 26.6 supports devices through iOS 26.5, while the owner device runs iOS 27. Under IGC-D019 use Xcode 27 on a compatible Mac for iOS 27, or a supported device; do not add project workarounds without separate evidence. |
 | Provider/legal entity and final signing owner unresolved; project identity confirmed | Product Owner; before App Store record/release | Project work can begin, but distribution ownership/metadata could be wrong if guessed | IGC-D018 records `uk.co.mochadesigns.igc`, `Henry Berkin`, and `2FKVFS8X67`; approve provider/legal entity and release signing responsibility before record/archive distribution. |
-| SKU / provider / copyright unresolved | Product Owner; before App Store Connect record | Immutable SKU/publisher metadata could be wrong | Approved record inputs before creation. |
+| Provider / copyright unresolved | Product Owner; before metadata completion | Publisher metadata could be wrong | Approve the provider/legal entity and copyright line before submission; SKU is already fixed as `IGC-IOS-001`. |
 | Privacy/support URLs absent | Product Owner/PM; before TestFlight/release | Required metadata blocked; no reliable user contact | Public reachable pages, correct entity/contact, policy/UI/App Privacy consistency. |
 | Finance category/positioning and financial-promotion/advice boundary | PM/Legal; before public copy or territory choice | App Review ambiguity; legal/regulatory exposure | Legal review, final claims/preset/“APR” review; reviewer note; no advice/guarantee/regulated-service implication. |
 | Age rating / child positioning undecided | Product Owner/PM; before record submission | Required field wrong; Kids obligations if elected | Complete latest questionnaire from final content; do not mark Made for Kids without separate decision. |

@@ -123,7 +123,11 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   later metadata/submission inputs; no Apple record or external-service change was
   made.
 - Recorded owner approval of immutable App Store SKU `IGC-IOS-001` and Full Access;
-  record creation remains a separately authorised external operation.
+  record creation was retained as a separately authorised external operation.
+- Registered explicit App ID `uk.co.mochadesigns.igc` under Team `2FKVFS8X67` and,
+  after separate owner approval, created App Store Connect app ID `6796327865` with
+  the approved iOS, name, English (U.K.), SKU and Full Access values. Version `1.0`
+  is **Prepare for Submission**; no build upload, TestFlight or submission occurred.
 
 ### Not changed
 

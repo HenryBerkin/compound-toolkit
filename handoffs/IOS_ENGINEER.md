@@ -6,8 +6,10 @@ Status: **Accepted and integrated**. This is a local release-preparation gate, n
 new feature task. Candidate commit
 `36eff61d12f7cf0c0a6afcc8cebd3dc33c8a9109` was integrated into
 `project/ios-migration-audit` by merge commit
-`fe1231e0007d0485afa72c7b4cd0127452b8a46a`. No App Store Connect record, upload,
-TestFlight build, push or external-service change was made.
+`fe1231e0007d0485afa72c7b4cd0127452b8a46a`. After owner approval, explicit App ID
+`uk.co.mochadesigns.igc` was registered and App Store Connect record `6796327865`
+was created on 2026-07-30. Version `1.0` is **Prepare for Submission**. No build has
+been uploaded and no TestFlight or submission action has been made.
 
 - Candidate branch: `codex/igc-release-candidate`
 - Exact accepted base: `0c3155493b4ce6c2650da0745bd0890d5fd3f2ae`
@@ -32,8 +34,8 @@ TestFlight build, push or external-service change was made.
 
 `docs/RELEASE_CHECKLIST.md` is the canonical detailed evidence and open-gate record.
 The local archive is development-signed; App Store distribution signing occurs during
-an authorised export/upload. Remaining owner/release operations—App Store Connect
-record/SKU, URLs, metadata, export/App Privacy answers and upload—must not be inferred
+an authorised export/upload. Remaining owner/release operations—URLs, metadata,
+export/App Privacy answers, distribution upload and submission—must not be inferred
 from this gate.
 
 ## IGC-013 native secondary content and preferences ready for review

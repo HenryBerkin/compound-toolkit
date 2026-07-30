@@ -88,9 +88,9 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   decision areas in IGC-D014. Specialist range
   `3bf1e517636d543e368b610b8a006cafd271e836..1940e3f95427f5fc0b3ca2dab07801e887650821`
   passes `git diff --check`; no native build was applicable.
-- Unresolved questions: IGC-D018 has since confirmed the application bundle identifier,
-  Team Name `Henry Berkin`, and Team ID `2FKVFS8X67`. App Store SKU remains required
-  before its App Store Connect record. These owner-controlled values did not block
+- Unresolved questions: none for architecture. IGC-D018 later confirmed the bundle
+  and Team identity; SKU `IGC-IOS-001` and App Store Connect app ID `6796327865` now
+  complete the owner-controlled record identity. These later operations did not affect
   architecture acceptance.
 - Branch/worktree: `codex/igc-004-ios-architecture` in an isolated worktree from
   `3bf1e517636d543e368b610b8a006cafd271e836`.

@@ -174,6 +174,20 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Corrected the growth-chart accessibility hint, which described one series when two
   are plotted (iOS).
 
+### Added
+
+- Declared `ITSAppUsesNonExemptEncryption = NO` via `INFOPLIST_KEY_...` on the
+  application target, so App Store Connect stops asking for export compliance on every
+  upload. IGC implements no encryption: it has no `CryptoKit`, `CommonCrypto` or
+  `Security` usage and no networking, and its only encryption-adjacent call requests
+  Apple's own file data protection (`FileProtectionType.complete`), which is a use of
+  OS-provided encryption rather than an implementation of an algorithm. Takes effect
+  from the next build (iOS).
+- Added a dormant App Store pointer for the web edition (`src/lib/iosApp.ts`). The
+  footer link renders only when `IOS_APP_IS_LIVE` is true; it is false until the public
+  listing exists, so the link and its URL are currently tree-shaken out of the build
+  entirely. Publishing it is a one-line change (Web).
+
 ### Changed — terminology and presets
 
 - Replaced "APR" with **annual growth rate** throughout both clients and described the

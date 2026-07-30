@@ -309,6 +309,7 @@
 				DEVELOPMENT_LANGUAGE = "en-GB";
 				DEVELOPMENT_TEAM = 2FKVFS8X67;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDevelopmentRegion = "en-GB";
 				INFOPLIST_KEY_CFBundleDisplayName = "Investment Growth Calculator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -347,6 +348,7 @@
 				DEVELOPMENT_LANGUAGE = "en-GB";
 				DEVELOPMENT_TEAM = 2FKVFS8X67;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDevelopmentRegion = "en-GB";
 				INFOPLIST_KEY_CFBundleDisplayName = "Investment Growth Calculator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";

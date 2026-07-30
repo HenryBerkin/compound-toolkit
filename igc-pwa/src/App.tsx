@@ -4,6 +4,7 @@ import { calculate, parseAndValidate, DEFAULT_FORM, inputsToForm } from './lib/c
 import { applyPwaUpdate, onPwaUpdateAvailable } from './lib/pwaUpdate';
 import { STARTER_PRESETS, type StarterPresetId } from './lib/presets';
 import { parseLooseNumber } from './lib/inputFormat';
+import { IOS_APP_IS_LIVE, IOS_APP_URL } from './lib/iosApp';
 import { useDebounce } from './hooks/useDebounce';
 import { useTheme } from './hooks/useTheme';
 import { useScenarios } from './hooks/useScenarios';
@@ -386,6 +387,14 @@ export default function App() {
           Illustrative projections only, not financial advice. Assumes constant rates and excludes
           taxes, slippage, and market volatility.
         </p>
+        {IOS_APP_IS_LIVE && (
+          <p className="app-footer__ios">
+            Also available as a native iPhone and iPad app.{' '}
+            <a href={IOS_APP_URL} target="_blank" rel="noopener noreferrer">
+              Get IGC on the App&nbsp;Store
+            </a>
+          </p>
+        )}
         <p className="app-footer__version">v{__APP_VERSION__}</p>
       </footer>
     </div>

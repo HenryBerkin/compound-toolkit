@@ -1,6 +1,6 @@
 # IGC project status
 
-Updated: 2026-07-29
+Updated: 2026-07-30
 Owner: Product Manager and Technical Lead
 
 ## Current state
@@ -9,6 +9,14 @@ Owner: Product Manager and Technical Lead
   foundation was development-signed, installed, and manually validated on a physical
   iPhone; the integrated native app now also includes the accepted local scenario
   lifecycle, secondary content, app preferences, and verified global local-data reset.
+- Release preparation: a local release-candidate branch
+  `codex/igc-release-candidate` was created from exact accepted branding head
+  `0c3155493b4ce6c2650da0745bd0890d5fd3f2ae`. On Xcode 26.6 / iOS 26.5 SDK,
+  56/56 unit tests, 23/23 iPhone UI tests, and the focused adaptive-iPad route test
+  pass. A signed `1.0 (1)` archive builds with zero Xcode warnings/errors and passes
+  the identity, signature, orientation, icon, privacy-manifest and binary inspections
+  recorded canonically in `docs/RELEASE_CHECKLIST.md`. No upload or App Store Connect
+  action has been made.
 - Working branch: `project/ios-migration-audit`.
 - Verified public source: `main` at
   `428fb46432fedab770ae90934b537587a32d70f6`.
@@ -162,6 +170,13 @@ manual accessibility sign-off, TestFlight, signed archive/privacy report, upload
 App Store records and external services remain later release gates. No subsequent
 engineering milestone is authorised until Product Manager roadmap review.
 
+Release-candidate preparation is now **Ready for Product Manager review**. The
+candidate adds explicit supported-orientation metadata required for the adaptive
+iPhone/iPad target; it does not change product behaviour, calculation, persistence,
+signing identity, capability or entitlement scope. `docs/RELEASE_CHECKLIST.md` is the
+single canonical evidence record; the iOS handoff links to it rather than duplicating
+the full command transcript.
+
 ## Known issues and deferred work
 
 - The preset picker initially displays “Global index (DIY)” while the untouched
@@ -172,8 +187,9 @@ engineering milestone is authorised until Product Manager roadmap review.
 - Dependency vulnerabilities remain in the preserved PWA toolchain.
 - Current PWA saved records predate explicit `schemaVersion`, `currency`, and
   `presetId`; a Web migration must be scoped and tested before changing localStorage.
-- Debugger-attached physical execution on the owner’s iOS 27.0 device is unavailable
-  with Xcode 26.2. Use Xcode 27 on a compatible Mac or a device within the maintained
+- Debugger-attached physical execution on the owner’s iOS 27.0 device remains
+  unavailable with stable Xcode 26.6, whose documented device support ends at iOS
+  26.5. Use Xcode 27 on a compatible Mac or a device within the maintained
   Xcode toolchain’s documented device-support range when attached debugging is needed;
   no project workaround is authorised without separate evidence.
 - Premium features, pricing, purchase type, entitlement sharing, and account strategy

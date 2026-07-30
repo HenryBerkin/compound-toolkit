@@ -1,5 +1,38 @@
 # iOS Engineer handoff
 
+## Native 1.0 local release candidate ready for Product Manager review
+
+Status: **Ready for review**. This is a local release-preparation gate, not a new
+feature task. No App Store Connect record, upload, TestFlight build, push, merge or
+external-service change was made.
+
+- Candidate branch: `codex/igc-release-candidate`
+- Exact accepted base: `0c3155493b4ce6c2650da0745bd0890d5fd3f2ae`
+- Toolchain: Xcode 26.6 (17F113), iOS 26.5 SDK, macOS 26.5
+- Product change: explicit supported orientations in the app target’s Debug and
+  Release settings—portrait and both landscapes on iPhone; all four orientations on
+  iPad. This resolves the signed-device/store-validation warning without requiring
+  full-screen mode or changing adaptive iPad scope.
+- Automated evidence: 56/56 unit tests, 23/23 iPhone UI tests, and focused adaptive
+  iPad route 1/1 passed with no failures or skips.
+- Archive: `/private/tmp/IGC-1.0-rc.xcarchive`, version `1.0 (1)`, bundle
+  `uk.co.mochadesigns.igc`, Team `2FKVFS8X67`; archive action succeeded with zero
+  errors, warnings or analyzer warnings.
+- Inspection: valid development signature; arm64 iOS app; iOS 17 minimum;
+  iPhone+iPad; correct processed opaque 1024×1024 IGC icon; valid app-root
+  UserDefaults/`CA92.1` privacy manifest; no embedded framework, extension, package,
+  third-party SDK or added entitlement/capability.
+- Apple rules rechecked 2026-07-30: Xcode 26+/iOS 26+ SDK is currently required for
+  upload, so Xcode 26.6/iOS 26.5 meets the current upload-toolchain floor. Xcode 26.6
+  supports physical devices only through iOS 26.5; the owner’s iOS 27 device still
+  requires Xcode 27 for attached debugging under IGC-D019.
+
+`docs/RELEASE_CHECKLIST.md` is the canonical detailed evidence and open-gate record.
+The local archive is development-signed; App Store distribution signing occurs during
+an authorised export/upload. Remaining owner/release operations—App Store Connect
+record/SKU, URLs, metadata, export/App Privacy answers and upload—must not be inferred
+from this gate.
+
 ## IGC-013 native secondary content and preferences ready for review
 
 Status: **Ready for review**. IGC-013 is not Done, accepted, integrated, merged or

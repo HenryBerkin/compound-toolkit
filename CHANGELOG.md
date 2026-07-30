@@ -111,6 +111,11 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   `a6a1e5fac3c66ea5c42bd71d8d93df93516e8ef6`.
 - Added the established IGC mark as the native app icon and changed the Calculator
   screen title to **IGC**, while retaining **Calculator** as the functional tab label.
+- Prepared the native `1.0 (1)` release candidate with explicit iPhone and iPad
+  orientation declarations. Xcode 26.6 / iOS 26.5 release-gate evidence passes 56/56
+  unit tests, 23/23 iPhone UI tests, a focused adaptive-iPad route, and a signed
+  zero-warning archive inspection without adding a capability, entitlement,
+  dependency, network path or App Store action.
 
 ### Not changed
 

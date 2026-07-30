@@ -128,9 +128,21 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   after separate owner approval, created App Store Connect app ID `6796327865` with
   the approved iOS, name, English (U.K.), SKU and Full Access values. Version `1.0`
   is **Prepare for Submission**; no build upload, TestFlight or submission occurred.
+- Added approved public IGC Privacy and Support pages for the supported PWA, using the
+  existing IGC identity, the confirmed Mocha Designs trading disclosure, and
+  `support@mochadesigns.co.uk` without analytics, tracking, forms, or dynamic services.
+- Authorised the complete supported PWA for static Cloudflare Pages publication at
+  `igc.mochadesigns.co.uk`; live deployment and domain verification remain pending.
+- Corrected the supported PWA’s initial preset display to explicit **Custom** while
+  preserving the verified 7% / 3% / 0.20% baseline. Deliberate Global Index selection
+  applies 0.40%, and editing a preset-controlled assumption returns the selector to
+  Custom.
+- Restored browser zoom by removing the maximum-scale and user-scalable restrictions
+  from the PWA viewport declaration.
 
 ### Not changed
 
-- PWA calculation logic, workflows, styling, storage keys, dependencies, and licence.
+- PWA calculation formulae, result behaviour, saved-scenario storage format and keys,
+  dependencies, and licence.
 - Native IGC-007 source, signing settings, capabilities, entitlements, and shared Xcode
   scheme formatting; Xcode’s incidental scheme-only reformat was discarded.

@@ -76,6 +76,8 @@ const CurrencyInput: FC<{
 // ─── Main form ────────────────────────────────────────────────────────────────
 
 const PRESET_INTERACTED_KEY = 'cgt-preset-interacted-v1';
+const CUSTOM_PRESET_ID = 'custom';
+type PresetSelectionId = StarterPresetId | typeof CUSTOM_PRESET_ID;
 
 export const CalculatorForm: FC<Props> = ({
   form,
@@ -85,7 +87,7 @@ export const CalculatorForm: FC<Props> = ({
   onApplyPreset,
   onPresetInteracted,
 }) => {
-  const [selectedPresetId, setSelectedPresetId] = useState<StarterPresetId>(STARTER_PRESETS[0].id);
+  const [selectedPresetId, setSelectedPresetId] = useState<PresetSelectionId>(CUSTOM_PRESET_ID);
   const [showTargetSection, setShowTargetSection] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
 
@@ -114,6 +116,13 @@ export const CalculatorForm: FC<Props> = ({
   }
 
   function handlePresetChange(nextPresetId: string) {
+    if (nextPresetId === CUSTOM_PRESET_ID) {
+      markPresetInteracted();
+      setSelectedPresetId(CUSTOM_PRESET_ID);
+      onChange({ apr: form.apr });
+      return;
+    }
+
     const preset = STARTER_PRESETS.find((item) => item.id === nextPresetId);
     if (!preset) return;
     markPresetInteracted();
@@ -123,9 +132,7 @@ export const CalculatorForm: FC<Props> = ({
 
   useEffect(() => {
     const activePreset = STARTER_PRESETS.find((preset) => preset.name === activePresetName);
-    if (activePreset) {
-      setSelectedPresetId(activePreset.id);
-    }
+    setSelectedPresetId(activePreset?.id ?? CUSTOM_PRESET_ID);
   }, [activePresetName]);
 
   return (
@@ -160,6 +167,7 @@ export const CalculatorForm: FC<Props> = ({
             onFocus={markPresetInteracted}
             onChange={(e) => handlePresetChange(e.target.value)}
           >
+            <option value={CUSTOM_PRESET_ID}>Custom</option>
             {STARTER_PRESETS.map((preset) => (
               <option key={preset.id} value={preset.id}>
                 {preset.name}

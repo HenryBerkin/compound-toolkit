@@ -124,6 +124,14 @@ export default function App() {
 
   const handleFormChange = useCallback((patch: Partial<FormState>) => {
     setForm((prev) => ({ ...prev, ...patch }));
+    if (
+      'apr' in patch
+      || 'inflationPercent' in patch
+      || 'annualFeePercent' in patch
+      || 'compoundFrequency' in patch
+    ) {
+      setActivePresetName(null);
+    }
     setActiveScenarioId(null);
   }, []);
 

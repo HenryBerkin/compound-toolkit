@@ -256,7 +256,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-010 — Plan maintained PWA releases and refinement backlog
 
 - Owner: Product Manager and Technical Lead
-- Status: Proposed
+- Status: In progress
 - Priority: P1
 - Platform: Web / Shared
 - Dependencies: IGC-003, IGC-009
@@ -270,6 +270,12 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     verified 7% / 3% / 0.20% baseline or losing legacy browser scenarios.
   - Release-note ownership distinguishes Shared and Web changes.
 - Verification: approved backlog and repeatable web regression checks.
+- Current release activity (2026-07-30): the owner approved publishing the complete
+  supported PWA at `igc.mochadesigns.co.uk` on Cloudflare Pages, with no analytics,
+  Functions, database, account, tracking, or paid service. The release source adds
+  approved public Privacy and Support pages, corrects the explicit Custom initial
+  preset state under IGC-D011, and restores browser zoom. Deployment and live-domain
+  verification remain before this task can be marked Done.
 
 ## IGC-011 — Select premium model and entitlement boundary
 

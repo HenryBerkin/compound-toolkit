@@ -4,6 +4,16 @@ All notable changes to this project will be documented here.
 
 ---
 
+## Unreleased — Supported Web Edition
+
+### Fixed
+- Keep the public Privacy and Support pages outside the calculator service worker's
+  app-shell navigation fallback.
+
+### Published
+- Deploy the supported PWA at `https://igc.mochadesigns.co.uk/` with public Privacy
+  and Support routes.
+
 ## 0.8.1 – UX Refinement Release
 
 ### Improved

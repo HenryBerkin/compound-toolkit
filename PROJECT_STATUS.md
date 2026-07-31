@@ -237,6 +237,20 @@ This work is a correctness and wording gate, not a release gate. Final legal cop
 review, physical-device sign-off, and App Review submission remain open. A new
 TestFlight build is required for these corrections to reach any tester.
 
+## App Review submission
+
+Version `1.0` was submitted for App Review on 2026-07-31 with build `1.0 (6)`,
+category Finance, age rating 4+, price free (IGC-D030), availability **United Kingdom
+only** (IGC-D029), dark screenshots at both required sizes, App Privacy answered **Data
+Not Collected**, copyright in the owner's own name, and **manual release** selected.
+
+Manual release means approval does not publish the app. The version moves to **Pending
+Developer Release** and stays there until the owner releases it deliberately.
+
+Outstanding once live: flip `IOS_APP_IS_LIVE` in `igc-pwa/src/lib/iosApp.ts` to publish
+the App Store link in the web edition's footer, after confirming the store URL loads in
+a signed-out browser.
+
 ## Remaining public-submission gaps
 
 The binary itself carries no known submission blocker. The archive inspection for

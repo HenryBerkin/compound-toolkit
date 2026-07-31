@@ -567,3 +567,29 @@
   Because divisors differ per row, an opening balance in today's money is not the
   previous row's closing balance; the interface and the contract both now say so. A new
   iOS invariant test asserts additivity on both paths in both bases.
+
+## IGC-D027 — Release iOS 1.0 to the United Kingdom and Ireland only
+
+- Date: 2026-07-31
+- Status: Accepted
+- Platform: iOS
+- Context: iOS 1.0 is GBP-only with UK-English terminology, and IGC-D024/IGC-D025
+  deepened that commitment by adopting UK conventions the app must be judged against
+  (annual growth rate rather than APR; AER for the savings preset). The App Store is
+  global by default, so a worldwide listing would surface a GBP-only calculator to
+  users it cannot serve, risking early one-star reviews on a listing with no rating
+  history to absorb them.
+- Decision: restrict App Store availability to the United Kingdom and Ireland for 1.0,
+  and state "UK English · GBP" in the listing so intent is visible before download.
+  Treat multi-currency and location-specific configuration as a later update rather
+  than a launch requirement.
+- Rationale: precise terminology requires committing to a jurisdiction, and the value
+  of this product is precision. Territory availability can be widened at any time
+  without a new binary; early reviews cannot be withdrawn.
+- Alternatives: worldwide availability with a clear description; delaying release until
+  multi-currency exists.
+- Consequences: no code change. `currency: GBP` is already explicit in the scenario
+  schema and the engine is currency-agnostic, so adding currencies later is
+  presentation work plus a schema value rather than a data migration. A future
+  multi-currency decision must also decide whether terminology becomes locale-specific,
+  which is the harder half of that work.

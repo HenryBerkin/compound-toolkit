@@ -196,6 +196,28 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   listing exists, so the link and its URL are currently tree-shaken out of the build
   entirely. Publishing it is a one-line change (Web).
 
+### Fixed — accessibility and web breakdown
+
+- Stacked money rows vertically at accessibility text sizes via a shared
+  `FinancialFactRow`. Side-by-side `LabeledContent` narrowed the value column until
+  figures broke mid-number — "£10,00" above "0.00" — which reads as a different amount.
+  Applied to Projection, annual detail and the saved-scenario rows (iOS).
+- Implemented `AXChartDescriptor` for the projection chart, so VoiceOver's Describe
+  Chart and Audio Graph actions genuinely work. The accessibility hint previously
+  promised an audio graph that no code provided; the hint now describes what exists and
+  the feature now exists (iOS).
+- Rebuilt the web year-by-year breakdown so every view reconciles. The After Fees view
+  had no growth column at all, leaving its rows short by the growth figure — £838.38 in
+  year 1 and £7,057.06 in year 15 of the default scenario — while the Nominal view with
+  the same layout did add up, training users to expect reconciliation. The real views
+  additionally mixed a per-row opening balance with cumulative columns, and Real After
+  Fees discounted the opening at the previous row's divisor. All four views now use one
+  row-end divisor and per-year amounts, after-fee views gain an explicit growth column
+  alongside fees, and a note states that after-fee growth is already net of the fee
+  shown and that today's-money totals are expressed at the projection end (Web).
+- Added engine-level tests asserting yearly rows add up on both paths in both bases,
+  and that the after-fee column totals equal the sum of their per-year columns (Web).
+
 ### Fixed — web update delivery
 
 - Changed the service-worker registration from `autoUpdate` to `prompt`. The app already

@@ -423,23 +423,23 @@ private struct ScenarioRowContent: View {
             Text(presetName)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            LabeledContent(
-                "Starting balance",
+            FinancialFactRow(
+                label: "Starting balance",
                 value: IGCFormatters.gbp(scenario.inputs.principal)
             )
             .font(.subheadline)
-            LabeledContent(
-                "Contribution",
+            FinancialFactRow(
+                label: "Contribution",
                 value: "\(IGCFormatters.gbp(scenario.inputs.contribution)) \(scenario.inputs.contributionFrequency.title.lowercased())"
             )
             .font(.subheadline)
-            LabeledContent(
-                "Growth",
+            FinancialFactRow(
+                label: "Growth",
                 value: IGCFormatters.percent(scenario.inputs.apr)
             )
             .font(.subheadline)
-            LabeledContent(
-                "Duration",
+            FinancialFactRow(
+                label: "Duration",
                 value: IGCFormatters.duration(
                     years: scenario.inputs.years,
                     months: scenario.inputs.months

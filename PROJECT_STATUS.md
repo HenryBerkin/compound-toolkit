@@ -252,11 +252,17 @@ verification passes:
   the category is chosen only in App Store Connect, so this is a metadata decision and
   not a code gap.
 - Final App Privacy questionnaire, age rating, reviewer notes and release mode.
-- Physical-device pass, including large Dynamic Type. IGC-014 added two text blocks to
-  Calculator (preset summary, effective-growth note) that have only been seen in the
-  simulator.
 - Landscape on iPhone is enabled in the supported orientations but has no automated
-  coverage; the Projection chart is the likely pinch point.
+  coverage; the Projection chart is the likely pinch point. The owner's `1.0 (3)`
+  device pass found no landscape problem.
+- Territory availability must be set to the United Kingdom and Ireland only, per
+  IGC-D027, and the listing should state "UK English · GBP".
+
+The owner's physical-device pass on `1.0 (3)` passed, with two findings now fixed in
+`1.0 (4)`: money rows wrapped mid-figure at large Dynamic Type, and the projection
+chart's accessibility hint promised an audio graph that no code implemented. Both are
+addressed and need re-checking on `1.0 (4)`, specifically the Breakdown at the largest
+text size and the VoiceOver rotor's Describe Chart / Audio Graph actions on Projection.
 
 Deferred deliberately: `FeatureAvailability` is injected into `RootTabView` and never
 read by any view. It is the intended premium seam, so it is harmless but currently
@@ -267,14 +273,14 @@ unexercised.
 - The preset picker initially displays “Global index (DIY)” while the untouched
   defaults use the accepted Custom 0.20% fee. The decision is resolved; the supported
   PWA correction belongs to a separately verified Web task.
-- The internal TestFlight build `1.0 (1)` predates the IGC-014 corrections, so it still
-  shows the APR wording, the previous savings preset, and the annual-detail and
-  breakdown presentation defects. Build `1.0 (2)` carries the corrections and is
-  archived, exported and inspected locally, but predates the Settings support route and
-  the export-compliance key. Build `1.0 (3)` supersedes it and is the build to upload:
-  it is archived and inspected at
-  `~/Library/Developer/Xcode/Archives/2026-07-31/IGC 1.0 (3).xcarchive`.
-- `1.0 (3)` **has not been exported or uploaded.** Command-line export now fails with
+- Build history. `1.0 (1)` and `1.0 (2)` are superseded: `1.0 (1)` predates the IGC-014
+  corrections entirely, and `1.0 (2)` predates the Settings support route and the
+  export-compliance key. `1.0 (3)` was uploaded and passed the owner's physical-device
+  pass, which raised the two accessibility findings now fixed. **`1.0 (4)` is the
+  current build**, archived and inspected at
+  `~/Library/Developer/Xcode/Archives/2026-07-31/IGC 1.0 (4).xcarchive`, carrying the
+  Dynamic Type stacking fix and the projection chart's `AXChartDescriptor`.
+- `1.0 (4)` **has not been exported or uploaded.** Command-line export fails with
   `No signing certificate "iOS Distribution" found`, alongside
   `DVTDeveloperAccountManager: Invalid credentials in keychain ... missing
   Xcode-Username`. No Apple Distribution certificate is present in the login keychain

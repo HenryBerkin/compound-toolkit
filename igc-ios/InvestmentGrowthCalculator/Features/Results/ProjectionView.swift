@@ -188,12 +188,12 @@ struct ProjectionView: View {
                 .accessibilityAddTraits(.isHeader)
             Text(IGCFormatters.targetGapText(analysis))
                 .font(.body)
-            LabeledContent(
-                "Target in today’s money",
+            FinancialFactRow(
+                label: "Target in today’s money",
                 value: IGCFormatters.gbp(analysis.targetToday)
             )
-            LabeledContent(
-                "Equivalent future amount",
+            FinancialFactRow(
+                label: "Equivalent future amount",
                 value: IGCFormatters.gbp(analysis.nominalTargetAtHorizon)
             )
         }
@@ -220,9 +220,9 @@ struct ProjectionView: View {
             Divider()
             financialFact(
                 "Final balance after fees",
-                snapshot.result.finalBalanceAfterFees
+                snapshot.result.finalBalanceAfterFees,
+                isEmphasised: true
             )
-            .fontWeight(.semibold)
             Text("The three amounts above add up to the final balance after fees.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
@@ -305,7 +305,16 @@ struct ProjectionView: View {
             }
             .frame(minHeight: 260, idealHeight: 280, maxHeight: 320)
             .accessibilityLabel("Balance over time")
-            .accessibilityHint("An audio graph of the series you have switched on: after-fee balances, and after-fee balances in today’s money. Annual detail follows.")
+            .accessibilityHint("Use the rotor to describe the chart or play it as an audio graph. Annual detail follows.")
+            .accessibilityChartDescriptor(
+                ProjectionChartDescriptor(
+                    points: chartPoints,
+                    durationDescription: IGCFormatters.duration(
+                        years: snapshot.input.years,
+                        months: snapshot.input.months
+                    )
+                )
+            )
             .transaction { transaction in
                 if reduceMotion {
                     transaction.animation = nil
@@ -324,12 +333,27 @@ struct ProjectionView: View {
             Text("Assumptions")
                 .font(.headline)
                 .accessibilityAddTraits(.isHeader)
-            LabeledContent("Preset", value: presetName)
-            LabeledContent("Annual growth rate", value: IGCFormatters.percent(snapshot.input.apr))
-            LabeledContent("Inflation", value: IGCFormatters.percent(snapshot.input.inflationRate))
-            LabeledContent("Annual fee", value: IGCFormatters.percent(snapshot.input.annualFeeRate))
-            LabeledContent("Compounding", value: snapshot.input.compoundFrequency.title)
-            LabeledContent("Contribution timing", value: snapshot.input.timing.title)
+            FinancialFactRow(label: "Preset", value: presetName)
+            FinancialFactRow(
+                label: "Annual growth rate",
+                value: IGCFormatters.percent(snapshot.input.apr)
+            )
+            FinancialFactRow(
+                label: "Inflation",
+                value: IGCFormatters.percent(snapshot.input.inflationRate)
+            )
+            FinancialFactRow(
+                label: "Annual fee",
+                value: IGCFormatters.percent(snapshot.input.annualFeeRate)
+            )
+            FinancialFactRow(
+                label: "Compounding",
+                value: snapshot.input.compoundFrequency.title
+            )
+            FinancialFactRow(
+                label: "Contribution timing",
+                value: snapshot.input.timing.title
+            )
             NavigationLink(
                 "How calculations work",
                 value: CalculatorRoute.education(.calculations)
@@ -372,13 +396,16 @@ struct ProjectionView: View {
         }
     }
 
-    private func financialFact(_ label: String, _ value: Double) -> some View {
-        LabeledContent {
-            Text(IGCFormatters.gbp(value))
-                .monospacedDigit()
-        } label: {
-            Text(label)
-        }
+    private func financialFact(
+        _ label: String,
+        _ value: Double,
+        isEmphasised: Bool = false
+    ) -> some View {
+        FinancialFactRow(
+            label: label,
+            value: IGCFormatters.gbp(value),
+            isEmphasised: isEmphasised
+        )
     }
 }
 

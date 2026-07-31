@@ -24,120 +24,97 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
   const showCollapsedYearly = canCollapseYearly && !expanded;
   const visibleYearly = showCollapsedYearly ? yearly.slice(0, previewYears) : yearly;
 
+  const isAfterFeesView = view === 'afterFees' || view === 'realAfterFees';
+  const isTodayMoneyView = view === 'real' || view === 'realAfterFees';
+
+  /**
+   * The row-end discount factor the engine already applied to this row's real
+   * ending balance. Every amount in a row is divided by this one factor, so the
+   * row reconciles against its own closing balance. Mixing divisors within a row
+   * produces a breakdown that does not add up.
+   */
   function yearEndDiscount(index: number): number {
+    if (!isTodayMoneyView) return 1;
     const row = yearly[index];
     if (row.realEndingBalance === 0) return 1;
-    return row.endingBalance / row.realEndingBalance;
+    const factor = row.endingBalance / row.realEndingBalance;
+    return Number.isFinite(factor) && factor > 0 ? factor : 1;
   }
 
-  function yearlyOpeningAfterFees(index: number): number {
+  function finalDiscount(): number {
+    if (result.finalBalanceReal === 0) return 1;
+    const factor = result.finalBalance / result.finalBalanceReal;
+    return Number.isFinite(factor) && factor > 0 ? factor : 1;
+  }
+
+  /** Opening balance on the after-fee path: the previous row's after-fee close. */
+  function openingAfterFees(index: number): number {
     if (index === 0) return yearly[0].startingBalance;
     return yearly[index - 1].endingBalanceAfterFees;
   }
 
-  function yearlyOpeningRealAfterFees(index: number): number {
-    if (index === 0) return yearly[0].startingBalance;
-    const prev = yearly[index - 1];
-    const prevDiscount = yearEndDiscount(index - 1);
-    return prev.endingBalanceAfterFees / prevDiscount;
-  }
-
   function viewLabels() {
-    switch (view) {
-      case 'real':
-        return {
-          opening: 'Opening Balance',
-          contributions: 'Cumulative Contributions',
-          middle: 'Cumulative Interest',
-          closing: 'Closing Balance',
-        };
-      case 'afterFees':
-        return {
-          opening: 'Opening Balance',
-          contributions: 'Contributions',
-          middle: 'Fees Paid',
-          closing: 'Closing Balance',
-        };
-      case 'realAfterFees':
-        return {
-          opening: 'Opening Balance',
-          contributions: 'Cumulative Contributions',
-          middle: 'Cumulative Fees Paid',
-          closing: 'Closing Balance',
-        };
-      case 'nominal':
-      default:
-        return {
-          opening: 'Opening Balance',
-          contributions: 'Contributions',
-          middle: 'Interest',
-          closing: 'Closing Balance',
-        };
-    }
+    return {
+      opening: 'Opening Balance',
+      contributions: 'Contributions',
+      growth: isAfterFeesView ? 'Growth After Fees' : 'Growth',
+      fees: isAfterFeesView ? 'Fees Deducted' : null,
+      closing: 'Closing Balance',
+    };
   }
 
   function rowValues(index: number) {
     const row = yearly[index];
     const discount = yearEndDiscount(index);
+    const opening = isAfterFeesView ? openingAfterFees(index) : row.startingBalance;
+    const closing = isAfterFeesView ? row.endingBalanceAfterFees : row.endingBalance;
+    // On the after-fee path growth is the residual, so it is already net of the
+    // fee shown alongside it. On the no-fee path it is the interest itself.
+    const growth = isAfterFeesView ? closing - opening - row.contributions : row.interest;
 
-    switch (view) {
-      case 'real':
-        return {
-          opening: index === 0 ? row.startingBalance : yearly[index - 1].realEndingBalance,
-          contributions: row.realCumulativeContributions,
-          middle: row.realCumulativeInterest,
-          closing: row.realEndingBalance,
-        };
-      case 'afterFees':
-        return {
-          opening: yearlyOpeningAfterFees(index),
-          contributions: row.contributions,
-          middle: row.yearlyFeesPaid,
-          closing: row.endingBalanceAfterFees,
-        };
-      case 'realAfterFees':
-        return {
-          opening: yearlyOpeningRealAfterFees(index),
-          contributions: row.realCumulativeContributions,
-          middle: row.cumulativeFeesPaid / discount,
-          closing: row.endingBalanceAfterFees / discount,
-        };
-      case 'nominal':
-      default:
-        return {
-          opening: row.startingBalance,
-          contributions: row.contributions,
-          middle: row.interest,
-          closing: row.endingBalance,
-        };
-    }
+    return {
+      opening: opening / discount,
+      contributions: row.contributions / discount,
+      growth: growth / discount,
+      fees: isAfterFeesView ? row.yearlyFeesPaid / discount : null,
+      closing: closing / discount,
+    };
   }
 
   function totals() {
+    const principal = yearly.length > 0 ? yearly[0].startingBalance : 0;
+
     switch (view) {
       case 'real':
         return {
           contributions: result.totalContributionsReal,
-          middle: result.totalInterestReal,
+          growth: result.totalInterestReal,
+          fees: null,
           closing: result.finalBalanceReal,
         };
       case 'afterFees':
         return {
           contributions: result.totalContributions,
-          middle: result.totalFeesPaidNominal,
+          growth: result.finalBalanceAfterFees - principal - result.totalContributions,
+          fees: result.totalFeesPaidNominal,
           closing: result.finalBalanceAfterFees,
         };
       case 'realAfterFees':
         return {
           contributions: result.totalContributionsReal,
-          middle: result.totalFeesPaidReal,
+          growth:
+            result.finalBalanceAfterFeesReal
+            - principal / finalDiscount()
+            - result.totalContributionsReal,
+          fees: result.totalFeesPaidReal,
           closing: result.finalBalanceAfterFeesReal,
         };
       case 'nominal':
       default:
         return {
           contributions: result.totalContributions,
-          middle: result.totalInterest,
+          growth: result.totalInterest,
+          fees: null,
           closing: result.finalBalance,
         };
     }
@@ -186,7 +163,8 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
       'Year',
       labels.opening,
       labels.contributions,
-      labels.middle,
+      labels.growth,
+      ...(labels.fees ? [labels.fees] : []),
       labels.closing,
     ];
     const rows: Array<Array<string | number>> = yearly.map((row, idx) => {
@@ -195,7 +173,8 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
         row.year,
         values.opening,
         values.contributions,
-        values.middle,
+        values.growth,
+        ...(labels.fees ? [values.fees ?? 0] : []),
         values.closing,
       ];
     });
@@ -203,7 +182,8 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
       'Total',
       '',
       totalsRow.contributions,
-      totalsRow.middle,
+      totalsRow.growth,
+      ...(labels.fees ? [totalsRow.fees ?? 0] : []),
       totalsRow.closing,
     ]);
     const csv = buildCsv(headers, rows);
@@ -272,7 +252,8 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
               <th scope="col" className="col-year">Year</th>
               <th scope="col" className="num">{labels.opening}</th>
               <th scope="col" className="num">{labels.contributions}</th>
-              <th scope="col" className="num">{labels.middle}</th>
+              <th scope="col" className="num">{labels.growth}</th>
+              {labels.fees && <th scope="col" className="num">{labels.fees}</th>}
               <th scope="col" className="num">{labels.closing}</th>
             </tr>
           </thead>
@@ -301,7 +282,10 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
                     <td className="year-cell">Year {row.year}</td>
                     <td className="num">{formatGBP(values.opening)}</td>
                     <td className="num contrib-cell">{formatGBP(values.contributions)}</td>
-                    <td className="num interest-cell">{formatGBP(values.middle)}</td>
+                    <td className="num interest-cell">{formatGBP(values.growth)}</td>
+                    {labels.fees && (
+                      <td className="num">{formatGBP(values.fees ?? 0)}</td>
+                    )}
                     <td className="num balance-cell">{formatGBP(values.closing)}</td>
                   </tr>
                 );
@@ -321,8 +305,13 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
                   <strong>{formatGBP(totalsRow.contributions)}</strong>
                 </td>
                 <td className="num interest-cell">
-                  <strong>{formatGBP(totalsRow.middle)}</strong>
+                  <strong>{formatGBP(totalsRow.growth)}</strong>
                 </td>
+                {labels.fees && (
+                  <td className="num">
+                    <strong>{formatGBP(totalsRow.fees ?? 0)}</strong>
+                  </td>
+                )}
                 <td className="num balance-cell">
                   <strong>{formatGBP(totalsRow.closing)}</strong>
                 </td>
@@ -331,6 +320,21 @@ export const BreakdownTable: FC<Props> = ({ result }) => {
           )}
         </table>
       </div>
+
+      {!showMonthly && (
+        <p className="breakdown-note">
+          Opening balance, contributions and growth add up to the closing balance in
+          every year.
+          {isAfterFeesView
+            && ' Growth after fees is already net of the fee shown, so the fee column is'
+              + ' context rather than a further subtraction.'}
+          {isTodayMoneyView
+            && ' Each year’s amounts use that year’s end as their today’s-money basis,'
+              + ' so an opening balance is not the previous year’s closing balance, and'
+              + ' the Total row — which is expressed at the end of the projection — is'
+              + ' not the sum of the column above it.'}
+        </p>
+      )}
 
       {canCollapseYearly && (
         <div className="breakdown-expand-row">

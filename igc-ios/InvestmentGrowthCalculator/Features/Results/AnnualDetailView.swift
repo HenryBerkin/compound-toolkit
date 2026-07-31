@@ -91,12 +91,13 @@ struct AnnualDetailView: View {
             }
 
             Section("Final context") {
-                LabeledContent(
-                    mode.rawValue,
-                    value: IGCFormatters.gbp(finalBalance)
+                FinancialFactRow(
+                    label: mode.rawValue,
+                    value: IGCFormatters.gbp(finalBalance),
+                    isEmphasised: true
                 )
-                LabeledContent(
-                    "Duration",
+                FinancialFactRow(
+                    label: "Duration",
                     value: IGCFormatters.duration(
                         years: snapshot.input.years,
                         months: snapshot.input.months
@@ -127,7 +128,7 @@ struct AnnualDetailView: View {
     }
 
     private func fact(_ label: String, _ value: Double) -> some View {
-        LabeledContent(label, value: IGCFormatters.gbp(value))
+        FinancialFactRow(label: label, value: IGCFormatters.gbp(value))
     }
 
     private func discount(at period: Int) -> Double {

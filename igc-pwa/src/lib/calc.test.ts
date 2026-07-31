@@ -896,3 +896,72 @@ describe('parseAndValidate', () => {
     expect(result.inputs?.annualFeeRate).toBeCloseTo(0.0125, 10);
   });
 });
+
+// ─── breakdown reconciliation ──────────────────────────────────────────────────
+
+describe('yearly breakdown reconciliation', () => {
+  // The breakdown table presents each year as an additive row. That reading is
+  // only honest if the underlying rows genuinely add up on both the no-fee and
+  // after-fee paths, and if a single row-end divisor keeps them adding up once
+  // expressed in today's money.
+  const inputs = {
+    principal: 10_000,
+    contribution: 250,
+    contributionFrequency: 'monthly' as const,
+    apr: 0.07,
+    inflationRate: 0.03,
+    annualFeeRate: 0.002,
+    compoundFrequency: 'monthly' as const,
+    years: 15,
+    months: 0,
+    timing: 'start' as const,
+  };
+
+  it('adds up on both paths, nominally and in today’s money', () => {
+    const result = calculate(inputs);
+    const yearly = result.yearlyBreakdown;
+    expect(yearly.length).toBeGreaterThan(0);
+
+    yearly.forEach((row, index) => {
+      expect(row.startingBalance + row.contributions + row.interest)
+        .toBeCloseTo(row.endingBalance, 6);
+
+      const openingAfterFees = index === 0
+        ? yearly[0].startingBalance
+        : yearly[index - 1].endingBalanceAfterFees;
+      const growthAfterFees = row.endingBalanceAfterFees - openingAfterFees - row.contributions;
+      expect(openingAfterFees + row.contributions + growthAfterFees)
+        .toBeCloseTo(row.endingBalanceAfterFees, 6);
+
+      const divisor = row.realEndingBalance === 0
+        ? 1
+        : row.endingBalance / row.realEndingBalance;
+      expect(
+        (row.startingBalance + row.contributions + row.interest) / divisor,
+      ).toBeCloseTo(row.realEndingBalance, 6);
+      expect(
+        (openingAfterFees + row.contributions + growthAfterFees) / divisor,
+      ).toBeCloseTo(row.endingBalanceAfterFees / divisor, 6);
+    });
+  });
+
+  it('after-fee column totals equal the sum of their per-year columns', () => {
+    const result = calculate(inputs);
+    const yearly = result.yearlyBreakdown;
+    const principal = yearly[0].startingBalance;
+
+    const summedContributions = yearly.reduce((sum, row) => sum + row.contributions, 0);
+    const summedFees = yearly.reduce((sum, row) => sum + row.yearlyFeesPaid, 0);
+    const summedGrowth = yearly.reduce((sum, row, index) => {
+      const opening = index === 0 ? principal : yearly[index - 1].endingBalanceAfterFees;
+      return sum + (row.endingBalanceAfterFees - opening - row.contributions);
+    }, 0);
+
+    expect(summedContributions).toBeCloseTo(result.totalContributions, 6);
+    expect(summedFees).toBeCloseTo(result.totalFeesPaidNominal, 6);
+    expect(summedGrowth).toBeCloseTo(
+      result.finalBalanceAfterFees - principal - result.totalContributions,
+      6,
+    );
+  });
+});

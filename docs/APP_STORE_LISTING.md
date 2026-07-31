@@ -15,7 +15,7 @@ market data, or tax-wrapper modelling that the app does not perform.
 | Name | Investment Growth Calculator | 28 / 30 |
 | Primary language | English (U.K.) | — |
 | Bundle ID | `uk.co.mochadesigns.igc` | — |
-| Availability | United Kingdom, Ireland (IGC-D027) | — |
+| Availability | United Kingdom only (IGC-D029) | — |
 | Support URL | `https://igc.mochadesigns.co.uk/support` | — |
 | Privacy Policy URL | `https://igc.mochadesigns.co.uk/privacy` | — |
 | Marketing URL | `https://igc.mochadesigns.co.uk/` | — |
@@ -147,23 +147,23 @@ inconsistent to a reader.
 Decide it before submission rather than at the last moment; it is displayed publicly on
 the listing.
 
-## EU trader status — required by the Ireland decision
+## EU trader status — not applicable to this release
 
-Distributing in the European Union brings the app under the Digital Services Act
-trader requirements, and IGC-D027 selects **Ireland** alongside the United Kingdom.
-App Store Connect therefore requires a trader declaration with verified contact
-details, and those details are **published on the public listing**: name, address,
-phone number and email address.
+**Do not select any EU territory.** IGC-D029 sets availability to the **United Kingdom
+only**, which is not an EU storefront, so the Digital Services Act trader declaration
+does not apply.
 
-For an individual developer without a business address, that means publishing a
-personal address. Consider whether that is acceptable before completing the
-declaration. The alternatives are a business or registered-office address if one
-exists, or dropping Ireland from the 1.0 territories and shipping to the United
-Kingdom only, which is not an EU storefront.
+This matters because the declaration publishes the trader's name, address, telephone
+number and email address on the public listing. On an individual developer account that
+address is a home address, and the owner has declined to publish one.
 
-Territories can be widened later without a new build, so United Kingdom only remains a
-reversible starting point. Verify the current requirement in App Store Connect at
-submission time; these rules have changed repeatedly.
+If an EU territory is ever added, resolve a publishable address first: a business or
+registered-office address, or incorporation. Adding a territory is a metadata change
+requiring no new build, so the decision stays reversible in one direction only — the
+address has to exist before the territory is selected, not after.
+
+Verify the current requirement in App Store Connect at submission time; these rules
+have changed repeatedly.
 
 ## Category
 
@@ -218,7 +218,7 @@ A field-by-field pass over App Store Connect, so nothing is discovered late agai
 | Age Rating | App Information | 4+ |
 | Privacy Policy URL | App Information | Above |
 | Price | Pricing and Availability | Free |
-| Availability | Pricing and Availability | United Kingdom, Ireland |
+| Availability | Pricing and Availability | United Kingdom only |
 | **EU trader status** | Business / App Information | Above; see the warning |
 | Data collection | App Privacy | Data Not Collected |
 | Screenshots | Version page | 6.9-inch and 13-inch slots |
@@ -243,7 +243,7 @@ coverage file, none of which apply to this release.
 > are stored locally.
 >
 > The app is deliberately GBP-only and uses UK English terminology, and availability is
-> limited to the United Kingdom and Ireland.
+> limited to the United Kingdom.
 >
 > The projection is explicitly illustrative. Disclaimers appear on the Calculator and
 > Projection screens, and Settings and Education both contain the full disclaimer and a

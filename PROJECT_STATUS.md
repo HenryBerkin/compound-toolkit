@@ -255,8 +255,10 @@ verification passes:
 - Landscape on iPhone is enabled in the supported orientations but has no automated
   coverage; the Projection chart is the likely pinch point. The owner's `1.0 (3)`
   device pass found no landscape problem.
-- Territory availability must be set to the United Kingdom and Ireland only, per
-  IGC-D027, and the listing should state "UK English · GBP".
+- Territory availability must be set to the **United Kingdom only**, per IGC-D029,
+  which narrows IGC-D027. Ireland is an EU storefront and would require a Digital
+  Services Act trader declaration publishing the owner's address on the listing. The
+  listing should state "UK English · GBP".
 
 The owner's physical-device pass on `1.0 (3)` passed, with two findings now fixed in
 `1.0 (4)`: money rows wrapped mid-figure at large Dynamic Type, and the projection

@@ -593,6 +593,9 @@
   presentation work plus a schema value rather than a data migration. A future
   multi-currency decision must also decide whether terminology becomes locale-specific,
   which is the harder half of that work.
+- Narrowed by IGC-D029, which drops Ireland and releases to the United Kingdom only.
+  The reasoning about committing to a jurisdiction is unchanged; only the territory
+  list is narrower.
 
 ## IGC-D028 — Keep the tax-wrapper product shape deliberately open
 
@@ -637,3 +640,32 @@
   the calculation core is extractable, which is the subject of IGC-015.
 - Consequences: `ISA` and `pension` stay out of App Store keywords and the description
   while the app does not model them. Revisit after iOS 1.0 has real usage.
+
+## IGC-D029 — Narrow iOS 1.0 availability to the United Kingdom only
+
+- Date: 2026-07-31
+- Status: Accepted
+- Platform: iOS
+- Supersedes: the territory selection in IGC-D027, whose reasoning otherwise stands
+- Context: IGC-D027 selected the United Kingdom and Ireland. Ireland is an EU
+  storefront, which places the app under Digital Services Act trader requirements:
+  App Store Connect requires a trader declaration whose name, address, telephone number
+  and email address are published on the public listing. The Apple Developer account is
+  an individual one, so the address would be the owner's home address, and the owner's
+  name is already public as the seller.
+- Decision: release iOS 1.0 to the **United Kingdom only**. The United Kingdom is not
+  an EU storefront, so the trader publication requirement does not apply.
+- Rationale: publishing a home address is a disproportionate cost for a marginal
+  territory, and it sits badly with a product whose privacy position is that it
+  collects nothing and sends nothing. Ireland was also a weak product fit
+  independently of that: the app is GBP-only with UK-specific terminology, and the ISA
+  wrapper referenced in the copy and keywords does not exist in Ireland, so an Irish
+  user would receive a calculator denominated in the wrong currency using terms for
+  products they cannot hold.
+- Alternatives: obtain a business or registered-office address usable for publication;
+  accept publishing the home address; incorporate. All remain open later.
+- Consequences: no code change and no new build; territories are metadata and widen at
+  any time without a binary. The EU trader declaration is not required for this
+  release. If any EU territory is added later, the declaration and a publishable
+  address must be resolved first. The listing copy's "BUILT FOR UK USERS" section and
+  the reviewer note remain accurate and need no change beyond removing Ireland.

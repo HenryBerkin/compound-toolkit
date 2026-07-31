@@ -128,6 +128,43 @@ wrapper modelling in IGC-D028 is ever built.
 > • Education covering the method, a glossary, and what the projection excludes
 > • Works entirely offline with no account and no tracking
 
+## Copyright
+
+App Store Connect wants the year the rights were obtained followed by the name of the
+person or entity that owns them. **Do not type the © symbol**; Apple renders it.
+
+**Suggested:** `2026 Henry Berkin`
+
+This is an open owner input, already tracked in `docs/RELEASE_CHECKLIST.md` under
+provider and copyright. The Apple Developer account is registered to **Henry Berkin**,
+so that is the entity that actually holds the rights and the name that appears as the
+seller on the listing. `2026 Mocha Designs` is equally legitimate if you trade under
+that name, and it matches the bundle identifier and support domain, but the copyright
+line should name the real rights holder rather than the brand. If the two differ, the
+seller name and the copyright line will not match, which is permitted but looks
+inconsistent to a reader.
+
+Decide it before submission rather than at the last moment; it is displayed publicly on
+the listing.
+
+## EU trader status — required by the Ireland decision
+
+Distributing in the European Union brings the app under the Digital Services Act
+trader requirements, and IGC-D027 selects **Ireland** alongside the United Kingdom.
+App Store Connect therefore requires a trader declaration with verified contact
+details, and those details are **published on the public listing**: name, address,
+phone number and email address.
+
+For an individual developer without a business address, that means publishing a
+personal address. Consider whether that is acceptable before completing the
+declaration. The alternatives are a business or registered-office address if one
+exists, or dropping Ireland from the 1.0 territories and shipping to the United
+Kingdom only, which is not an EU storefront.
+
+Territories can be widened later without a new build, so United Kingdom only remains a
+reversible starting point. Verify the current requirement in App Store Connect at
+submission time; these rules have changed repeatedly.
+
 ## Category
 
 **Finance.** Owner decision, 2026-07-31. It is where people look for this, and the
@@ -167,6 +204,34 @@ data collection.
 
 **4+.** No objectionable content, no user-generated content, no web browsing, no
 gambling, no unrestricted external links.
+
+## Remaining fields, and where they live
+
+A field-by-field pass over App Store Connect, so nothing is discovered late again.
+
+| Field | Screen | Value |
+| --- | --- | --- |
+| Name, Subtitle | App Information | Above |
+| Category | App Information | Finance, no secondary |
+| **Copyright** | App Information | Above; owner decision |
+| Content Rights | App Information | Contains no third-party content |
+| Age Rating | App Information | 4+ |
+| Privacy Policy URL | App Information | Above |
+| Price | Pricing and Availability | Free |
+| Availability | Pricing and Availability | United Kingdom, Ireland |
+| **EU trader status** | Business / App Information | Above; see the warning |
+| Data collection | App Privacy | Data Not Collected |
+| Screenshots | Version page | 6.9-inch and 13-inch slots |
+| Promotional text, Description, Keywords | Version page | Above |
+| Support URL, Marketing URL | Version page | Above |
+| Build | Version page | Latest verified archive |
+| Version Release | Version page | **Manually release this version** |
+| Sign-in required | App Review Information | No; the app has no account |
+| Contact and Notes | App Review Information | Owner contact; notes below |
+
+Left at their defaults deliberately: the standard Apple licence agreement, no
+promotional artwork, no app previews, no pre-orders, no phased release, and no routing
+coverage file, none of which apply to this release.
 
 ## Review notes
 

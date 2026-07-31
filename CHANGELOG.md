@@ -196,6 +196,15 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   listing exists, so the link and its URL are currently tree-shaken out of the build
   entirely. Publishing it is a one-line change (Web).
 
+### Fixed — headline amount at accessibility text sizes
+
+- Stepped the Projection headline down one text style at accessibility sizes only.
+  A currency amount is a single unbroken token, so at the largest sizes it split
+  between digits — "£79,373.9" above "3" — which reads as a different amount, the same
+  correctness risk as the mid-figure wrapping already fixed in the money rows. The
+  headline still grows with Dynamic Type and stays far larger than surrounding text;
+  it is not scaled to fit, which would defeat the size the reader chose (iOS).
+
 ### Fixed — projection chart accessibility
 
 - Made the projection chart a single focusable accessibility element. Each mark

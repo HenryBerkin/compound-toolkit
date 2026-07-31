@@ -7,6 +7,7 @@ struct ProjectionView: View {
     let showAnnualDetail: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showAfterFees = true
     @State private var showTodayMoney = true
     @State private var showsSaveSheet = false
@@ -149,7 +150,7 @@ struct ProjectionView: View {
                 .font(.headline)
                 .accessibilityAddTraits(.isHeader)
             Text(IGCFormatters.gbp(snapshot.result.finalBalanceAfterFees))
-                .font(.largeTitle.bold())
+                .font(headlineAmountFont)
                 .monospacedDigit()
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("projection.finalBalance")
@@ -164,6 +165,16 @@ struct ProjectionView: View {
                 .stroke(.separator)
         }
         .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    /// A currency amount is one unbroken token, so when it cannot fit the line it
+    /// splits between digits — "£79,373.9" above "3" — which reads as a different
+    /// amount. At accessibility sizes the headline steps down one text style rather
+    /// than being scaled: it still grows with Dynamic Type and stays far larger than
+    /// the surrounding text, but it fits the width often enough to stay intact.
+    /// Shrinking to fit would defeat the size the reader deliberately chose.
+    private var headlineAmountFont: Font {
+        dynamicTypeSize.isAccessibilitySize ? .title.bold() : .largeTitle.bold()
     }
 
     private var todayMoneyContext: some View {

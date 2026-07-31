@@ -123,11 +123,19 @@ which costs more in one-star reviews than the traffic is worth.
 
 ## Category
 
-**Recommended: Finance.** It is where people look for this, and the honesty of the
-copy is an asset in the category that attracts the most scrutiny.
+**Finance.** Owner decision, 2026-07-31. It is where people look for this, and the
+honesty of the copy is an asset in the category that attracts the most scrutiny.
+Education was the defensible alternative but carries far lower browse traffic.
 
-Education is the defensible alternative and matches the app's own framing, but the
-browse traffic is far lower.
+## Screenshot appearance
+
+**Dark.** Owner decision, 2026-07-31. `igc-ios/screenshots/` holds the dark sets at
+both required sizes. Regenerate after any UI change; see the README in that directory.
+
+Suggested order, leading with the result rather than the form: `02` headline, `01`
+calculator, `03` breakdown and fees, `04` chart, `08` exclusions. Placing the
+exclusions screen in the visible set signals the honesty that distinguishes IGC from
+the many general compound-interest calculators.
 
 ## App Privacy questionnaire
 

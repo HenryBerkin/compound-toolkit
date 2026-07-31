@@ -456,7 +456,9 @@ struct CalculatorView: View {
             Text(label)
                 .font(.body)
             HStack {
-                if let unit {
+                // Currency leads the value; a percentage follows it. Rendering the
+                // unit on both sides showed percent fields as "% 7 %".
+                if let unit, unit != "%" {
                     Text(unit)
                         .foregroundStyle(.secondary)
                         .accessibilityHidden(true)

@@ -196,6 +196,25 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   listing exists, so the link and its URL are currently tree-shaken out of the build
   entirely. Publishing it is a one-line change (Web).
 
+### Fixed — Calculator unit symbols
+
+- Stopped percentage fields rendering their symbol twice. `inputRow` placed the unit
+  before the value for every field and then added a second `%` after it, so the growth
+  rate, inflation and annual fee all displayed as "% 7 %". Currency now leads the value
+  and a percentage follows it. Found while capturing App Store screenshots, on the
+  screen the listing leads with (iOS).
+
+### Added — App Store listing assets
+
+- Added `AppStoreScreenshotTests`, a skipped-by-default UI test that captures the
+  listing screenshots from the running app, and the generated sets at both sizes Apple
+  requires: `igc-ios/screenshots/iphone-6.9` at 1320×2868 and
+  `igc-ios/screenshots/ipad-13` at 2064×2752. Generating them from the app rather than
+  from mock-ups means a listing image cannot show a state the app does not produce, and
+  it is what surfaced the duplicated percent symbol above. Regenerate with
+  `TEST_RUNNER_IGC_SCREENSHOTS=1`; the `TEST_RUNNER_` prefix is required for the
+  variable to reach the test process on the simulator (iOS).
+
 ### Fixed — accessibility and web breakdown
 
 - Stacked money rows vertically at accessibility text sizes via a shared

@@ -59,9 +59,9 @@ which costs more in one-star reviews than the traffic is worth.
 
 ## Description
 
-> Investment Growth Calculator works out what regular investing could become — and,
-> unlike most compound-interest calculators, it shows the result after charges and in
-> today's money.
+> Investment Growth Calculator works out what regular investing could become. Unlike
+> most compound-interest calculators, it shows the result after charges and in today's
+> money.
 >
 > Enter a starting balance, a regular contribution, an assumed annual growth rate, an
 > inflation assumption and an annual fee. IGC runs the calculation month by month and
@@ -97,8 +97,8 @@ which costs more in one-star reviews than the traffic is worth.
 > BUILT FOR UK USERS
 >
 > UK English and GBP only. Savings rates are treated the way UK accounts advertise
-> them, and the growth rate is described as a nominal rate, not an APR — in the UK, APR
-> measures the cost of credit, not investment growth.
+> them, and the growth rate is described as a nominal rate rather than an APR. In the
+> UK, APR measures the cost of credit, not investment growth.
 >
 > ACCESSIBILITY
 >
@@ -163,7 +163,7 @@ gambling, no unrestricted external links.
 ## Review notes
 
 > IGC is an offline educational calculator. It requires no account and no sign-in, and
-> there is nothing to configure before use — launching the app shows a worked example
+> there is nothing to configure before use. Launching the app shows a worked example
 > immediately.
 >
 > The app makes no network requests. All calculations run on device and saved scenarios

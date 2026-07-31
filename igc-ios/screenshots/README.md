@@ -12,8 +12,13 @@ what surfaced the duplicated percent symbol on the Calculator screen.
 Appearance: **dark** (owner decision, 2026-07-31). Status bars are normalised to 09:41
 with full signal and a charged battery.
 
-Suggested listing order: `02` headline, `01` calculator, `03` breakdown and fees,
-`04` chart, `08` exclusions.
+Suggested listing order: `02` headline, `01` calculator, `03` chart, `05` annual
+detail, `08` exclusions.
+
+Frame counts differ by device on purpose: a frame that would be pixel-identical to the
+previous one is dropped rather than written, because how much fits without scrolling
+varies by screen. The 13-inch iPad shows the whole Projection page at once, so it has
+no separate `04-assumptions` frame.
 
 ## Regenerating
 

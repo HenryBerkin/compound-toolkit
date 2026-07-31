@@ -41,21 +41,28 @@ Editable at any time without a new build, so use it for seasonal or responsive c
 > Most calculators show a number that ignores charges and inflation. IGC shows what
 > your projection is worth after fees, in today's money, and says what it leaves out.
 
-(167 characters.)
+(165 characters.)
 
 ## Keywords — 100 characters
 
 ```
-compound,interest,fees,inflation,savings,GBP,UK,projection,compounding,retirement,money,planner
+compound,interest,fees,inflation,savings,GBP,UK,projection,compounding,retirement,ISA,money
 ```
 
-(95 characters.) The app name is already indexed, so "investment", "growth" and
+(90 characters.) The app name is already indexed, so "investment", "growth" and
 "calculator" are deliberately omitted to avoid wasting the field.
 
-**Deliberately excluded:** `ISA` and `pension`. Both are high-volume UK search terms,
-but the app explicitly does not model ISA or pension rules, and the Education content
-says so. Ranking for them would attract users expecting a feature that does not exist,
-which costs more in one-star reviews than the traffic is worth.
+**`ISA` is included.** An ISA is a tax-free wrapper: there is no tax on growth inside
+it and none on withdrawal, so IGC's projection is directly and correctly applicable to
+ISA savings. What IGC does not model is the annual subscription limit, which changes
+how much you may pay in rather than how the balance grows. Someone searching for an ISA
+calculator gets a tool that genuinely answers their growth question.
+
+**`pension` is excluded.** For a pension the tax treatment is not neutral: relief on
+contributions and income tax on drawdown are usually the dominant factors in the
+outcome, and IGC models neither. A projection that ignores both would give a materially
+incomplete answer to someone searching for a pension calculator. Revisit if the
+wrapper modelling in IGC-D028 is ever built.
 
 ## Description
 
@@ -133,7 +140,7 @@ Education was the defensible alternative but carries far lower browse traffic.
 both required sizes. Regenerate after any UI change; see the README in that directory.
 
 Suggested order, leading with the result rather than the form: `02` headline, `01`
-calculator, `03` breakdown and fees, `04` chart, `08` exclusions. Placing the
+calculator, `03` chart, `05` annual detail, `08` exclusions. Placing the
 exclusions screen in the visible set signals the honesty that distinguishes IGC from
 the many general compound-interest calculators.
 

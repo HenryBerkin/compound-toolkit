@@ -45,13 +45,15 @@ final class AppStoreScreenshotTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 10))
         capture(app, named: "02-projection-headline")
 
-        // 3 — Breakdown and fee impact.
-        scrollTo(app.staticTexts["Fee impact"], in: app)
-        capture(app, named: "03-breakdown-and-fees")
-
-        // 4 — Balance over time.
+        // 3 — Balance over time. The headline frame already carries the breakdown and
+        // fee impact on a large iPhone, so a separate capture of those produced a
+        // duplicate of frame 2.
         scrollTo(app.buttons["projection.viewAnnualDetail"], in: app)
-        capture(app, named: "04-chart")
+        capture(app, named: "03-chart")
+
+        // 4 — Assumptions, which lists every input the projection used.
+        scrollTo(app.staticTexts["Assumptions"], in: app)
+        capture(app, named: "04-assumptions")
 
         // 5 — Annual detail with a year expanded, showing the row reconciling.
         app.buttons["projection.viewAnnualDetail"].tap()
@@ -93,11 +95,27 @@ final class AppStoreScreenshotTests: XCTestCase {
         capture(app, named: "08-exclusions")
     }
 
+    private var previousCapture: (name: String, data: Data)?
+
     private func capture(_ app: XCUIApplication, named name: String) {
         // Full-screen capture: App Store screenshots must be the device's exact
         // pixel dimensions, which a window-scoped screenshot may not match.
         _ = app
-        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        let screenshot = XCUIScreen.main.screenshot()
+
+        // A scroll helper whose target is already on screen does nothing, so the next
+        // frame is a pixel-identical duplicate. That shipped once. How much fits
+        // without scrolling varies by device — the whole Projection page fits on a
+        // 13-inch iPad — so drop the duplicate rather than failing, and let each
+        // device produce as many genuinely distinct frames as it has.
+        let data = screenshot.pngRepresentation
+        if let previous = previousCapture, previous.data == data {
+            print("IGC-SHOT skipped \(name): identical to \(previous.name)")
+            return
+        }
+        previousCapture = (name, data)
+
+        let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)

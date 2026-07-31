@@ -542,3 +542,31 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   export, comparison, sync and account work remain out of scope and unstarted. Final
   legal copy review, physical-device sign-off, and App Store submission remain open
   gates.
+
+## IGC-015 — Extract the calculation core as a reusable Swift package
+
+- Owner: iOS Engineer
+- Status: Proposed
+- Priority: P2
+- Platform: iOS
+- Dependencies: iOS 1.0 release; to be delivered alongside the 1.1 comparison work
+- Affected: native project structure, calculation and validation core, fixture-parity
+  tests, and any future second application
+- Objective: move the pure calculation core — engine, models, validation, presets,
+  target analysis and fixture parity — out of the application target and into a local
+  Swift package, so it can be consumed by more than one product without duplicating the
+  engine or adding a third implementation to keep in fixture parity.
+- Rationale: the 1.1 two-scenario comparison needs the engine as a reusable unit
+  regardless. Doing the extraction then, rather than later, keeps the IGC-D028 product
+  shape question cheap to answer in either direction. Deferring it until a second
+  application exists would mean extracting from a codebase that has grown around the
+  assumption of a single target.
+- Acceptance criteria:
+  - The package contains no SwiftUI view code and no UIKit dependency.
+  - Fixture parity continues to load `shared/fixtures/calculation-v1.json` directly and
+    passes unchanged; no expected value is regenerated.
+  - The application target builds, and the full unit and UI suites pass, with no
+    behavioural change and no change to persisted scenario data.
+  - Contract version 1 is untouched; this is a structural change only.
+- Scope boundary: extraction only. It does not authorise tax-wrapper modelling,
+  premium work, or a second application, all of which remain subject to IGC-D028.

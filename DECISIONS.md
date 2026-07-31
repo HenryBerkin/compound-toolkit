@@ -593,3 +593,47 @@
   presentation work plus a schema value rather than a data migration. A future
   multi-currency decision must also decide whether terminology becomes locale-specific,
   which is the harder half of that work.
+
+## IGC-D028 — Keep the tax-wrapper product shape deliberately open
+
+- Date: 2026-07-31
+- Status: Accepted (as a deferral, not a design)
+- Platform: Shared
+- Context: ISA-versus-pension modelling, including tax relief on contributions and tax
+  on drawdown, is the highest-value UK feature the product could offer and is already
+  listed as a later candidate in `ROADMAP.md`. Two questions arose together: how to
+  build it safely, and whether it belongs inside IGC at all.
+- Decision: defer both. Do not build tax-wrapper modelling in iOS 1.0 or 1.1, and do not
+  yet commit to whether it ships as an IGC feature or as a separate application.
+  Record the following constraints so a later decision starts from them rather than
+  rediscovering them.
+- Constraints that any future implementation must respect:
+  - The user supplies the tax assumptions — relief rate, expected drawdown rate,
+    tax-free portion — exactly as they already supply the growth rate. The app must not
+    infer them from income. This avoids collecting income data, keeps the tool an
+    arithmetic calculator rather than a personal recommendation, and means there is no
+    tax table to go stale.
+  - Consequently no remote configuration is required. Shipping maintained tax tables
+    would force either an App Store release every Budget or a network fetch, and a
+    network fetch would invalidate the App Privacy answer, the Settings and Privacy copy,
+    and the reviewer notes, all of which currently state that the app makes no network
+    request.
+  - Present both wrappers side by side and never state which is better, matching the
+    existing target feature, which reports above/below without judging suitability.
+  - Current-year allowances may be offered as editable defaults labelled with their tax
+    year, but the app must not assert authority over figures it cannot keep current.
+  - Obtain a professional legal or compliance opinion before implementation.
+    `docs/RELEASE_CHECKLIST.md` already carries an open financial-content review flag,
+    and wrapper comparison is materially closer to the advice boundary than a general
+    growth projection.
+- Product shape, unresolved: a separate application would let IGC remain free, which
+  suits its positioning and its existing About copy, and would resolve the finding that
+  almost nothing in IGC can be honourably paywalled; it would also rank for search
+  intent that a feature inside IGC never could, and would isolate the advice-adjacent
+  surface and the Budget maintenance cycle. Against that, a second application doubles
+  listings, privacy declarations, review cycles, screenshots and support, and IGC has
+  no users yet from whom to learn whether the demand is real.
+- Rationale: the deciding evidence does not exist yet. Both paths remain cheap provided
+  the calculation core is extractable, which is the subject of IGC-015.
+- Consequences: `ISA` and `pension` stay out of App Store keywords and the description
+  while the app does not model them. Revisit after iOS 1.0 has real usage.

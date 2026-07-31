@@ -48,14 +48,15 @@ final class AppStoreScreenshotTests: XCTestCase {
         // 3 — Balance over time. The headline frame already carries the breakdown and
         // fee impact on a large iPhone, so a separate capture of those produced a
         // duplicate of frame 2.
+        //
+        // There is deliberately no Assumptions frame. Scrolling to it only moves the
+        // view a fraction, leaving a frame that is still dominated by the chart: not
+        // byte-identical, so the duplicate check passed it, but a near-duplicate to
+        // the eye. Seven distinct frames beat eight with a redundant one.
         scrollTo(app.buttons["projection.viewAnnualDetail"], in: app)
         capture(app, named: "03-chart")
 
-        // 4 — Assumptions, which lists every input the projection used.
-        scrollTo(app.staticTexts["Assumptions"], in: app)
-        capture(app, named: "04-assumptions")
-
-        // 5 — Annual detail with a year expanded, showing the row reconciling.
+        // 4 — Annual detail with a year expanded, showing the row reconciling.
         app.buttons["projection.viewAnnualDetail"].tap()
         XCTAssertTrue(app.navigationBars["Annual detail"].waitForExistence(timeout: 10))
         let finalYear = app.buttons.matching(
@@ -64,10 +65,10 @@ final class AppStoreScreenshotTests: XCTestCase {
         if finalYear.waitForExistence(timeout: 5) {
             finalYear.tap()
         }
-        capture(app, named: "05-annual-detail")
+        capture(app, named: "04-annual-detail")
         app.navigationBars["Annual detail"].buttons.element(boundBy: 0).tap()
 
-        // 6 — Saved scenarios, populated.
+        // 5 — Saved scenarios, populated.
         XCTAssertTrue(app.navigationBars["Projection"].waitForExistence(timeout: 10))
         app.buttons["projection.save"].tap()
         let nameField = app.textFields["projection.saveSheet.name"]
@@ -78,21 +79,21 @@ final class AppStoreScreenshotTests: XCTestCase {
         }
         tab(named: "Saved", in: app).tap()
         XCTAssertTrue(app.navigationBars["Saved scenarios"].waitForExistence(timeout: 10))
-        capture(app, named: "06-saved-scenarios")
+        capture(app, named: "05-saved-scenarios")
 
-        // 7 — Education, the honesty story.
+        // 6 — Education, the honesty story.
         tab(named: "Education", in: app).tap()
         XCTAssertTrue(app.navigationBars["Education"].waitForExistence(timeout: 10))
-        capture(app, named: "07-education")
+        capture(app, named: "06-education")
 
-        // 8 — What the projection excludes.
+        // 7 — What the projection excludes.
         let exclusions = app.buttons["education.exclusions"]
         scrollTo(exclusions, in: app)
         exclusions.tap()
         XCTAssertTrue(
             app.navigationBars["What this projection excludes"].waitForExistence(timeout: 10)
         )
-        capture(app, named: "08-exclusions")
+        capture(app, named: "07-exclusions")
     }
 
     private var previousCapture: (name: String, data: Data)?

@@ -12,13 +12,15 @@ what surfaced the duplicated percent symbol on the Calculator screen.
 Appearance: **dark** (owner decision, 2026-07-31). Status bars are normalised to 09:41
 with full signal and a charged battery.
 
-Suggested listing order: `02` headline, `01` calculator, `03` chart, `05` annual
-detail, `08` exclusions.
+Seven frames per device. Suggested listing order: `02` headline, `01` calculator,
+`03` chart, then the rest. Only the first three appear on App Store installation
+sheets, so lead with the result rather than the form.
 
-Frame counts differ by device on purpose: a frame that would be pixel-identical to the
-previous one is dropped rather than written, because how much fits without scrolling
-varies by screen. The 13-inch iPad shows the whole Projection page at once, so it has
-no separate `04-assumptions` frame.
+A frame that would be pixel-identical to the previous one is dropped rather than
+written, because how much fits without scrolling varies by screen. Note that check is
+byte-exact and will not catch a near-duplicate: an Assumptions frame was removed after
+review because scrolling to it barely moved the view, leaving a frame still dominated
+by the chart. Look at the frames after regenerating.
 
 ## Regenerating
 

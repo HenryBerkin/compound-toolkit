@@ -139,10 +139,11 @@ Education was the defensible alternative but carries far lower browse traffic.
 **Dark.** Owner decision, 2026-07-31. `igc-ios/screenshots/` holds the dark sets at
 both required sizes. Regenerate after any UI change; see the README in that directory.
 
-Suggested order, leading with the result rather than the form: `02` headline, `01`
-calculator, `03` chart, `05` annual detail, `08` exclusions. Placing the
-exclusions screen in the visible set signals the honesty that distinguishes IGC from
-the many general compound-interest calculators.
+Seven frames per device. Suggested order, leading with the result rather than the
+form: `02` headline, `01` calculator, `03` chart, `04` annual detail, `07` exclusions.
+Only the first three appear on installation sheets. Placing the exclusions screen in
+the visible set signals the honesty that distinguishes IGC from the many general
+compound-interest calculators.
 
 ## App Privacy questionnaire
 

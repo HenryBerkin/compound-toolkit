@@ -273,14 +273,19 @@ unexercised.
 - The preset picker initially displays “Global index (DIY)” while the untouched
   defaults use the accepted Custom 0.20% fee. The decision is resolved; the supported
   PWA correction belongs to a separately verified Web task.
-- Build history. `1.0 (1)` and `1.0 (2)` are superseded: `1.0 (1)` predates the IGC-014
-  corrections entirely, and `1.0 (2)` predates the Settings support route and the
-  export-compliance key. `1.0 (3)` was uploaded and passed the owner's physical-device
-  pass, which raised the two accessibility findings now fixed. **`1.0 (4)` is the
-  current build**, archived and inspected at
-  `~/Library/Developer/Xcode/Archives/2026-07-31/IGC 1.0 (4).xcarchive`, carrying the
-  Dynamic Type stacking fix and the projection chart's `AXChartDescriptor`.
-- `1.0 (4)` **has not been exported or uploaded.** Command-line export fails with
+- Build history. `1.0 (1)` to `1.0 (4)` are superseded. `1.0 (3)` was uploaded and
+  passed the owner's physical-device pass, which raised two accessibility findings.
+  `1.0 (4)` addressed Dynamic Type but its `AXChartDescriptor` proved unreachable:
+  owner testing on device confirmed VoiceOver could focus only individual chart
+  sections, never the chart itself. **`1.0 (5)` is the current build**, archived and
+  inspected at `~/Library/Developer/Xcode/Archives/2026-07-31/IGC 1.0 (5).xcarchive`,
+  carrying the chart-accessibility restructure and the duplicated-percent-symbol fix.
+- The projection chart's audio graph remains **unverified**. The chart is now a single
+  focusable element carrying its factual summary, which a UI test asserts, and that is
+  a real accessibility improvement on its own. Whether iOS then offers a playable audio
+  graph needs VoiceOver audio on hardware. The accessibility hint deliberately no
+  longer mentions the rotor, so the app promises nothing that may not materialise.
+- `1.0 (5)` **has not been exported or uploaded.** Command-line export fails with
   `No signing certificate "iOS Distribution" found`, alongside
   `DVTDeveloperAccountManager: Invalid credentials in keychain ... missing
   Xcode-Username`. No Apple Distribution certificate is present in the login keychain

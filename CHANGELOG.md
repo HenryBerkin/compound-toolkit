@@ -196,6 +196,22 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   listing exists, so the link and its URL are currently tree-shaken out of the build
   entirely. Publishing it is a one-line change (Web).
 
+### Fixed — projection chart accessibility
+
+- Made the projection chart a single focusable accessibility element. Each mark
+  previously carried its own label, so VoiceOver focused the individual sections and
+  never the chart itself; the chart descriptor added earlier was therefore attached to
+  an element the user could not reach, and no Describe Chart or Audio Graph action was
+  offered. Owner device testing confirmed this: the chart could be heard announced, but
+  a selection box never covered the whole graph and swiping only moved between
+  sections. The chart now speaks its factual summary as its accessibility value, and
+  annual detail remains the complete year-by-year alternative one tap below (iOS).
+- Removed the accessibility hint's claim about the rotor. The hint now points to annual
+  detail, which is true whether or not a given VoiceOver configuration surfaces the
+  audio graph. A UI test asserts the chart is one element carrying its summary and that
+  no per-point elements remain, which is the part that can be verified without
+  VoiceOver audio (iOS).
+
 ### Fixed — Calculator unit symbols
 
 - Stopped percentage fields rendering their symbol twice. `inputRow` placed the unit

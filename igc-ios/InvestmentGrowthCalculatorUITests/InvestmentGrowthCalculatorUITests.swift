@@ -774,6 +774,38 @@ final class InvestmentGrowthCalculatorUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Deletion"].exists)
     }
 
+    /// The chart descriptor that provides Describe Chart and the audio graph is only
+    /// reachable if VoiceOver can focus the chart itself. While each mark carried its
+    /// own accessibility label, focus landed on individual sections and the whole-chart
+    /// element was never offered. Assert the chart is one element carrying the summary,
+    /// and that per-point elements are gone.
+    func testProjectionChartIsOneFocusableElementCarryingItsSummary() {
+        let app = launch()
+        openProjection(in: app)
+
+        let chart = app.descendants(matching: .any)["projection.chart"]
+        scrollToElement(chart, in: app)
+        XCTAssertTrue(chart.exists)
+        XCTAssertEqual(chart.label, "Balance over time")
+
+        let value = chart.value as? String ?? ""
+        XCTAssertTrue(
+            value.contains("£10,000.00") && value.contains("15 years"),
+            "Chart should speak its factual summary, got: \(value)"
+        )
+
+        let perPointElements = app.descendants(matching: .any).matching(
+            NSPredicate(format: "label CONTAINS %@", "After fees in today’s money")
+        )
+        for index in 0..<perPointElements.count {
+            let label = perPointElements.element(boundBy: index).label
+            XCTAssertFalse(
+                label.hasPrefix("Year "),
+                "Per-point chart element still exposed: \(label)"
+            )
+        }
+    }
+
     private func launch(arguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = [

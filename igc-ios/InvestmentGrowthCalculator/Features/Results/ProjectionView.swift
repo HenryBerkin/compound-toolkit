@@ -282,8 +282,6 @@ struct ProjectionView: View {
                 )
                 .foregroundStyle(by: .value("Series", point.series.rawValue))
                 .symbol(by: .value("Series", point.series.rawValue))
-                .accessibilityLabel("\(point.label), \(point.series.rawValue)")
-                .accessibilityValue(IGCFormatters.gbp(point.value))
             }
             .chartForegroundStyleScale([
                 ProjectionChartPoint.Series.afterFees.rawValue: Color.indigo,
@@ -304,8 +302,22 @@ struct ProjectionView: View {
                 }
             }
             .frame(minHeight: 260, idealHeight: 280, maxHeight: 320)
+            // One focusable element, not a container of per-point elements. While each
+            // mark carried its own label, VoiceOver focused the individual sections and
+            // never the chart itself, so the chart descriptor was attached to something
+            // the user could not reach and no Describe Chart or Audio Graph action was
+            // offered. Point-by-point reading is not lost: annual detail is the complete
+            // year-by-year alternative, one tap below.
+            .accessibilityElement(children: .ignore)
             .accessibilityLabel("Balance over time")
-            .accessibilityHint("Use the rotor to describe the chart or play it as an audio graph. Annual detail follows.")
+            .accessibilityValue(
+                ProjectionPresenter.factualSummary(
+                    input: snapshot.input,
+                    result: snapshot.result
+                )
+            )
+            .accessibilityHint("Annual detail below gives every year’s figures.")
+            .accessibilityIdentifier("projection.chart")
             .accessibilityChartDescriptor(
                 ProjectionChartDescriptor(
                     points: chartPoints,

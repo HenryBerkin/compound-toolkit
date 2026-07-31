@@ -669,3 +669,30 @@
   release. If any EU territory is added later, the declaration and a publishable
   address must be resolved first. The listing copy's "BUILT FOR UK USERS" section and
   the reviewer note remain accurate and need no change beyond removing Ireland.
+
+## IGC-D030 — Launch iOS 1.0 free, and monetise later without an upfront price
+
+- Date: 2026-07-31
+- Status: Accepted
+- Platform: Shared
+- Context: App Store Connect requires a price before a version can be submitted. A
+  £0.99 launch price was considered and rejected.
+- Decision: publish iOS 1.0 at **no cost**. Any future revenue comes from an in-app
+  purchase or a separate paid product, not from putting a price on this listing.
+- Rationale: the app tells users it is free. `AboutIGCView` states "IGC is a free,
+  local educational calculator", so charging would make the app's own copy wrong on the
+  day it ships, in a product whose differentiator is not overstating things. Beyond
+  that, the listing has no ratings, the category is crowded with free
+  compound-interest calculators, and the qualities that distinguish IGC — fee and
+  inflation modelling, and candour about exclusions — are not visible until after
+  download, so a price would be asked for a quality the buyer cannot yet perceive.
+  Downloads, reviews and feature requests are currently worth more than the revenue a
+  £0.99 price would realistically produce, and they are the evidence IGC-D028 needs.
+- Alternatives: £0.99 upfront; free with an immediate in-app purchase.
+- Consequences: the free positioning in `AboutIGCView`, the Settings and Privacy copy,
+  and the App Store description remain accurate and must be revisited together if that
+  ever changes. `FeatureAvailability` stays the intended entitlement seam. If a charge
+  is introduced later, enrol in the App Store Small Business Program, which reduces
+  commission from 30% to 15% below the annual revenue threshold. Adding an in-app
+  purchase or shipping a separate paid product disturbs neither this listing nor the
+  About copy; putting a price on this listing would disturb both.

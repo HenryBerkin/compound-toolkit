@@ -4,6 +4,19 @@ All notable changes to this project will be documented here.
 
 ---
 
+## 1.0.1 – Browser Favicon Correction
+
+### Fixed
+- Use a dedicated full-bleed SVG favicon with no transparent rounded perimeter or
+  outer stroke. Safari and other browsers that composite transparent favicon corners
+  onto a light system plate no longer produce an apparent white rim.
+- Give the corrected SVG a new filename so browsers do not reuse the previous cached
+  favicon rendition.
+
+### Not changed
+- PWA, Home Screen and native iOS application icons retain their existing artwork.
+- Calculation behaviour, saved scenarios and product features are unchanged.
+
 ## 1.0.0 – Supported Web 1.0
 
 ### Changed

@@ -670,3 +670,39 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     then purged only `https://igc.mochadesigns.co.uk/sw.js` from the zone cache;
   - confirmed the live worker now precaches the Web 1.0 bundle and returns
     `Cache-Control: no-cache, no-store, must-revalidate` with `CF-Cache-Status: BYPASS`.
+
+## IGC-018 — Correct the browser favicon perimeter
+
+- Owner: Product Manager and Technical Lead
+- Status: Ready for review
+- Priority: P1
+- Platform: Web
+- Dependencies: IGC-017
+- Affected: browser favicon metadata and one dedicated SVG favicon, Web package
+  version and release notes
+- Objective: prevent Safari and other browsers from rendering an apparent white rim
+  when they composite the favicon's transparent rounded corners onto a light plate.
+- Acceptance criteria:
+  - Browser favicon metadata selects a new, cache-busted SVG filename.
+  - The dedicated SVG has a full-bleed `#0b1b3a` background, no transparent perimeter
+    and no outer stroke, while preserving the IGC lettering and blue dot.
+  - Existing PNG fallbacks, PWA manifest icons, Apple touch icons, in-page brand icon
+    and native iOS icon remain unchanged.
+  - The visible Web version is `1.0.1`.
+  - Type-check, all Web tests and production build pass; built output contains the new
+    favicon and references it from `index.html`.
+- Explicit exclusions: calculation, validation, fixture, persistence or storage-key
+  changes; icon redesign; PWA/Home Screen/native icon changes; dependency upgrades;
+  analytics, backend or feature work.
+- Branch/worktree: `codex/igc-018-browser-favicon` in isolated worktree
+  `/private/tmp/igc-018-browser-favicon`, from exact base
+  `240d9827b2a4ca31ba1fe1cef1f983b7456b8db2`.
+- Required handoff: exact commit and changed files; visual and build evidence; live
+  favicon URL and metadata verification; clean-worktree confirmation.
+- Completion evidence:
+  - the dedicated SVG renders with a full `#0b1b3a` perimeter at all four edges,
+    carries no corner radius or outer stroke and is served as `image/svg+xml`;
+  - local browser metadata selects `/icons/favicon-v2.svg`, while the existing PNG,
+    manifest, Apple touch and native iOS icon assets are unchanged from the task base;
+  - `npm run lint`, `npm test` (87/87) and `npm run build` pass;
+  - the production output references and precaches `icons/favicon-v2.svg`.

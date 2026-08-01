@@ -722,3 +722,32 @@
   that pension and ISA rules are not modelled, so expectations are set inside the
   listing. Revisit `pension` only if the wrapper modelling contemplated by IGC-D028 is
   built.
+
+## IGC-D032 — Declare the maintained Web edition ready for 1.0
+
+- Date: 2026-08-01
+- Status: Accepted
+- Platform: Web
+- Context: the public PWA still identifies itself as `0.8.2`, although it is a
+  supported product surface and has since received the accepted annual-growth-rate
+  terminology, savings-preset, reconciled-results, accessibility and update-delivery
+  corrections. A live check confirmed that the current origin serves the corrected
+  application, while one Safari client remained controlled by the earlier precached
+  application shell. Cloudflare served the generated `sw.js` with a four-hour cache
+  lifetime.
+- Decision: release the maintained Web edition as product version **1.0.0**. Serve the
+  generated service-worker entry point with `Cache-Control: no-cache, no-store,
+  must-revalidate`, retain the existing user-visible **Update available / Refresh**
+  flow, and leave fingerprinted application assets under their normal cache policy.
+- Rationale: `0.8.2` no longer communicates the maturity of the supported Web product,
+  and prompt discovery should not be delayed by an ordinary static-asset cache
+  lifetime. Web `1.0.0` and native iOS `1.0` describe aligned public product maturity;
+  their build and patch numbers remain independently managed.
+- Alternatives: retain `0.8.2`; wait for native public release; remove offline PWA
+  support; force every new worker to activate without user control.
+- Consequences: no calculation, validation, terminology, contract, fixture, scenario
+  schema, browser-storage key, dependency or product-feature change. Existing local
+  scenarios remain compatible. A visitor controlled by the legacy `autoUpdate` worker
+  may still need to close every IGC tab or standalone window once so the waiting
+  prompt-mode worker can activate; clearing website data is not the default remedy
+  because it would also erase local scenarios.

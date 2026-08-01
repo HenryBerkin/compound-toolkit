@@ -61,6 +61,13 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 
 ### Changed
 
+- Declared the maintained Web edition ready for product version **1.0.0** after its
+  accepted terminology, preset, results-presentation, accessibility and update-flow
+  corrections; Web and native build numbers remain independently managed (Web,
+  IGC-D032).
+- Added a Cloudflare Pages no-cache policy for the generated `sw.js` entry point so
+  browsers check promptly for a replacement worker while fingerprinted application
+  assets retain normal caching (Web).
 - Isolated the preserved PWA under `igc-pwa/`.
 - Accepted and integrated IGC-007 after its Product Manager correction review; the
   independent gate passed 27/27 tests and the Release simulator build.

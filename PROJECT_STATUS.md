@@ -56,6 +56,11 @@ Owner: Product Manager and Technical Lead
   Support destinations are `https://igc.mochadesigns.co.uk/privacy` and
   `https://igc.mochadesigns.co.uk/support`; no analytics, tracking, Function, database
   or paid service was enabled.
+- Web 1.0 maintenance: IGC-D032 accepts the supported PWA as product version `1.0.0`.
+  IGC-017 has prepared and verified the version bump and a no-cache policy for the
+  generated service-worker entry point and is **Ready for review**. The live origin
+  remains on its current deployment until that isolated change is deliberately
+  integrated.
 - Public product/App Store name: **Investment Growth Calculator**.
 - Shorthand/icon identity: **IGC**; long-form marketing:
   **IGC — Investment Growth Calculator**.

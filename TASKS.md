@@ -606,3 +606,53 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 - Note: the App Store description's accessibility paragraph was already corrected on
   2026-08-01, while the version was Waiting for Review, because its previous wording
   claimed more than the evidence supports. That correction did not require a new build.
+
+## IGC-017 — Release the maintained PWA as Web 1.0
+
+- Owner: Product Manager and Technical Lead
+- Status: Ready for review
+- Priority: P1
+- Platform: Web
+- Dependencies: IGC-010, IGC-014, accepted IGC-D032
+- Affected: Web package version and changelog, Cloudflare Pages response headers,
+  Web release records
+- Objective: identify the corrected supported PWA as version 1.0.0 and make future
+  service-worker updates discoverable without a four-hour static cache delay.
+- Acceptance criteria:
+  - The application and lockfile versions are `1.0.0`, and the generated footer
+    displays `v1.0.0`.
+  - The generated `sw.js` is covered by a Cloudflare Pages no-cache/no-store response
+    policy; fingerprinted application assets retain their existing policy.
+  - The current prompt-mode service-worker registration and Update available / Refresh
+    flow remain intact.
+  - Calculation, validation, terminology, fixtures, scenario persistence, storage
+    keys, dependencies and product capabilities are unchanged.
+  - Type-check, all Web tests and a production build pass. The built output contains
+    the `_headers` policy, `v1.0.0`, the annual-growth-rate label and the update prompt.
+- Explicit exclusions: calculation or schema changes; saved-data migration; dependency
+  upgrades; redesign; new feature; analytics; tracking; backend; account; native code;
+  App Store Connect; automatic public deployment before the release change is reviewed.
+- Branch/worktree: `codex/igc-017-web-1-0-release` in isolated worktree
+  `/private/tmp/igc-017-web-1-0-release`, from exact base
+  `8c76352ad1e6a1f40dbe96cfef0b6972ba001805`.
+- Required handoff: exact commit range and changed files; verification results;
+  built-header and bundle-string evidence; live-origin baseline; deployment and
+  rollback instructions; clean-worktree confirmation. Stop at **Ready for review**
+  without push, merge or Cloudflare deployment.
+- Completion evidence (2026-08-01):
+  - `npm install` completed without a forced upgrade; the previously recorded 15
+    dependency findings remain 1 low, 5 moderate, 8 high and 1 critical.
+  - `npm run lint` passed.
+  - `npm test` passed 87/87 tests across the calculation and direct shared-fixture
+    suites.
+  - `npm run build` passed and generated `dist/_headers`, `dist/sw.js` and a
+    fingerprinted application bundle containing **Annual Growth Rate**, **Update
+    available** and version `1.0.0`.
+  - The generated worker retains prompt-mode activation: it calls `skipWaiting` only
+    after the Refresh action sends `SKIP_WAITING`; it does not force activation.
+  - The local development server returned HTTP 200 for the application entry point.
+  - Before this task, the live origin returned the corrected Annual Growth Rate bundle
+    and update prompt but served `sw.js` with `Cache-Control: public, max-age=14400,
+    must-revalidate`, reproducing the update-discovery weakness this task addresses.
+  - `git diff --check` passed. No shared contract, fixture, calculation, validation,
+    scenario, storage-key, dependency-version, native or external-service file changed.

@@ -4,6 +4,22 @@ All notable changes to this project will be documented here.
 
 ---
 
+## 1.0.0 – Supported Web 1.0
+
+### Changed
+- Present the maintained PWA as a supported 1.0 product following the accepted
+  terminology, preset, results-presentation, accessibility and update-delivery
+  corrections.
+- Serve the generated service-worker entry point with a no-cache policy so browsers
+  check promptly for a replacement worker. Fingerprinted application assets retain
+  their normal caching behaviour.
+
+### Compatibility
+- Calculation behaviour, contract version, saved-scenario storage and browser-storage
+  keys are unchanged from 0.8.2.
+- A visitor still controlled by the earlier `autoUpdate` worker may need to close all
+  IGC tabs or standalone windows once so the waiting 1.0 worker can activate.
+
 ## 0.8.2 – Supported Web Edition
 
 ### Fixed

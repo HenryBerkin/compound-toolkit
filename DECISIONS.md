@@ -696,3 +696,29 @@
   commission from 30% to 15% below the annual revenue threshold. Adding an in-app
   purchase or shipping a separate paid product disturbs neither this listing nor the
   About copy; putting a price on this listing would disturb both.
+
+## IGC-D031 — Include ISA, but not pension, in App Store keywords
+
+- Date: 2026-08-01
+- Status: Accepted
+- Platform: iOS
+- Supersedes: the keyword consequence recorded in IGC-D028, which stated that both
+  `ISA` and `pension` stay out of App Store keywords and the description. The rest of
+  IGC-D028 stands.
+- Context: IGC-D028 excluded both terms on the grounds that the app models neither
+  wrapper. An independent audit found that the submitted listing includes `ISA` while
+  IGC-D028 still forbade it, leaving an accepted decision contradicted by shipped
+  metadata with no superseding record. That contradiction is the reason for this entry.
+- Decision: include `ISA` in keywords. Continue to exclude `pension`.
+- Rationale: the two cases are not alike, which IGC-D028 failed to distinguish. An ISA
+  is a tax-free wrapper with no tax on growth inside it and none on withdrawal, so the
+  projection IGC produces applies to ISA savings directly and correctly; what it does
+  not model is the annual subscription limit, which governs how much may be paid in
+  rather than how the balance grows. For a pension, relief on contributions and income
+  tax on drawdown usually dominate the outcome and IGC models neither, so a projection
+  that ignores both would materially mislead someone searching for a pension
+  calculator.
+- Consequences: keywords are 91 of 100 characters. The description continues to state
+  that pension and ISA rules are not modelled, so expectations are set inside the
+  listing. Revisit `pension` only if the wrapper modelling contemplated by IGC-D028 is
+  built.

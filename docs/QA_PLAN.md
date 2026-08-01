@@ -302,8 +302,8 @@ Fixture/specification changes require an accepted Shared decision, compatibility
 | Scenario lifecycle | V1 CRUD, atomic/recovery/failure/reset/relaunch evidence and truthful backup wording. | Passed under IGC-012/IGC-D021: corrected specialist and independent PM evidence includes 40/40 unit/fixture/store tests, 16/16 UI tests, current-source recovery preservation, save gating, relaunch and offline checks. Physical release-candidate recheck remains open under IGC-D019. |
 | Accessibility readiness | Automated/simulator/device/VoiceOver/manual evidence; Dynamic Type/adaptive/contrast/motion/keyboard findings resolved or accepted. | Partial: IGC-007 simulator/accessibility suite and requested physical smoke passed; feature-complete and release-candidate evidence remains open. |
 | Web regression | Supported PWA passes; known defects/vulnerabilities/deployment risk triaged with owner/exception. | Historical audit/85-test evidence; rerun for change/release. |
-| TestFlight/release candidate | iOS parity/regression/device/offline/recovery/privacy evidence, no unresolved release blockers, approved known-issue list. | Planned. |
-| App Store/privacy readiness | IGC-008 current official review, approved disclosures/URLs/metadata, current SDK/upload/signing evidence. | Planned; not a compliance claim. |
+| TestFlight/release candidate | iOS parity/regression/device/offline/recovery/privacy evidence, no unresolved release blockers, approved known-issue list. | Passed for build 1.0 (6): 59/59 unit and 24/24 UI tests, owner physical-device pass, independent Release-build audit 2026-08-01. Open accessibility findings are recorded, not resolved. |
+| App Store/privacy readiness | IGC-008 current official review, approved disclosures/URLs/metadata, current SDK/upload/signing evidence. | Submitted 2026-07-31 with build 1.0 (6): App Privacy answered Data Not Collected, Xcode 26.6 / iOS 26.5 SDK, manual release. Awaiting Apple's result; not a compliance claim. |
 
 ### Current evidence versus planned evidence
 

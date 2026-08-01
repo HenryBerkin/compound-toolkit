@@ -1,8 +1,14 @@
 # IGC App Store listing copy
 
-Status: Draft for owner review
+Status: Submitted to App Review 2026-07-31 with build 1.0 (6); awaiting result
 Owner: Product Manager
 Applies to: iOS 1.0
+
+The accessibility paragraph of the description was corrected on 2026-08-01, while the
+version was still Waiting for Review, after an audit found the previous wording
+("Full Dynamic Type support", "VoiceOver labels throughout") stronger than the
+evidence supports. Metadata is editable in that state; only a new build requires
+removing the version from review.
 
 All copy is UK English. It must not describe IGC as advice, a forecast, a
 recommendation, or a regulated service, and must not imply account connection, live
@@ -109,9 +115,10 @@ wrapper modelling in IGC-D028 is ever built.
 >
 > ACCESSIBILITY
 >
-> Full Dynamic Type support including accessibility sizes, VoiceOver labels throughout,
-> Light and Dark appearance, and a complete year-by-year table as an alternative to the
-> chart.
+> IGC supports Dynamic Type, including accessibility text sizes, with monetary figures
+> laid out to stay readable as text grows. It supports VoiceOver, Reduce Motion, and
+> Light and Dark appearance, and the year-by-year table is a complete alternative to
+> the chart.
 >
 > Investment Growth Calculator is an educational tool. It is not financial advice, a
 > forecast, or a recommendation. Actual outcomes may be higher or lower.

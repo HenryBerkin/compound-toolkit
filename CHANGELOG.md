@@ -246,10 +246,14 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
   `FinancialFactRow`. Side-by-side `LabeledContent` narrowed the value column until
   figures broke mid-number — "£10,00" above "0.00" — which reads as a different amount.
   Applied to Projection, annual detail and the saved-scenario rows (iOS).
-- Implemented `AXChartDescriptor` for the projection chart, so VoiceOver's Describe
-  Chart and Audio Graph actions genuinely work. The accessibility hint previously
-  promised an audio graph that no code provided; the hint now describes what exists and
-  the feature now exists (iOS).
+- Implemented `AXChartDescriptor` for the projection chart. The accessibility hint had
+  promised an audio graph that no code provided. **This entry originally claimed the
+  Describe Chart and Audio Graph actions "genuinely work"; that claim was wrong.**
+  Owner device testing found the descriptor unreachable, because per-mark labels made
+  the chart a container VoiceOver never focused as a whole. See the later
+  "projection chart accessibility" entry for the fix, after which the chart is a single
+  focusable element carrying its summary and the hint no longer mentions the rotor.
+  Whether iOS surfaces a playable audio graph remains unverified (iOS).
 - Rebuilt the web year-by-year breakdown so every view reconciles. The After Fees view
   had no growth column at all, leaving its rows short by the growth figure — £838.38 in
   year 1 and £7,057.06 in year 15 of the default scenario — while the Nominal view with

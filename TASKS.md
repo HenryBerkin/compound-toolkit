@@ -570,3 +570,39 @@ more than one only when its acceptance criteria genuinely span those surfaces.
   - Contract version 1 is untouched; this is a structural change only.
 - Scope boundary: extraction only. It does not authorise tax-wrapper modelling,
   premium work, or a second application, all of which remain subject to IGC-D028.
+
+## IGC-016 — Resolve the open accessibility findings before public release
+
+- Owner: iOS Engineer
+- Status: Proposed
+- Priority: P1
+- Platform: iOS
+- Dependencies: an App Review result on build `1.0 (6)`
+- Affected: `ProjectionView` accessibility labels, the contrast findings across all
+  screens, `AccessibilityAuditTests`, and the App Store accessibility declarations
+- Context: an independent audit of build `1.0 (6)` on 2026-08-01 confirmed no
+  calculation, persistence, privacy, navigation, crash, layout or signing blocker, and
+  recommended the build remain in review. It also confirmed 47 open accessibility
+  audit findings: 13 contrast failures, 26 contrast near-misses, 6 partial Dynamic Type
+  findings, and 2 non-human-readable labels.
+- Objective: resolve or formally accept each finding, then decide which App Store
+  accessibility declarations are supportable.
+- Acceptance criteria:
+  - `projection.finalBalance` and `projection.todayMoney` expose a label describing
+    what the amount is, not the amount alone. These are low-cost and unambiguous.
+  - The contrast findings are measured rather than assumed. Determine how many are
+    genuine and how many are artefacts of the translucent floating tab bar overlaying
+    content, which is the current working hypothesis and is unverified. Fix the genuine
+    ones; record the rest as accepted with the measurement that justifies it.
+  - The 6 Dynamic Type findings are attributed to specific elements and either fixed or
+    accepted, distinguishing app-controlled elements from system-provided ones.
+  - `AccessibilityAuditTests` is promoted from skipped-by-default to a gate once the
+    remaining findings are accepted, so regressions fail the suite.
+  - The App Store accessibility declarations are set only to what the evidence
+    supports. Declarations are metadata and can be updated without a build.
+- Scope boundary: accessibility only. No calculation, schema, persistence or premium
+  change. Any code fix requires a new build, so it cannot reach users already on
+  `1.0 (6)` without one.
+- Note: the App Store description's accessibility paragraph was already corrected on
+  2026-08-01, while the version was Waiting for Review, because its previous wording
+  claimed more than the evidence supports. That correction did not require a new build.

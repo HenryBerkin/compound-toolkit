@@ -1,11 +1,17 @@
 # IGC project status
 
-Updated: 2026-07-30
+Updated: 2026-08-01
 Owner: Product Manager and Technical Lead
 
 ## Current state
 
-- Phase: IGC-007, IGC-012, and IGC-013 are accepted and integrated. The IGC-007
+- **Phase: iOS 1.0 is submitted to App Review with build `1.0 (6)` and awaiting a
+  result. Manual release is selected, so approval will move the version to Pending
+  Developer Release rather than publishing it.** See "App Review submission" below for
+  the submitted values, and "Remaining public-submission gaps" for what is still open.
+  The narrative bullets that follow record how the project reached that point and are
+  historical; where they disagree with the App Review section, that section is current.
+- Phase history: IGC-007, IGC-012, and IGC-013 are accepted and integrated. The IGC-007
   foundation was development-signed, installed, and manually validated on a physical
   iPhone; the integrated native app now also includes the accepted local scenario
   lifecycle, secondary content, app preferences, and verified global local-data reset.
@@ -252,6 +258,11 @@ the App Store link in the web edition's footer, after confirming the store URL l
 a signed-out browser.
 
 ## Remaining public-submission gaps
+
+Most of this section is now satisfied; the metadata items were completed at submission
+on 2026-07-31 and are recorded in `docs/APP_STORE_LISTING.md` and
+`docs/RELEASE_CHECKLIST.md`. What genuinely remains open is the accessibility work in
+IGC-016 and the landscape coverage noted below.
 
 The binary itself carries no known submission blocker. The archive inspection for
 `1.0 (2)` matches the `1.0 (1)` baseline, the app icon is a 1024×1024 PNG with no alpha

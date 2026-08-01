@@ -57,7 +57,7 @@ The initial state is explicitly **Custom**, not a selected preset:
 | --- | ---: |
 | Principal | £10,000 |
 | Contribution | £250 monthly |
-| APR | 7% |
+| Annual growth rate (`apr`) | 7% |
 | Inflation | 3% |
 | Annual fee | 0.20% |
 | Compounding | Monthly |
@@ -68,7 +68,7 @@ The initial state is explicitly **Custom**, not a selected preset:
 
 The curated presets are:
 
-| Preset ID | APR | Inflation | Annual fee | Compounding |
+| Preset ID | Annual growth rate | Inflation | Annual fee | Compounding |
 | --- | ---: | ---: | ---: | --- |
 | `global-index-diy` | 7% | 3% | 0.40% | Monthly |
 | `balanced-portfolio` | 6% | 3% | 0.75% | Monthly |

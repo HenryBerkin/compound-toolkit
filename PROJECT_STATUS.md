@@ -47,12 +47,16 @@ Owner: Product Manager and Technical Lead
   scenario lifecycle, and IGC-013 secondary content/preferences are integrated into
   `project/ios-migration-audit`. IGC-007 passed its physical-device gate under
   IGC-D019.
-- PWA status: supported IGC Web edition `1.0.0` and behavioural reference, published
+- PWA status: supported IGC Web edition `1.0.1` and behavioural reference, published
   at `https://igc.mochadesigns.co.uk/` on Cloudflare Pages from production branch
-  `project/ios-migration-audit`. IGC-017 candidate
+  `project/ios-migration-audit`. Web 1.0 was established when IGC-017 candidate
   `bf451ccfc176f2274675f794f49b46a9ddae2479` was integrated by merge commit
-  `575f78fa8c534b646fd06fd4be3b0425fdc95e11`, deployed and verified live on
-  2026-08-01. The live worker precaches the Web 1.0 bundle and is served with
+  `575f78fa8c534b646fd06fd4be3b0425fdc95e11`. IGC-018 patch candidate
+  `985c17a57dc2e45b03dbb8dd49c6d3336b38f621` was integrated by merge commit
+  `64c999a45322802a70c85342fdf1718aee55b1e4`, deployed and verified live on
+  2026-08-01. The patch replaces only the browser favicon with a cache-busted,
+  full-bleed SVG; PWA, Home Screen and native icons are unchanged. The live worker
+  precaches the Web 1.0.1 bundle and is served with
   `Cache-Control: no-cache, no-store, must-revalidate`; the prior same-name worker was
   removed with a single-URL cache purge. The owner-controlled custom domain is Active
   with SSL enabled. Public Privacy and Support destinations are

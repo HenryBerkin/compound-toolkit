@@ -169,7 +169,7 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Replaced the Web tab favicon with a cache-busted, full-bleed SVG that has no
   transparent rounded perimeter or outer stroke, preventing Safari-like light icon
   plates from appearing as a white rim. PWA, Home Screen and native icons are
-  unchanged (Web, IGC-018).
+  unchanged. Published and verified as Web `1.0.1` (Web, IGC-018).
 - Corrected annual detail so every amount in a year shares one row-end inflation
   divisor. Today's-money rows previously discounted the opening balance at the year's
   start and everything else at the year's end, so a row did not sum to its own closing

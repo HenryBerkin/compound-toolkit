@@ -674,7 +674,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-018 — Correct the browser favicon perimeter
 
 - Owner: Product Manager and Technical Lead
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: Web
 - Dependencies: IGC-017
@@ -706,3 +706,12 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     manifest, Apple touch and native iOS icon assets are unchanged from the task base;
   - `npm run lint`, `npm test` (87/87) and `npm run build` pass;
   - the production output references and precaches `icons/favicon-v2.svg`.
+  - accepted candidate `985c17a57dc2e45b03dbb8dd49c6d3336b38f621` was
+    integrated by merge commit `64c999a45322802a70c85342fdf1718aee55b1e4`;
+  - confirmed the live root selects `/icons/favicon-v2.svg`, the live asset is HTTP
+    200 `image/svg+xml`, the live bundle displays `v1.0.1`, and the live worker
+    precaches the corrected asset;
+  - exercised an already-cached browser session: it presented **Update available**,
+    and **Refresh** advanced it from `v0.8.2` with `/icons/icon.svg` to `v1.0.1` with
+    `/icons/favicon-v2.svg`;
+  - confirmed the public root, Privacy and Support routes each return HTTP 200.

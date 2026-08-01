@@ -47,20 +47,18 @@ Owner: Product Manager and Technical Lead
   scenario lifecycle, and IGC-013 secondary content/preferences are integrated into
   `project/ios-migration-audit`. IGC-007 passed its physical-device gate under
   IGC-D019.
-- PWA status: supported IGC web edition and behavioural reference, published at
-  `https://igc.mochadesigns.co.uk/` on Cloudflare Pages from production branch
-  `project/ios-migration-audit`. Release commit
-  `f6d514169ab1ca2824d8da931b75eb2fbab4522f` passed the Pages production build
-  `6ca2abea-4875-4aaa-86f0-9efb2d12b353`;
-  the owner-controlled custom domain is Active with SSL enabled. Public Privacy and
-  Support destinations are `https://igc.mochadesigns.co.uk/privacy` and
+- PWA status: supported IGC Web edition `1.0.0` and behavioural reference, published
+  at `https://igc.mochadesigns.co.uk/` on Cloudflare Pages from production branch
+  `project/ios-migration-audit`. IGC-017 candidate
+  `bf451ccfc176f2274675f794f49b46a9ddae2479` was integrated by merge commit
+  `575f78fa8c534b646fd06fd4be3b0425fdc95e11`, deployed and verified live on
+  2026-08-01. The live worker precaches the Web 1.0 bundle and is served with
+  `Cache-Control: no-cache, no-store, must-revalidate`; the prior same-name worker was
+  removed with a single-URL cache purge. The owner-controlled custom domain is Active
+  with SSL enabled. Public Privacy and Support destinations are
+  `https://igc.mochadesigns.co.uk/privacy` and
   `https://igc.mochadesigns.co.uk/support`; no analytics, tracking, Function, database
-  or paid service was enabled.
-- Web 1.0 maintenance: IGC-D032 accepts the supported PWA as product version `1.0.0`.
-  IGC-017 has prepared and verified the version bump and a no-cache policy for the
-  generated service-worker entry point and is **Ready for review**. The live origin
-  remains on its current deployment until that isolated change is deliberately
-  integrated.
+  or paid service is enabled.
 - Public product/App Store name: **Investment Growth Calculator**.
 - Shorthand/icon identity: **IGC**; long-form marketing:
   **IGC — Investment Growth Calculator**.

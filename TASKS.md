@@ -610,7 +610,7 @@ more than one only when its acceptance criteria genuinely span those surfaces.
 ## IGC-017 — Release the maintained PWA as Web 1.0
 
 - Owner: Product Manager and Technical Lead
-- Status: Ready for review
+- Status: Done
 - Priority: P1
 - Platform: Web
 - Dependencies: IGC-010, IGC-014, accepted IGC-D032
@@ -656,3 +656,17 @@ more than one only when its acceptance criteria genuinely span those surfaces.
     must-revalidate`, reproducing the update-discovery weakness this task addresses.
   - `git diff --check` passed. No shared contract, fixture, calculation, validation,
     scenario, storage-key, dependency-version, native or external-service file changed.
+- Product Manager acceptance, integration and deployment (2026-08-01):
+  - accepted exact candidate commit
+    `bf451ccfc176f2274675f794f49b46a9ddae2479` and integrated it into
+    `project/ios-migration-audit` with merge commit
+    `575f78fa8c534b646fd06fd4be3b0425fdc95e11`;
+  - pushed the configured production branch and confirmed the public root switched to
+    the expected `assets/index-CSIIWizO.js` Web 1.0 bundle;
+  - confirmed the live bundle contains **Annual Growth Rate**, **Update available**
+    and version `1.0.0`, and that the root, Privacy and Support routes resolve to HTTP
+    200;
+  - found Cloudflare still serving the prior same-name worker after the deployment,
+    then purged only `https://igc.mochadesigns.co.uk/sw.js` from the zone cache;
+  - confirmed the live worker now precaches the Web 1.0 bundle and returns
+    `Cache-Control: no-cache, no-store, must-revalidate` with `CF-Cache-Status: BYPASS`.

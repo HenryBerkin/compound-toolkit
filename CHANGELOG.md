@@ -68,6 +68,9 @@ Project-wide changes are recorded here. Historical PWA releases remain unchanged
 - Added a Cloudflare Pages no-cache policy for the generated `sw.js` entry point so
   browsers check promptly for a replacement worker while fingerprinted application
   assets retain normal caching (Web).
+- Published and verified Web `1.0.0` at `https://igc.mochadesigns.co.uk/`. A
+  single-URL purge removed the prior cached `sw.js`; the live replacement now
+  precaches the Web 1.0 bundle and returns the accepted no-cache policy (Web, IGC-017).
 - Isolated the preserved PWA under `igc-pwa/`.
 - Accepted and integrated IGC-007 after its Product Manager correction review; the
   independent gate passed 27/27 tests and the Release simulator build.
